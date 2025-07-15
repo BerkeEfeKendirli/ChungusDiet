@@ -1,13 +1,13 @@
 import { Pressable, Text, StyleSheet } from "react-native";
 import { StyleColors } from "../../constants/colors";
 
-function TextButton({ text, onPress }) {
+function TextButton({ text, onPress, style }) {
   return (
     <Pressable
       style={({ pressed }) => pressed && styles.pressed}
       onPress={onPress}
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={style}>{text}</Text>
     </Pressable>
   );
 }
@@ -15,11 +15,6 @@ function TextButton({ text, onPress }) {
 export default TextButton;
 
 const styles = StyleSheet.create({
-  text: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onBackgroundVariant,
-  },
   pressed: {
     opacity: 0.7,
   },

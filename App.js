@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import RecipesScreen from "./screens/RecipesScreen";
-import DiaryScreen from "./screens/DiaryScreen";
-import ReportsScreen from "./screens/ReportsScreen";
+import RecipesScreen from "./screens/Home/RecipesScreen";
+import DiaryScreen from "./screens/Home/DiaryScreen";
+import ReportsScreen from "./screens/Home/ReportsScreen";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import OnboardingSlideScreen from "./screens/Onboarding/OnboardingSlideScreen";

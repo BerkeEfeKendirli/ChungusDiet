@@ -2,7 +2,7 @@ import { StyleSheet, View, Animated } from "react-native";
 import { StyleColors } from "../../constants/colors";
 import { useEffect, useRef } from "react";
 
-function OnboardingPagination({ slides, currentSlide }) {
+function OnboardingNavigation({ slides, currentSlide }) {
   const animatedValues = useRef(
     slides.map(() => new Animated.Value(0))
   ).current;
@@ -11,7 +11,7 @@ function OnboardingPagination({ slides, currentSlide }) {
     animatedValues.forEach((animValue, index) => {
       Animated.timing(animValue, {
         toValue: index === currentSlide ? 1 : 0,
-        duration: 300,
+        duration: 100,
         useNativeDriver: false,
       }).start();
     });
@@ -40,7 +40,7 @@ function OnboardingPagination({ slides, currentSlide }) {
   );
 }
 
-export default OnboardingPagination;
+export default OnboardingNavigation;
 
 const styles = StyleSheet.create({
   pagination: {

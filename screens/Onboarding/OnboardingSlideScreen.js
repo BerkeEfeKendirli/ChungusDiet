@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { View, StyleSheet, ScrollView, Dimensions } from "react-native";
 import { onboardingSlideData } from "../../data/onboardingSlideData";
 import OnboardingSlideItem from "../../components/onboarding/OnboardingSlideItem";
-import OnboardingPagination from "../../components/onboarding/OnboardingPagination";
+import OnboardingNavigation from "../../components/onboarding/OnboardingNavigation";
 import FloatingActionButton from "../../components/buttons/FloatingActionButton";
 import TextButton from "../../components/buttons/TextButton";
 import { StyleColors } from "../../constants/colors";
@@ -53,14 +53,19 @@ function OnboardingSlideScreen({ navigation }) {
             <OnboardingSlideItem key={slide.id} slide={slide} />
           ))}
         </ScrollView>
-        <OnboardingPagination
+        <OnboardingNavigation
           slides={onboardingSlideData}
           currentSlide={currentSlide}
         />
       </View>
       <View style={styles.buttons}>
         {currentSlide > 0 ? (
-          <TextButton text="Back" onPress={handleBack} />
+          <TextButton
+            text="Back"
+            color={StyleColors.onBackgroundVariant}
+            onPress={handleBack}
+            style={styles.backButton}
+          />
         ) : (
           <TextButton />
         )}
@@ -87,10 +92,15 @@ const styles = StyleSheet.create({
   },
   buttons: {
     paddingHorizontal: 24,
-    marginBottom: 40,
+    paddingBottom: 40,
     width: width,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  backButton: {
+    fontFamily: "inter-regular",
+    fontSize: 16,
+    color: StyleColors.onBackgroundVariant,
   },
 });
