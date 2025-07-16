@@ -6,7 +6,11 @@ import TextButton from "../../components/buttons/TextButton";
 
 function WelcomeScreen({ navigation }) {
   const startButtonHandler = () => {
-    navigation.navigate("Home");
+    navigation.navigate("SignUp");
+  };
+
+  const startTextHandler = () => {
+    navigation.navigate("Login");
   };
 
   return (
@@ -22,7 +26,12 @@ function WelcomeScreen({ navigation }) {
       </View>
       <View style={styles.startContainer}>
         <View style={styles.button}>
-          <Button text="Start" onPress={startButtonHandler} />
+          <Button
+            text="Start"
+            onPress={startButtonHandler}
+            style={{ backgroundColor: StyleColors.primary }}
+            textColor={StyleColors.onPrimary}
+          />
         </View>
         <View style={styles.startTextContainer}>
           <Text style={styles.startText}>Already have an account?</Text>
@@ -30,6 +39,7 @@ function WelcomeScreen({ navigation }) {
             text="Sign In"
             color={StyleColors.primary}
             style={styles.startTextButton}
+            onPress={startTextHandler}
           />
         </View>
       </View>
@@ -42,7 +52,6 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: StyleColors.background,
     justifyContent: "center",
     alignItems: "center",
   },

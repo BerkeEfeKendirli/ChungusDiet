@@ -18,7 +18,7 @@ export const StyleColors = {
   orange: "#FFA072",
   lightGreen: "#59FFC4",
   green: "#35CC8C",
-  blueGraidentStart: "#81DDFF",
+  blueGradientStart: "#81DDFF",
   blueGradientEnd: "#78ABFF",
   danger: "#CB2030",
 };

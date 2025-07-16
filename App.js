@@ -7,9 +7,22 @@ import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import OnboardingSlideScreen from "./screens/Onboarding/OnboardingSlideScreen";
 import WelcomeScreen from "./screens/Onboarding/WelcomeScreen";
+import SignUpScreen from "./screens/Auth/SignUpScreen";
+import LoginScreen from "./screens/Auth/LoginScreen";
+import { StyleColors } from "./constants/colors";
+import { Ionicons } from "@expo/vector-icons";
+import { Pressable, StyleSheet, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
+
+function CustomBackButton({ navigation }) {
+  return (
+    <Pressable onPress={() => navigation.goBack()}>
+      <Ionicons name="chevron-back" size={24} />
+    </Pressable>
+  );
+}
 
 function BottomTabNavigator() {
   return (
@@ -37,12 +50,54 @@ export default function App() {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+          contentStyle: { backgroundColor: StyleColors.background },
         }}
       >
         <Stack.Screen name="Onboarding" component={OnboardingSlideScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUpScreen}
+          options={({ navigation }) => ({
+            title: "Sign Up",
+            headerTitleAlign: "center",
+            headerShown: true,
+            headerLeft: () => (
+              <CustomBackButton
+                navigation={navigation}
+                tintColor={StyleColors.onBackground}
+              />
+            ),
+            headerTitleStyle: styles.signUpTitle,
+          })}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={({ navigation }) => ({
+            title: "Login",
+            headerShown: true,
+            headerTitleAlign: "center",
+            headerLeft: () => (
+              <CustomBackButton
+                navigation={navigation}
+                tintColor={StyleColors.onBackground}
+              />
+            ),
+            headerTitleStyle: styles.signUpTitle,
+          })}
+        />
+
         <Stack.Screen name="Home" component={BottomTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  signUpTitle: {
+    fontFamily: "inter-medium",
+    fontSize: 18,
+    color: StyleColors.onBackground,
+  },
+});
