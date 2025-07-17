@@ -12,29 +12,35 @@ function OutlinedTextField({
   autoComplete = "off",
   passwordRules, // Ekle
   importantForAutofill,
+  onChangeText,
+  value = "",
+  error,
 }) {
   const [isFocused, setIsFocused] = useState(false);
   const [isPasswordHidden, setIsPasswordHidden] = useState(
     rightIcon === "eye-off"
   );
-  const [inputValue, setInputValue] = useState("");
   const animatedValue = useRef(new Animated.Value(0)).current;
 
   // Animasyon effect'i
   useEffect(() => {
     Animated.timing(animatedValue, {
-      toValue: isFocused || inputValue.length > 0 ? 1 : 0,
+      toValue: isFocused || value.length > 0 ? 1 : 0,
       duration: 200,
       useNativeDriver: false,
     }).start();
-  }, [isFocused]);
+  }, [isFocused, value]);
 
   // Label style'ı
   const labelStyle = {
     backgroundColor: isFocused ? StyleColors.background : null,
     paddingHorizontal: isFocused ? 8 : 0,
     fontFamily: "inter-regular",
-    color: isFocused ? StyleColors.primary : StyleColors.onBackgroundVariant,
+    color: error
+      ? StyleColors.danger
+      : isFocused
+      ? StyleColors.primary
+      : StyleColors.onBackgroundVariant,
     position: "absolute",
     left: isFocused ? 0 : 30,
     top: isFocused ? -20 : "20%",
@@ -42,7 +48,7 @@ function OutlinedTextField({
       inputRange: [0, 1],
       outputRange: [16, 12],
     }),
-    opacity: inputValue.length > 0 && !isFocused ? 0 : 1,
+    opacity: value && value.length > 0 && !isFocused ? 0 : 1,
   };
 
   return (
@@ -50,7 +56,9 @@ function OutlinedTextField({
       style={[
         styles.textInputContainer,
         {
-          borderColor: isFocused
+          borderColor: error
+            ? StyleColors.danger
+            : isFocused
             ? StyleColors.primary
             : StyleColors.onBackgroundVariant,
         },
@@ -65,7 +73,9 @@ function OutlinedTextField({
             style={{ paddingRight: 4 }}
             name={leftIcon}
             color={
-              isFocused
+              error
+                ? StyleColors.danger
+                : isFocused
                 ? StyleColors.onBackground
                 : StyleColors.onBackgroundVariant
             }
@@ -73,14 +83,16 @@ function OutlinedTextField({
           />
           <Animated.Text style={labelStyle}>{placeholder}</Animated.Text>
           <TextInput
-            value={inputValue}
-            onChangeText={setInputValue}
+            value={value}
+            onChangeText={onChangeText}
             caretHidden={false}
             style={[
               styles.inputText,
               {
-                color: isFocused
-                  ? StyleColors.onBackground
+                color: error
+                  ? StyleColors.danger
+                  : isFocused
+                  ? StyleColors.primary
                   : StyleColors.onBackgroundVariant,
               },
             ]}
@@ -102,7 +114,9 @@ function OutlinedTextField({
         {rightIcon === "eye-off" && (
           <Ionicons
             color={
-              isFocused
+              error
+                ? StyleColors.danger
+                : isFocused
                 ? StyleColors.onBackground
                 : StyleColors.onBackgroundVariant
             }
