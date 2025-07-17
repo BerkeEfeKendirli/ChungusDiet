@@ -12,6 +12,9 @@ import LoginScreen from "./screens/Auth/LoginScreen";
 import { StyleColors } from "./constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, View } from "react-native";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./config/firebaseConfig";
+import { useEffect, useState } from "react";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -26,7 +29,11 @@ function CustomBackButton({ navigation }) {
 
 function BottomTabNavigator() {
   return (
-    <BottomTab.Navigator>
+    <BottomTab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <BottomTab.Screen name="Recipes" component={RecipesScreen} />
       <BottomTab.Screen name="Diary" component={DiaryScreen} />
       <BottomTab.Screen name="Reports" component={ReportsScreen} />
@@ -40,8 +47,18 @@ export default function App() {
     "inter-medium": require("./assets/fonts/Inter-Medium.ttf"),
     "inter-semibold": require("./assets/fonts/Inter-SemiBold.ttf"),
   });
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Auth state changed:", user ? user.email : "null");
+      setUser(user);
+      setIsLoading(false);
+    });
+    return unsubscribe;
+  }, []);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || isLoading) {
     return null;
   }
 
@@ -53,42 +70,46 @@ export default function App() {
           contentStyle: { backgroundColor: StyleColors.background },
         }}
       >
-        <Stack.Screen name="Onboarding" component={OnboardingSlideScreen} />
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen
-          name="SignUp"
-          component={SignUpScreen}
-          options={({ navigation }) => ({
-            title: "Sign Up",
-            headerTitleAlign: "center",
-            headerShown: true,
-            headerLeft: () => (
-              <CustomBackButton
-                navigation={navigation}
-                tintColor={StyleColors.onBackground}
-              />
-            ),
-            headerTitleStyle: styles.signUpTitle,
-          })}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={({ navigation }) => ({
-            title: "Login",
-            headerShown: true,
-            headerTitleAlign: "center",
-            headerLeft: () => (
-              <CustomBackButton
-                navigation={navigation}
-                tintColor={StyleColors.onBackground}
-              />
-            ),
-            headerTitleStyle: styles.signUpTitle,
-          })}
-        />
-
-        <Stack.Screen name="Home" component={BottomTabNavigator} />
+        {user ? (
+          <Stack.Screen name="Home" component={BottomTabNavigator} />
+        ) : (
+          <>
+            <Stack.Screen name="Onboarding" component={OnboardingSlideScreen} />
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen
+              name="SignUp"
+              component={SignUpScreen}
+              options={({ navigation }) => ({
+                title: "Sign Up",
+                headerTitleAlign: "center",
+                headerShown: true,
+                headerLeft: () => (
+                  <CustomBackButton
+                    navigation={navigation}
+                    tintColor={StyleColors.onBackground}
+                  />
+                ),
+                headerTitleStyle: styles.signUpTitle,
+              })}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={({ navigation }) => ({
+                title: "Login",
+                headerShown: true,
+                headerTitleAlign: "center",
+                headerLeft: () => (
+                  <CustomBackButton
+                    navigation={navigation}
+                    tintColor={StyleColors.onBackground}
+                  />
+                ),
+                headerTitleStyle: styles.signUpTitle,
+              })}
+            />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -12,6 +12,8 @@ import { StyleColors } from "../../constants/colors";
 import GoogleSvg from "../../assets/images/svg/google";
 import TextButton from "../../components/buttons/TextButton";
 import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
 
 function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -81,6 +83,22 @@ function SignUpScreen({ navigation }) {
     navigation.replace("Login");
   };
 
+  const handleSignUp = async () => {
+    if (validateForm()) {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        console.log("user created", userCredential.user.email);
+      } catch (error) {
+        console.log(error.message);
+        setErrors({ general: error.message });
+      }
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -135,13 +153,7 @@ function SignUpScreen({ navigation }) {
               style={styles.signButton}
               text="Sign Up"
               textColor={StyleColors.onPrimary}
-              onPress={() => {
-                if (validateForm()) {
-                  // Form is valid - proceed with sign up
-                } else {
-                  // Form has errors - they are already displayed
-                }
-              }}
+              onPress={handleSignUp}
             />
             <Button
               text="Sign up with Google"

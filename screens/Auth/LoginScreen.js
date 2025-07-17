@@ -11,18 +11,75 @@ import Button from "../../components/buttons/Button";
 import { StyleColors } from "../../constants/colors";
 import GoogleSvg from "../../assets/images/svg/google";
 import TextButton from "../../components/buttons/TextButton";
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
+import { GenerativeModel } from "firebase/ai";
 
 function LoginScreen({ navigation }) {
   const startTextHandler = () => {
     navigation.replace("SignUp");
   };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  const validatePassword = (password) => {
+    return password.length >= 8;
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const isEmailEmpty = email.trim() === "";
+    const isEmailValid = validateEmail(email);
+
+    if (isEmailEmpty) {
+      newErrors.email = "Email is required";
+    } else if (!isEmailValid) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    const isPasswordEmpty = password.trim() === "";
+
+    if (isPasswordEmpty) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleLogin = async () => {
+    if (validateForm()) {
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        console.log("User logged in:", userCredential.user.email);
+      } catch (error) {
+        console.error("Login error:", error.message);
+        setErrors({ general: error.message });
+      }
+    }
+  };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      enabled={Platform.OS === "ios"}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.rootContainer}>
           <View style={styles.textFieldContainer}>
             <OutlinedTextField
@@ -30,6 +87,9 @@ function LoginScreen({ navigation }) {
               placeholder="Email"
               leftIcon="mail-outline"
               autoComplete="off"
+              value={email}
+              onChangeText={setEmail}
+              error={errors.email}
             />
             <OutlinedTextField
               keyboardType="default"
@@ -37,17 +97,26 @@ function LoginScreen({ navigation }) {
               leftIcon="lock-closed-outline"
               rightIcon="eye-off"
               autoComplete="off"
+              value={password}
+              onChangeText={setPassword}
+              error={errors.password}
             />
             <TextButton
               style={styles.forgotPasswordButton}
               text="Forgot your password?"
             />
+            {Object.keys(errors).length > 0 && (
+              <Text style={styles.errorText}>
+                Please enter valid information.
+              </Text>
+            )}
           </View>
           <View style={styles.authOptions}>
             <Button
               style={styles.signButton}
               text="Login"
               textColor={StyleColors.onPrimary}
+              onPress={handleLogin}
             />
             <Button
               text="Sign in with Google"
@@ -91,6 +160,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: StyleColors.primary,
     alignSelf: "flex-end",
+    marginTop: -12,
+  },
+  errorText: {
+    fontFamily: "inter-medium",
+    fontSize: 14,
+    color: StyleColors.danger,
     marginTop: -12,
   },
   authOptions: {

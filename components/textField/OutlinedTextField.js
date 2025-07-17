@@ -92,7 +92,7 @@ function OutlinedTextField({
                 color: error
                   ? StyleColors.danger
                   : isFocused
-                  ? StyleColors.primary
+                  ? StyleColors.onBackground
                   : StyleColors.onBackgroundVariant,
               },
             ]}

@@ -1,9 +1,20 @@
 import { View, Text, StyleSheet } from "react-native";
+import Button from "../../components/buttons/Button";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebaseConfig";
 
 function RecipesScreen() {
+  const logoutHandler = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
+  };
+
   return (
     <View style={styles.rootContainer}>
-      <Text>Recipes Screen</Text>
+      <Button text="logout" onPress={logoutHandler} />
     </View>
   );
 }
