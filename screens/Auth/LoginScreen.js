@@ -14,7 +14,6 @@ import TextButton from "../../components/buttons/TextButton";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
-import { GenerativeModel } from "firebase/ai";
 
 function LoginScreen({ navigation }) {
   const startTextHandler = () => {
@@ -61,9 +60,7 @@ function LoginScreen({ navigation }) {
           email,
           password
         );
-        console.log("User logged in:", userCredential.user.email);
       } catch (error) {
-        console.error("Login error:", error.message);
         setErrors({ general: error.message });
       }
     }

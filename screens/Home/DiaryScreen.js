@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 function DiaryScreen() {
   return (
     <View style={styles.rootContainer}>
-      <Text>Recipes Screen</Text>
+      <Text>Diary Screen</Text>
     </View>
   );
 }

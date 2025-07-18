@@ -91,9 +91,7 @@ function SignUpScreen({ navigation }) {
           email,
           password
         );
-        console.log("user created", userCredential.user.email);
       } catch (error) {
-        console.log(error.message);
         setErrors({ general: error.message });
       }
     }

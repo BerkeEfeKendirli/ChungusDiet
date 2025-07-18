@@ -15,6 +15,9 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebaseConfig";
 import { useEffect, useState } from "react";
+import { getUserProfile, createUserProfile } from "./services/userService";
+import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -48,11 +51,27 @@ export default function App() {
     "inter-semibold": require("./assets/fonts/Inter-SemiBold.ttf"),
   });
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log("Auth state changed:", user ? user.email : "null");
       setUser(user);
+
+      if (user) {
+        try {
+          let profile = await getUserProfile(user.uid);
+          if (!profile) {
+            profile = await createUserProfile(user.uid, { email: user.email });
+          }
+          setUserProfile(profile);
+        } catch (error) {
+          console.error("Profile error:", error);
+        }
+      } else {
+        setUserProfile(null);
+      }
       setIsLoading(false);
     });
     return unsubscribe;
@@ -63,55 +82,67 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: StyleColors.background },
-        }}
-      >
-        {user ? (
-          <Stack.Screen name="Home" component={BottomTabNavigator} />
-        ) : (
-          <>
-            <Stack.Screen name="Onboarding" component={OnboardingSlideScreen} />
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUpScreen}
-              options={({ navigation }) => ({
-                title: "Sign Up",
-                headerTitleAlign: "center",
-                headerShown: true,
-                headerLeft: () => (
-                  <CustomBackButton
-                    navigation={navigation}
-                    tintColor={StyleColors.onBackground}
-                  />
-                ),
-                headerTitleStyle: styles.signUpTitle,
-              })}
-            />
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={({ navigation }) => ({
-                title: "Login",
-                headerShown: true,
-                headerTitleAlign: "center",
-                headerLeft: () => (
-                  <CustomBackButton
-                    navigation={navigation}
-                    tintColor={StyleColors.onBackground}
-                  />
-                ),
-                headerTitleStyle: styles.signUpTitle,
-              })}
-            />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: StyleColors.background },
+          }}
+        >
+          {user ? (
+            userProfile?.isProfileComplete ? (
+              <Stack.Screen name="Home" component={BottomTabNavigator} />
+            ) : (
+              <Stack.Screen
+                name="ProfileSetup"
+                component={ProfileSetupNavigatorScreen}
+              />
+            )
+          ) : (
+            <>
+              <Stack.Screen
+                name="Onboarding"
+                component={OnboardingSlideScreen}
+              />
+              <Stack.Screen name="Welcome" component={WelcomeScreen} />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={({ navigation }) => ({
+                  title: "Sign Up",
+                  headerTitleAlign: "center",
+                  headerShown: true,
+                  headerLeft: () => (
+                    <CustomBackButton
+                      navigation={navigation}
+                      tintColor={StyleColors.onBackground}
+                    />
+                  ),
+                  headerTitleStyle: styles.signUpTitle,
+                })}
+              />
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={({ navigation }) => ({
+                  title: "Login",
+                  headerShown: true,
+                  headerTitleAlign: "center",
+                  headerLeft: () => (
+                    <CustomBackButton
+                      navigation={navigation}
+                      tintColor={StyleColors.onBackground}
+                    />
+                  ),
+                  headerTitleStyle: styles.signUpTitle,
+                })}
+              />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 

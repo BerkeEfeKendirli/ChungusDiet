@@ -7,9 +7,7 @@ function RecipesScreen() {
   const logoutHandler = async () => {
     try {
       await signOut(auth);
-    } catch (error) {
-      console.log("Logout error:", error);
-    }
+    } catch (error) {}
   };
 
   return (
