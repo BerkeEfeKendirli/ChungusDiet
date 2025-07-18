@@ -27,7 +27,7 @@ function AgeStep({ formData, setFormData }) {
           value={age}
           onChangeText={handleAgeChange}
           placeholder="25"
-          placeholderTextColor={StyleColors.onBackgroundVariant}
+          placeholderTextColor={StyleColors.outline}
         />
         <Text style={styles.text}>years</Text>
       </View>

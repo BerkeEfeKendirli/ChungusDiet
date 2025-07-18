@@ -11,13 +11,14 @@ import SignUpScreen from "./screens/Auth/SignUpScreen";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import { StyleColors } from "./constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebaseConfig";
 import { useEffect, useState } from "react";
-import { getUserProfile, createUserProfile } from "./services/userService";
+import { listenUserProfile } from "./services/userService";
 import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -30,14 +31,17 @@ function CustomBackButton({ navigation }) {
   );
 }
 
-function BottomTabNavigator() {
+function BottomTabNavigator({ userProfile }) {
   return (
     <BottomTab.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <BottomTab.Screen name="Recipes" component={RecipesScreen} />
+      <BottomTab.Screen
+        name="Recipes"
+        children={() => <RecipesScreen userProfile={userProfile} />}
+      />
       <BottomTab.Screen name="Diary" component={DiaryScreen} />
       <BottomTab.Screen name="Reports" component={ReportsScreen} />
     </BottomTab.Navigator>
@@ -55,26 +59,25 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log("Auth state changed:", user ? user.email : "null");
+    let unsubscribeProfile;
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       setUser(user);
 
       if (user) {
-        try {
-          let profile = await getUserProfile(user.uid);
-          if (!profile) {
-            profile = await createUserProfile(user.uid, { email: user.email });
-          }
+        // Profil değişimini canlı dinle
+        unsubscribeProfile = listenUserProfile(user.uid, (profile) => {
           setUserProfile(profile);
-        } catch (error) {
-          console.error("Profile error:", error);
-        }
+          setIsLoading(false);
+        });
       } else {
         setUserProfile(null);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     });
-    return unsubscribe;
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeProfile) unsubscribeProfile();
+    };
   }, []);
 
   if (!fontsLoaded || isLoading) {
@@ -92,12 +95,23 @@ export default function App() {
         >
           {user ? (
             userProfile?.isProfileComplete ? (
-              <Stack.Screen name="Home" component={BottomTabNavigator} />
-            ) : (
               <Stack.Screen
-                name="ProfileSetup"
-                component={ProfileSetupNavigatorScreen}
+                name="Home"
+                children={() => (
+                  <BottomTabNavigator userProfile={userProfile} />
+                )}
               />
+            ) : (
+              <>
+                <Stack.Screen
+                  name="ProfileSetup"
+                  component={ProfileSetupNavigatorScreen}
+                />
+                <Stack.Screen
+                  name="RecommendedCaloriesScreen"
+                  component={RecommendedCaloriesScreen}
+                />
+              </>
             )
           ) : (
             <>

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 function ReportsScreen() {
   return (
     <View style={styles.rootContainer}>
-      <Text>Recipes Screen</Text>
+      <Text>Reports Screen</Text>
     </View>
   );
 }

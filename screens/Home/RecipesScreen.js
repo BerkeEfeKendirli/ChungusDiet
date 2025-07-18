@@ -3,7 +3,7 @@ import Button from "../../components/buttons/Button";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 
-function RecipesScreen() {
+function RecipesScreen({ userProfile }) {
   const logoutHandler = async () => {
     try {
       await signOut(auth);
@@ -12,6 +12,7 @@ function RecipesScreen() {
 
   return (
     <View style={styles.rootContainer}>
+      <Text>{userProfile?.profile?.targetCalories ?? "Bilinmiyor"}</Text>
       <Button text="logout" onPress={logoutHandler} />
     </View>
   );

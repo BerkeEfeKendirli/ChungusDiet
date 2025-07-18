@@ -43,7 +43,7 @@ function TargetWeightStep({ formData, setFormData }) {
           value={targetWeight}
           onChangeText={handleTargetWeightChange}
           placeholder="70"
-          placeholderTextColor={StyleColors.onBackgroundVariant}
+          placeholderTextColor={StyleColors.outline}
         />
         <Text style={styles.text}>kg</Text>
       </View>

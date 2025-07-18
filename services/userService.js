@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../config/firebaseConfig";
 
 export const getUserProfile = async (userId) => {
@@ -45,15 +45,25 @@ export const createUserProfile = async (userId, userData) => {
   }
 };
 
-export const updateUserProfile = async (userId, profileData) => {
+export const updateUserProfile = async (
+  userId,
+  profileData,
+  isProfileComplete
+) => {
   try {
     const userDocRef = doc(db, "users", userId);
     await updateDoc(userDocRef, {
       profile: profileData,
-      isProfileComplete: true,
+      isProfileComplete: isProfileComplete,
     });
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
+
+export function listenUserProfile(uid, callback) {
+  return onSnapshot(doc(db, "users", uid), (docSnap) => {
+    callback(docSnap.exists() ? docSnap.data() : null);
+  });
+}

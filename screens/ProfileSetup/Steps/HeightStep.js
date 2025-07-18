@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { StyleColors } from "../../../constants/colors";
@@ -10,6 +10,12 @@ function HeightStep({ formData, setFormData }) {
   const [selectedCentimeters, setSelectedCentimeters] = useState(
     formData?.height?.centimeters || 70
   );
+
+  useEffect(() => {
+    if (!formData?.height) {
+      handleHeightChange(selectedMeters, selectedCentimeters);
+    }
+  }, []);
 
   const handleHeightChange = (newMeters, newCentimeters) => {
     setFormData({
