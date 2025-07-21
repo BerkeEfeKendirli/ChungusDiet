@@ -14,6 +14,7 @@ import TextButton from "../../components/buttons/TextButton";
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
+import { createUserProfile } from "../../services/userService";
 
 function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -91,6 +92,9 @@ function SignUpScreen({ navigation }) {
           email,
           password
         );
+        await createUserProfile(userCredential.user.uid, {
+          email: userCredential.user.email,
+        });
       } catch (error) {
         setErrors({ general: error.message });
       }

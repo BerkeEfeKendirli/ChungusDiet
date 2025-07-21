@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
+import { StyleColors } from "../../constants/colors";
 
 function ReportsScreen() {
   return (
@@ -15,5 +16,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: StyleColors.background,
   },
 });

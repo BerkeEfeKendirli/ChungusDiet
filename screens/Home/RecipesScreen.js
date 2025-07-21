@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import Button from "../../components/buttons/Button";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
+import { StyleColors } from "../../constants/colors";
 
 function RecipesScreen({ userProfile }) {
   const logoutHandler = async () => {
@@ -25,5 +26,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: StyleColors.background,
   },
 });

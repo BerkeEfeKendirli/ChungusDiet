@@ -11,7 +11,13 @@ import SignUpScreen from "./screens/Auth/SignUpScreen";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import { StyleColors } from "./constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  View,
+  Text,
+} from "react-native";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./config/firebaseConfig";
 import { useEffect, useState } from "react";
@@ -19,6 +25,8 @@ import { listenUserProfile } from "./services/userService";
 import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
+import LoadingScreen from "./screens/Onboarding/LoadingScreen";
+import BottomBar from "./components/ui/BottomBar";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -37,6 +45,7 @@ function BottomTabNavigator({ userProfile }) {
       screenOptions={{
         headerShown: false,
       }}
+      tabBar={(props) => <BottomBar {...props} />}
     >
       <BottomTab.Screen
         name="Recipes"
@@ -54,34 +63,49 @@ export default function App() {
     "inter-medium": require("./assets/fonts/Inter-Medium.ttf"),
     "inter-semibold": require("./assets/fonts/Inter-SemiBold.ttf"),
   });
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(undefined);
   const [userProfile, setUserProfile] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
     let unsubscribeProfile;
-    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       setUser(user);
 
       if (user) {
-        // Profil değişimini canlı dinle
         unsubscribeProfile = listenUserProfile(user.uid, (profile) => {
           setUserProfile(profile);
-          setIsLoading(false);
         });
       } else {
         setUserProfile(null);
-        setIsLoading(false);
       }
     });
+
     return () => {
       unsubscribeAuth();
       if (unsubscribeProfile) unsubscribeProfile();
     };
   }, []);
 
-  if (!fontsLoaded || isLoading) {
-    return null;
+  useEffect(() => {
+    if (fontsLoaded && user !== undefined && (!user || userProfile)) {
+      setIsAppReady(true);
+    }
+  }, [fontsLoaded, user, userProfile]);
+
+  if (!isAppReady) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: StyleColors.background,
+        }}
+      >
+        <ActivityIndicator size="large" color={StyleColors.primary} />
+      </View>
+    );
   }
 
   return (
@@ -94,7 +118,9 @@ export default function App() {
           }}
         >
           {user ? (
-            userProfile?.isProfileComplete ? (
+            !userProfile ? (
+              <Stack.Screen name="Loading" component={LoadingScreen} />
+            ) : userProfile.isProfileComplete ? (
               <Stack.Screen
                 name="Home"
                 children={() => (
