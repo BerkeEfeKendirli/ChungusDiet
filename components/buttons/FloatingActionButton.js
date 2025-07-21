@@ -2,13 +2,28 @@ import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet } from "react-native";
 import { StyleColors } from "../../constants/colors";
 
-function FloatingActionButton({ icon, onPress }) {
+function FloatingActionButton({
+  icon,
+  onPress,
+  size,
+  backgroundColor,
+  iconColor,
+}) {
   return (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      style={({ pressed }) => [
+        styles.button,
+        {
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+          backgroundColor: backgroundColor,
+        },
+        pressed && styles.pressed,
+      ]}
       onPress={onPress}
     >
-      <Ionicons name={icon} size={13} color={StyleColors.onPrimary} />
+      <Ionicons name={icon} size={13} color={iconColor} />
     </Pressable>
   );
 }
@@ -17,10 +32,6 @@ export default FloatingActionButton;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: StyleColors.primary,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
   },

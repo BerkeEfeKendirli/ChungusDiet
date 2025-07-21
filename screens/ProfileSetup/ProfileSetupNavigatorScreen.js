@@ -203,7 +203,13 @@ function ProfileSetupNavigatorScreen() {
             <TextButton />
           )}
 
-          <FloatingActionButton icon="chevron-forward" onPress={handleNext} />
+          <FloatingActionButton
+            icon="chevron-forward"
+            onPress={handleNext}
+            size={50}
+            backgroundColor={StyleColors.primary}
+            iconColor={StyleColors.onBackground}
+          />
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>

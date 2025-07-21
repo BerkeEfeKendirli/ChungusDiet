@@ -1,0 +1,148 @@
+import { View, Text, StyleSheet } from "react-native";
+import { StyleColors } from "../../constants/colors";
+import FloatingActionButton from "./../buttons/FloatingActionButton";
+import { LinearGradient } from "expo-linear-gradient";
+
+function WaterIntake({ percentage }) {
+  const fillHeight = 100 * (percentage / 100);
+  return (
+    <View style={styles.rootContainer}>
+      <View style={styles.summaryContainer}>
+        <View style={styles.waterTextContainer}>
+          <Text style={styles.title}>Water</Text>
+          <View style={styles.literTextContainer}>
+            <Text style={styles.currentLiterText}>1,9 / </Text>
+            <Text style={styles.targetLiterText}>2,5L</Text>
+          </View>
+        </View>
+        <Text style={styles.timeText}>Last time 10:45 AM</Text>
+      </View>
+      <View style={styles.waterInput}>
+        <View style={styles.buttons}>
+          <FloatingActionButton
+            icon="add"
+            size={24}
+            backgroundColor={StyleColors.surfaceVariant}
+            iconColor={StyleColors.onSurfacePrimary}
+          />
+          <FloatingActionButton
+            icon="remove"
+            size={24}
+            backgroundColor={StyleColors.surfaceVariant}
+            iconColor={StyleColors.onSurfacePrimary}
+          />
+        </View>
+        <View style={styles.waterIndicator}>
+          <View style={[styles.percentageIndicator, { height: fillHeight }]}>
+            <LinearGradient
+              colors={[
+                StyleColors.blueGradientStart,
+                StyleColors.blueGradientEnd,
+              ]}
+              style={styles.gradientFill}
+            />
+          </View>
+          <View style={[styles.emptyContainer, { height: 100 - fillHeight }]} />
+          <View style={styles.percentTextContainer}>
+            <Text style={styles.percentText}>{percentage}%</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+export default WaterIntake;
+
+const styles = StyleSheet.create({
+  rootContainer: {
+    padding: 16,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  summaryContainer: {
+    justifyContent: "space-between",
+    marginBottom: 6,
+  },
+  waterTextContainer: {
+    justifyContent: "center",
+  },
+  literTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  title: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+    color: StyleColors.onBackground,
+  },
+  currentLiterText: {
+    fontFamily: "inter-semibold",
+    fontSize: 16,
+    color: StyleColors.onBackground,
+  },
+  targetLiterText: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+    color: StyleColors.onBackground,
+  },
+  timeText: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+    color: StyleColors.onBackgroundVariant,
+  },
+  waterInput: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  buttons: {
+    gap: 24,
+  },
+  waterIndicator: {
+    width: 40,
+    height: 100,
+    borderRadius: 30,
+    backgroundColor: StyleColors.surfaceVariant,
+    overflow: "hidden",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    position: "relative",
+  },
+  percentageIndicator: {
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  gradientFill: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyContainer: {
+    width: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    backgroundColor: "transparent",
+  },
+  percentTextContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  percentText: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+    color: StyleColors.onSurfacePrimary,
+  },
+});

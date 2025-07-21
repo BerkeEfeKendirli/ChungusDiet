@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
   },
   activeIconWrapper: {
     backgroundColor: StyleColors.primary,
+    borderRadius: 27,
+    height: 60,
+    width: 60,
   },
 });
 
