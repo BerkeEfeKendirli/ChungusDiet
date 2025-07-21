@@ -71,10 +71,10 @@ function OnboardingSlideScreen({ navigation }) {
         )}
         <FloatingActionButton
           icon="chevron-forward"
+          iconColor={StyleColors.onPrimary}
           onPress={handleNext}
           size={50}
           backgroundColor={StyleColors.primary}
-          iconColor={StyleColors.onBackground}
         />
       </View>
     </View>

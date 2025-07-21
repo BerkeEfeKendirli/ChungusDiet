@@ -208,7 +208,7 @@ function ProfileSetupNavigatorScreen() {
             onPress={handleNext}
             size={50}
             backgroundColor={StyleColors.primary}
-            iconColor={StyleColors.onBackground}
+            iconColor={StyleColors.onPrimary}
           />
         </View>
       </SafeAreaView>

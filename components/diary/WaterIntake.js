@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { StyleColors } from "../../constants/colors";
 import FloatingActionButton from "./../buttons/FloatingActionButton";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 
 function WaterIntake({ percentage }) {
   const fillHeight = 100 * (percentage / 100);
@@ -15,7 +16,14 @@ function WaterIntake({ percentage }) {
             <Text style={styles.targetLiterText}>2,5L</Text>
           </View>
         </View>
-        <Text style={styles.timeText}>Last time 10:45 AM</Text>
+        <View style={styles.time}>
+          <Ionicons
+            name="time-outline"
+            color={StyleColors.onBackgroundVariant}
+            size={12.67}
+          />
+          <Text style={styles.timeText}>Last time 10:45 AM</Text>
+        </View>
       </View>
       <View style={styles.waterInput}>
         <View style={styles.buttons}>
@@ -59,6 +67,8 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: "row",
     justifyContent: "space-between",
+    backgroundColor: StyleColors.surfacePrimary,
+    borderRadius: 20,
   },
   summaryContainer: {
     justifyContent: "space-between",
@@ -85,6 +95,12 @@ const styles = StyleSheet.create({
     fontFamily: "inter-regular",
     fontSize: 12,
     color: StyleColors.onBackground,
+  },
+  time: {
+    flexDirection: "row",
+    gap: 4,
+    alignItems: "center",
+    justifyContent: "center",
   },
   timeText: {
     fontFamily: "inter-regular",
