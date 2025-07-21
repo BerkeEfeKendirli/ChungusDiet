@@ -1,13 +1,35 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { StyleColors } from "../../constants/colors";
-import WaterIntake from "../../components/diary/WaterIntake";
+import { Ionicons } from "@expo/vector-icons";
+import { getAuth } from "firebase/auth";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import NutrientsIndicator from "../../components/diary/NutrientsIndicator";
-
-const { width } = Dimensions.get("window");
+import WaterIntake from "../../components/diary/WaterIntake";
+import { StyleColors } from "../../constants/colors";
 
 function DiaryScreen() {
+  const auth = getAuth();
+  const email = auth.currentUser?.email;
+
   return (
-    <View style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer}>
+      <View style={styles.headerContainer}>
+        <View style={styles.userContainer}>
+          <Ionicons
+            name="person-circle-outline"
+            size={40}
+            color={StyleColors.onBackgroundVariant}
+          />
+          <Text style={styles.emailText}>{email}</Text>
+        </View>
+        <View style={styles.dateContainer}>
+          <Text style={styles.dateText}>Today</Text>
+          <Ionicons
+            name="calendar-outline"
+            size={24}
+            color={StyleColors.primary}
+          />
+        </View>
+      </View>
       <View style={styles.content}>
         <View style={styles.indicatorContainer}>
           <Text style={styles.title}>Nutrients Indicator</Text>
@@ -17,8 +39,14 @@ function DiaryScreen() {
           <Text style={styles.title}>Water Intake</Text>
           <WaterIntake percentage={69} />
         </View>
+        <View style={styles.indicatorContainer}>
+          <View style={styles.mealTitle}>
+            <Text style={styles.title}>Meals</Text>
+            <Ionicons name="add" size={24} />
+          </View>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -29,9 +57,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: StyleColors.background,
   },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 24,
+    marginBottom: 36,
+    marginTop: 10,
+  },
+  userContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 9,
+  },
+  dateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  emailText: {
+    fontFamily: "inter-medium",
+    fontSize: 18,
+    color: StyleColors.onBackground,
+  },
+  dateText: {
+    fontFamily: "inter-regular",
+    fontSize: 14,
+    color: StyleColors.onBackground,
+  },
   content: {
     flexGrow: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 20,
@@ -43,5 +99,10 @@ const styles = StyleSheet.create({
   indicatorContainer: {
     width: "100%",
     gap: 10,
+  },
+  mealTitle: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 });

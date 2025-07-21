@@ -6,6 +6,7 @@ import OnboardingNavigation from "../../components/onboarding/OnboardingNavigati
 import FloatingActionButton from "../../components/buttons/FloatingActionButton";
 import TextButton from "../../components/buttons/TextButton";
 import { StyleColors } from "../../constants/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const { width } = Dimensions.get("window");
 
@@ -34,7 +35,7 @@ function OnboardingSlideScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer}>
       <View style={styles.contentContainer}>
         <ScrollView
           style={styles.slide}
@@ -77,7 +78,7 @@ function OnboardingSlideScreen({ navigation }) {
           backgroundColor={StyleColors.primary}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

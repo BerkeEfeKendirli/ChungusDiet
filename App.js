@@ -46,6 +46,7 @@ function BottomTabNavigator({ userProfile }) {
         headerShown: false,
       }}
       tabBar={(props) => <BottomBar {...props} />}
+      initialRouteName="Diary"
     >
       <BottomTab.Screen
         name="Recipes"
@@ -153,6 +154,7 @@ export default function App() {
                   title: "Sign Up",
                   headerTitleAlign: "center",
                   headerShown: true,
+                  headerShadowVisible: false,
                   headerLeft: () => (
                     <CustomBackButton
                       navigation={navigation}
@@ -168,6 +170,7 @@ export default function App() {
                 options={({ navigation }) => ({
                   title: "Login",
                   headerShown: true,
+                  headerShadowVisible: false,
                   headerTitleAlign: "center",
                   headerLeft: () => (
                     <CustomBackButton

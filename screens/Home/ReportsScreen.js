@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import { StyleColors } from "../../constants/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function ReportsScreen() {
   return (
-    <View style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer}>
       <Text>Reports Screen</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

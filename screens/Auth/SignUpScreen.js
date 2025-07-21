@@ -15,6 +15,7 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import { createUserProfile } from "../../services/userService";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -112,7 +113,7 @@ function SignUpScreen({ navigation }) {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.rootContainer}>
+        <SafeAreaView style={styles.rootContainer}>
           <View style={styles.textFieldContainer}>
             <OutlinedTextField
               keyboardType="email-address"
@@ -177,7 +178,7 @@ function SignUpScreen({ navigation }) {
               />
             </View>
           </View>
-        </View>
+        </SafeAreaView>
       </ScrollView>
     </KeyboardAvoidingView>
   );

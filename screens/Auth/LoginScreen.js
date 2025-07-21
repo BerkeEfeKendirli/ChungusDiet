@@ -14,6 +14,7 @@ import TextButton from "../../components/buttons/TextButton";
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function LoginScreen({ navigation }) {
   const startTextHandler = () => {
@@ -77,7 +78,7 @@ function LoginScreen({ navigation }) {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.rootContainer}>
+        <SafeAreaView style={styles.rootContainer}>
           <View style={styles.textFieldContainer}>
             <OutlinedTextField
               keyboardType="email-address"
@@ -130,7 +131,7 @@ function LoginScreen({ navigation }) {
               />
             </View>
           </View>
-        </View>
+        </SafeAreaView>
       </ScrollView>
     </KeyboardAvoidingView>
   );

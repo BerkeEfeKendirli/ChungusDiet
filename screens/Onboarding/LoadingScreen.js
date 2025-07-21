@@ -1,12 +1,13 @@
 import { ActivityIndicator, View, Text, StyleSheet } from "react-native";
 import { StyleColors } from "../../constants/colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function LoadingScreen() {
   return (
-    <View style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer}>
       <ActivityIndicator color={StyleColors.primary} size={"large"} />
       <Text style={styles.text}>Loading...</Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

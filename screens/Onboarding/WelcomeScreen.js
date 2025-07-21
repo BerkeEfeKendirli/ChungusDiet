@@ -3,6 +3,7 @@ import Onboarding4 from "../../assets/images/svg/Onboarding4";
 import { StyleColors } from "../../constants/colors";
 import Button from "../../components/buttons/Button";
 import TextButton from "../../components/buttons/TextButton";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function WelcomeScreen({ navigation }) {
   const startButtonHandler = () => {
@@ -14,7 +15,7 @@ function WelcomeScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer}>
       <View style={styles.content}>
         <View style={styles.svgContainer}>
           <Onboarding4 />
@@ -43,7 +44,7 @@ function WelcomeScreen({ navigation }) {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
