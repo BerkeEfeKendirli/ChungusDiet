@@ -173,7 +173,7 @@ function SignUpScreen({ navigation }) {
               <Text>Already have an account?</Text>
               <TextButton
                 style={styles.loginDirectorButton}
-                text="Login instead"
+                text="Sign in instead"
                 onPress={startTextHandler}
               />
             </View>

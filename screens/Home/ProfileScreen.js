@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { getAuth } from "firebase/auth";
-import { StyleSheet, Text, View } from "react-native";
+import { getAuth, signOut } from "firebase/auth";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { StyleColors } from "../../constants/colors";
 import ProfileButton from "./../../components/buttons/ProfileButton";
 import SettingsButton from "../../components/buttons/SettingsButton";
@@ -12,6 +12,24 @@ function ProfileScreen({ userProfile }) {
   const email = auth.currentUser?.email;
   const calories = userProfile?.profile?.targetCalories;
   const [darkMode, setDarkMode] = useState(false);
+
+  const logoutHandler = () => {
+    try {
+      Alert.alert("Do you really want to sign out?", "", [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Sign Out",
+          style: "destructive",
+          onPress: async () => {
+            await signOut(auth);
+          },
+        },
+      ]);
+    } catch (error) {}
+  };
 
   return (
     <View style={styles.rootContainer}>
@@ -58,10 +76,11 @@ function ProfileScreen({ userProfile }) {
       <SettingsButton text="About app" icon="information-circle-outline" />
       <SettingsButton text="Settings" icon="settings-outline" />
       <SettingsButton
-        text="Logout"
+        text="Sign Out"
         icon="log-out-outline"
         iconColor={StyleColors.danger}
         textColor={StyleColors.danger}
+        onPress={logoutHandler}
       />
     </View>
   );

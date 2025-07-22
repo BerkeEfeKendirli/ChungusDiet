@@ -50,10 +50,7 @@ function BottomTabNavigator({ userProfile }) {
       initialRouteName="Diary"
       contentStyle={{ backgroundColor: StyleColors.background }}
     >
-      <BottomTab.Screen
-        name="Recipes"
-        children={() => <RecipesScreen userProfile={userProfile} />}
-      />
+      <BottomTab.Screen name="Recipes" component={RecipesScreen} />
       <BottomTab.Screen name="Diary" component={DiaryScreen} />
       <BottomTab.Screen name="Reports" component={ReportsScreen} />
     </BottomTab.Navigator>
@@ -187,7 +184,7 @@ export default function App() {
                 name="Login"
                 component={LoginScreen}
                 options={({ navigation }) => ({
-                  title: "Login",
+                  title: "Sign In",
                   headerShown: true,
                   headerShadowVisible: false,
                   headerTitleAlign: "center",

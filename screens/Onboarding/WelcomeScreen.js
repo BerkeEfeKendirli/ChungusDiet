@@ -28,7 +28,7 @@ function WelcomeScreen({ navigation }) {
       <View style={styles.startContainer}>
         <View style={styles.button}>
           <Button
-            text="Start"
+            text="Sign Up"
             onPress={startButtonHandler}
             style={{ backgroundColor: StyleColors.primary }}
             textColor={StyleColors.onPrimary}

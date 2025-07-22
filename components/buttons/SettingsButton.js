@@ -7,10 +7,12 @@ function SettingsButton({
   text,
   textColor = StyleColors.onBackground,
   iconColor = StyleColors.primary,
+  onPress,
 }) {
   return (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.pressed]}
+      onPress={onPress}
     >
       <Ionicons name={icon} color={iconColor} size={20} />
       <Text style={[styles.text, { color: textColor }]}>{text}</Text>

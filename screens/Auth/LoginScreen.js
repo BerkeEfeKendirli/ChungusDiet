@@ -112,7 +112,7 @@ function LoginScreen({ navigation }) {
           <View style={styles.authOptions}>
             <Button
               style={styles.signButton}
-              text="Login"
+              text="Sign In"
               textColor={StyleColors.onPrimary}
               onPress={handleLogin}
             />
