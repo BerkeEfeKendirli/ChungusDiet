@@ -1,51 +1,66 @@
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import NutrientsIndicator from "../../components/diary/NutrientsIndicator";
 import WaterIntake from "../../components/diary/WaterIntake";
 import { StyleColors } from "../../constants/colors";
+import Meal from "../../components/diary/Meal";
 
-function DiaryScreen() {
+function DiaryScreen({ navigation }) {
   const auth = getAuth();
   const email = auth.currentUser?.email;
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <View style={styles.headerContainer}>
-        <View style={styles.userContainer}>
-          <Ionicons
-            name="person-circle-outline"
-            size={40}
-            color={StyleColors.onBackgroundVariant}
-          />
-          <Text style={styles.emailText}>{email}</Text>
-        </View>
-        <View style={styles.dateContainer}>
-          <Text style={styles.dateText}>Today</Text>
-          <Ionicons
-            name="calendar-outline"
-            size={24}
-            color={StyleColors.primary}
-          />
-        </View>
-      </View>
-      <View style={styles.content}>
-        <View style={styles.indicatorContainer}>
-          <Text style={styles.title}>Nutrients Indicator</Text>
-          <NutrientsIndicator />
-        </View>
-        <View style={styles.indicatorContainer}>
-          <Text style={styles.title}>Water Intake</Text>
-          <WaterIntake percentage={69} />
-        </View>
-        <View style={styles.indicatorContainer}>
-          <View style={styles.mealTitle}>
-            <Text style={styles.title}>Meals</Text>
-            <Ionicons name="add" size={24} />
+      <ScrollView style={styles.scrollContainer}>
+        <View style={styles.headerContainer}>
+          <View style={styles.userContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+              <Ionicons
+                name="person-circle-outline"
+                size={40}
+                color={StyleColors.onBackgroundVariant}
+              />
+            </TouchableOpacity>
+            <Text style={styles.emailText}>{email}</Text>
+          </View>
+          <View style={styles.dateContainer}>
+            <Text style={styles.dateText}>Today</Text>
+            <Ionicons
+              name="calendar-outline"
+              size={24}
+              color={StyleColors.primary}
+            />
           </View>
         </View>
-      </View>
+        <View style={styles.content}>
+          <View style={styles.indicatorContainer}>
+            <Text style={styles.title}>Nutrients Indicator</Text>
+            <NutrientsIndicator />
+          </View>
+          <View style={styles.indicatorContainer}>
+            <Text style={styles.title}>Water Intake</Text>
+            <WaterIntake percentage={69} />
+          </View>
+          <View style={styles.indicatorContainer}>
+            <View style={styles.mealTitle}>
+              <Text style={styles.title}>Meals</Text>
+              <Ionicons name="add" size={24} />
+            </View>
+            <Meal />
+            <Meal />
+            <Meal />
+            <Meal />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -56,6 +71,9 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     backgroundColor: StyleColors.background,
+  },
+  scrollContainer: {
+    flexGrow: 1,
   },
   headerContainer: {
     flexDirection: "row",

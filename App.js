@@ -27,6 +27,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
 import LoadingScreen from "./screens/Onboarding/LoadingScreen";
 import BottomBar from "./components/ui/BottomBar";
+import ProfileScreen from "./screens/Home/ProfileScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -47,6 +48,7 @@ function BottomTabNavigator({ userProfile }) {
       }}
       tabBar={(props) => <BottomBar {...props} />}
       initialRouteName="Diary"
+      contentStyle={{ backgroundColor: StyleColors.background }}
     >
       <BottomTab.Screen
         name="Recipes"
@@ -101,7 +103,6 @@ export default function App() {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          backgroundColor: StyleColors.background,
         }}
       >
         <ActivityIndicator size="large" color={StyleColors.primary} />
@@ -122,12 +123,21 @@ export default function App() {
             !userProfile ? (
               <Stack.Screen name="Loading" component={LoadingScreen} />
             ) : userProfile.isProfileComplete ? (
-              <Stack.Screen
-                name="Home"
-                children={() => (
-                  <BottomTabNavigator userProfile={userProfile} />
-                )}
-              />
+              <>
+                <Stack.Screen
+                  name="Home"
+                  children={() => (
+                    <BottomTabNavigator userProfile={userProfile} />
+                  )}
+                />
+                <Stack.Screen
+                  name="Profile"
+                  component={ProfileScreen}
+                  options={{
+                    headerShadowVisible: false,
+                  }}
+                />
+              </>
             ) : (
               <>
                 <Stack.Screen
