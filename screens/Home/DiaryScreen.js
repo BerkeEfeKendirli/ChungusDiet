@@ -19,7 +19,11 @@ function DiaryScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView
+        style={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        overScrollMode="never"
+      >
         <View style={styles.headerContainer}>
           <View style={styles.userContainer}>
             <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
@@ -105,7 +109,6 @@ const styles = StyleSheet.create({
   },
   content: {
     flexGrow: 1,
-    // justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 20,

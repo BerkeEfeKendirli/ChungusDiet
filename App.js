@@ -132,10 +132,19 @@ export default function App() {
                 />
                 <Stack.Screen
                   name="Profile"
-                  component={ProfileScreen}
-                  options={{
+                  children={() => <ProfileScreen userProfile={userProfile} />}
+                  options={({ navigation }) => ({
+                    headerTitleAlign: "center",
+                    headerShown: true,
                     headerShadowVisible: false,
-                  }}
+                    headerLeft: () => (
+                      <CustomBackButton
+                        navigation={navigation}
+                        tintColor={StyleColors.onBackground}
+                      />
+                    ),
+                    headerTitleStyle: styles.signUpTitle,
+                  })}
                 />
               </>
             ) : (

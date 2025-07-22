@@ -1,5 +1,4 @@
 import { Pressable, StyleSheet, Text } from "react-native";
-import { StyleColors } from "../../constants/colors";
 
 function Button({ onPress, text, style, textColor, icon }) {
   return (
