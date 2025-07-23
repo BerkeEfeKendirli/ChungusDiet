@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { TouchableOpacity, View, StyleSheet, Animated } from "react-native";
+import { useState } from "react";
+import { Animated, StyleSheet, TouchableOpacity } from "react-native";
 import { StyleColors } from "../../constants/colors";
 
 function CustomSwitch({ value = false, onValueChange }) {
@@ -15,7 +15,7 @@ function CustomSwitch({ value = false, onValueChange }) {
 
   const translateX = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 16],
+    outputRange: [0, 15],
   });
 
   return (
