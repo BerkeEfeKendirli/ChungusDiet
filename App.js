@@ -1,33 +1,28 @@
+import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import RecipesScreen from "./screens/Home/RecipesScreen";
-import DiaryScreen from "./screens/Home/DiaryScreen";
-import ReportsScreen from "./screens/Home/ReportsScreen";
-import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useFonts } from "expo-font";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import BottomBar from "./components/ui/BottomBar";
+import { auth } from "./config/firebaseConfig";
+import { StyleColors } from "./constants/colors";
+import LoginScreen from "./screens/Auth/LoginScreen";
+import SignUpScreen from "./screens/Auth/SignUpScreen";
+import DiaryScreen from "./screens/Home/DiaryScreen";
+import ProfileScreen from "./screens/Home/ProfileScreen";
+import RecipesScreen from "./screens/Home/Recipes/RecipesScreen";
+import ReportsScreen from "./screens/Home/ReportsScreen";
+import LoadingScreen from "./screens/Onboarding/LoadingScreen";
 import OnboardingSlideScreen from "./screens/Onboarding/OnboardingSlideScreen";
 import WelcomeScreen from "./screens/Onboarding/WelcomeScreen";
-import SignUpScreen from "./screens/Auth/SignUpScreen";
-import LoginScreen from "./screens/Auth/LoginScreen";
-import { StyleColors } from "./constants/colors";
-import { Ionicons } from "@expo/vector-icons";
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  View,
-  Text,
-} from "react-native";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./config/firebaseConfig";
-import { useEffect, useState } from "react";
-import { listenUserProfile } from "./services/userService";
 import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
-import LoadingScreen from "./screens/Onboarding/LoadingScreen";
-import BottomBar from "./components/ui/BottomBar";
-import ProfileScreen from "./screens/Home/ProfileScreen";
+import { listenUserProfile } from "./services/userService";
+import RecipeDetailScreen from "./screens/Home/Recipes/RecipeDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -127,22 +122,28 @@ export default function App() {
                     <BottomTabNavigator userProfile={userProfile} />
                   )}
                 />
-                <Stack.Screen
-                  name="Profile"
-                  children={() => <ProfileScreen userProfile={userProfile} />}
-                  options={({ navigation }) => ({
-                    headerTitleAlign: "center",
-                    headerShown: true,
-                    headerShadowVisible: false,
-                    headerLeft: () => (
-                      <CustomBackButton
-                        navigation={navigation}
-                        tintColor={StyleColors.onBackground}
-                      />
-                    ),
-                    headerTitleStyle: styles.signUpTitle,
-                  })}
-                />
+                <>
+                  <Stack.Screen
+                    name="Profile"
+                    children={() => <ProfileScreen userProfile={userProfile} />}
+                    options={({ navigation }) => ({
+                      headerTitleAlign: "center",
+                      headerShown: true,
+                      headerShadowVisible: false,
+                      headerLeft: () => (
+                        <CustomBackButton
+                          navigation={navigation}
+                          tintColor={StyleColors.onBackground}
+                        />
+                      ),
+                      headerTitleStyle: styles.signUpTitle,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="RecipeDetail"
+                    component={RecipeDetailScreen}
+                  />
+                </>
               </>
             ) : (
               <>

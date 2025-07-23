@@ -1,14 +1,16 @@
 import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import RecipeItem from "../../components/recipes/RecipeItem";
-import { StyleColors } from "../../constants/colors";
+import RecipeItem from "../../../components/recipes/RecipeItem";
+import { StyleColors } from "../../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
-import SearchField from "../../components/textField/SearchField";
+import SearchField from "../../../components/textField/SearchField";
+import { useNavigation } from "@react-navigation/native";
 
 function RecipesScreen() {
   const auth = getAuth();
   const email = auth.currentUser?.email;
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -30,10 +32,20 @@ function RecipesScreen() {
               color={StyleColors.primary}
             />
           </View>
-          <RecipeItem />
-          <RecipeItem />
-          <RecipeItem />
-          <RecipeItem />
+          <RecipeItem
+            title="Sushi"
+            calories={244}
+            time={60}
+            image={require("../../../assets/images/sushi.jpg")}
+            onPress={() =>
+              navigation.navigate("RecipeDetail", {
+                title: "Sushi",
+                calories: 244,
+                time: 60,
+                image: require("../../../assets/images/sushi.jpg"),
+              })
+            }
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

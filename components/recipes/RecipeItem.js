@@ -1,18 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Image, Text, View, StyleSheet, Pressable } from "react-native";
 import { StyleColors } from "../../constants/colors";
 
-function RecipeItem() {
+function RecipeItem({ title, calories, time, image, onPress }) {
   return (
-    <View style={styles.rootContainer}>
-      <Image
-        source={require("../../assets/images/sushi.jpg")}
-        style={styles.image}
-      />
+    <Pressable style={styles.rootContainer} onPress={onPress}>
+      <Image source={image} style={styles.image} />
       <View style={styles.bottomContainer}>
         <View>
-          <Text style={styles.mealText}>Sushi</Text>
-          <Text style={styles.secondaryText}>244 Cal</Text>
+          <Text style={styles.mealText}>{title}</Text>
+          <Text style={styles.secondaryText}>{calories} Cal</Text>
         </View>
         <View style={styles.timeContainer}>
           <Ionicons
@@ -20,10 +17,10 @@ function RecipeItem() {
             size={12.67}
             color={StyleColors.onSurfaceVariant}
           />
-          <Text style={styles.secondaryText}>60 min</Text>
+          <Text style={styles.secondaryText}>{time} min</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
