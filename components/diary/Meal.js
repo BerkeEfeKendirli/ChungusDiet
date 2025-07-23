@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: StyleColors.surfacePrimary,
-    marginBottom: 2,
   },
   timeContainer: {
     gap: 21.5,

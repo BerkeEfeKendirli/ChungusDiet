@@ -18,7 +18,7 @@ function DiaryScreen({ navigation }) {
   const email = auth.currentUser?.email;
 
   return (
-    <SafeAreaView style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -58,10 +58,12 @@ function DiaryScreen({ navigation }) {
               <Text style={styles.title}>Meals</Text>
               <Ionicons name="add" size={24} />
             </View>
-            <Meal />
-            <Meal />
-            <Meal />
-            <Meal />
+            <View style={{ gap: 12 }}>
+              <Meal />
+              <Meal />
+              <Meal />
+              <Meal />
+            </View>
           </View>
         </View>
       </ScrollView>

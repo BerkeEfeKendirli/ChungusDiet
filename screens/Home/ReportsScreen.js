@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 function ReportsScreen() {
   return (
-    <SafeAreaView style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <Text>Reports Screen</Text>
     </SafeAreaView>
   );

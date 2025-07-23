@@ -13,7 +13,7 @@ function RecipesScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.rootContainer}>
+    <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <ScrollView>
         <View style={styles.profile}>
           <Ionicons
@@ -32,6 +32,48 @@ function RecipesScreen() {
               color={StyleColors.primary}
             />
           </View>
+          <RecipeItem
+            title="Sushi"
+            calories={244}
+            time={60}
+            image={require("../../../assets/images/sushi.jpg")}
+            onPress={() =>
+              navigation.navigate("RecipeDetail", {
+                title: "Sushi",
+                calories: 244,
+                time: 60,
+                image: require("../../../assets/images/sushi.jpg"),
+              })
+            }
+          />
+          <RecipeItem
+            title="Sushi"
+            calories={244}
+            time={60}
+            image={require("../../../assets/images/sushi.jpg")}
+            onPress={() =>
+              navigation.navigate("RecipeDetail", {
+                title: "Sushi",
+                calories: 244,
+                time: 60,
+                image: require("../../../assets/images/sushi.jpg"),
+              })
+            }
+          />
+          <RecipeItem
+            title="Sushi"
+            calories={244}
+            time={60}
+            image={require("../../../assets/images/sushi.jpg")}
+            onPress={() =>
+              navigation.navigate("RecipeDetail", {
+                title: "Sushi",
+                calories: 244,
+                time: 60,
+                image: require("../../../assets/images/sushi.jpg"),
+              })
+            }
+          />
           <RecipeItem
             title="Sushi"
             calories={244}

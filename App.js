@@ -14,6 +14,7 @@ import LoginScreen from "./screens/Auth/LoginScreen";
 import SignUpScreen from "./screens/Auth/SignUpScreen";
 import DiaryScreen from "./screens/Home/DiaryScreen";
 import ProfileScreen from "./screens/Home/ProfileScreen";
+import RecipeDetailScreen from "./screens/Home/Recipes/RecipeDetailScreen";
 import RecipesScreen from "./screens/Home/Recipes/RecipesScreen";
 import ReportsScreen from "./screens/Home/ReportsScreen";
 import LoadingScreen from "./screens/Onboarding/LoadingScreen";
@@ -22,7 +23,6 @@ import WelcomeScreen from "./screens/Onboarding/WelcomeScreen";
 import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
 import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
 import { listenUserProfile } from "./services/userService";
-import RecipeDetailScreen from "./screens/Home/Recipes/RecipeDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();

@@ -1,11 +1,19 @@
-import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { StyleColors } from "../../constants/colors";
 
 function BottomBar({ state, descriptors, navigation }) {
+  const insets = useSafeAreaInsets();
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          marginBottom: insets.bottom + 12,
+        },
+      ]}
+    >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
@@ -60,16 +68,15 @@ function BottomBar({ state, descriptors, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    height: 60,
     backgroundColor: StyleColors.bottomBarContainer,
     justifyContent: "space-around",
     alignItems: "center",
+    height: 60,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     marginHorizontal: 12,
-    marginBottom: 12,
   },
   tab: {
     alignItems: "center",

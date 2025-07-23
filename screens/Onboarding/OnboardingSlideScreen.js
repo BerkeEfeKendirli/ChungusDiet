@@ -87,6 +87,7 @@ export default OnboardingSlideScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
+    backgroundColor: StyleColors.background,
   },
   contentContainer: {
     flex: 1,
