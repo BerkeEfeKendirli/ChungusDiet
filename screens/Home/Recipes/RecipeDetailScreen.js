@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     marginTop: 16,
-    marginBottom: 24,
+    marginBottom: 12,
   },
   timeContainer: {
     flexDirection: "row",

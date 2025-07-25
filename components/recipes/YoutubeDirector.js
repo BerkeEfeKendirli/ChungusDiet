@@ -22,6 +22,7 @@ function YoutubeDirector({ link }) {
     : null;
   const [thumbnailError, setThumbnailError] = useState(false);
   const [videoTitle, setVideoTitle] = useState("");
+  const [channelName, setChannelName] = useState("");
 
   useEffect(() => {
     async function fetchYoutubeTitle() {
@@ -33,8 +34,10 @@ function YoutubeDirector({ link }) {
         );
         const data = await res.json();
         setVideoTitle(data.items?.[0]?.snippet?.title || "");
+        setChannelName(data.items?.[0]?.snippet?.channelTitle || "");
       } catch (err) {
         setVideoTitle("");
+        setChannelName("");
       }
     }
     fetchYoutubeTitle();
@@ -63,13 +66,16 @@ function YoutubeDirector({ link }) {
               <Text style={styles.placeholderText}>Not Available</Text>
             </View>
           )}
-          <Text
-            style={styles.videoTitle}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {videoTitle}
-          </Text>
+          <View style={styles.videoDetails}>
+            <Text
+              style={styles.videoTitle}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {videoTitle}
+            </Text>
+            <Text style={styles.channelName}>{channelName}</Text>
+          </View>
         </View>
       </Pressable>
     </View>
@@ -81,8 +87,10 @@ export default YoutubeDirector;
 const styles = StyleSheet.create({
   button: {
     gap: 4,
+    width: "100%",
   },
   description: {
+    alignSelf: "center",
     fontFamily: "inter-regular",
     fontSize: 14,
     color: StyleColors.onBackgroundVariant,
@@ -94,6 +102,8 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.7,
+    backgroundColor: StyleColors.outline,
+    borderRadius: 6,
   },
   link: {
     fontFamily: "inter-regular",
@@ -105,10 +115,20 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 6,
   },
+  videoDetails: {
+    flexDirection: "column",
+    gap: 2,
+  },
   videoTitle: {
     fontFamily: "inter-medium",
     fontSize: 16,
-    color: StyleColors.red,
+    color: StyleColors.onBackground,
+    maxWidth: 220,
+  },
+  channelName: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+    color: StyleColors.onBackgroundVariant,
     maxWidth: 200,
   },
   placeholder: {
