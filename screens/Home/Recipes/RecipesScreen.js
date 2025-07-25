@@ -1,4 +1,10 @@
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  RefreshControl,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeItem from "../../../components/recipes/RecipeItem";
 import { StyleColors } from "../../../constants/colors";
@@ -18,24 +24,28 @@ function RecipesScreen() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [initialRecipes, setInitialRecipes] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchRandomRecipes = async () => {
+    setLoading(true);
+    setRefreshing(true);
+    try {
+      let meals = [];
+      for (let i = 0; i < 10; i++) {
+        const r = await fetch(
+          "https://www.themealdb.com/api/json/v1/1/random.php"
+        );
+        const d = await r.json();
+        if (d.meals && d.meals[0]) meals.push(d.meals[0]);
+      }
+      setRecipes(meals);
+      setInitialRecipes(meals); // İlk random tarifleri sakla
+    } catch (error) {}
+    setLoading(false);
+    setRefreshing(false);
+  };
 
   useEffect(() => {
-    const fetchRandomRecipes = async () => {
-      setLoading(true);
-      try {
-        let meals = [];
-        for (let i = 0; i < 10; i++) {
-          const r = await fetch(
-            "https://www.themealdb.com/api/json/v1/1/random.php"
-          );
-          const d = await r.json();
-          if (d.meals && d.meals[0]) meals.push(d.meals[0]);
-        }
-        setRecipes(meals);
-        setInitialRecipes(meals); // İlk random tarifleri sakla
-      } catch (error) {}
-      setLoading(false);
-    };
     fetchRandomRecipes();
   }, []);
 
@@ -60,7 +70,17 @@ function RecipesScreen() {
 
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={fetchRandomRecipes}
+            colors={[StyleColors.primary]}
+            tintColor={StyleColors.primary}
+          />
+        }
+      >
         <View style={styles.profile}>
           <Ionicons
             name="person-circle-outline"
@@ -73,7 +93,7 @@ function RecipesScreen() {
           <View style={styles.searchContainer}>
             <SearchField value={search} onChangeText={handleSearch} />
           </View>
-          {loading && <LoadingScreen />}
+          {!refreshing && loading && <LoadingScreen />}
           {recipes
             .filter(
               (recipe, index, self) =>
