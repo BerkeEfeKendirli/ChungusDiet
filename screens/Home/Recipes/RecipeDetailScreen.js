@@ -1,16 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
-import { Image, StyleSheet, Text, View, ScrollView } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import RecipeDetailNutrition from "../../../components/recipes/RecipeDetailNutrition";
 import { StyleColors } from "../../../constants/colors";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import YoutubeDirector from "../../../components/recipes/YoutubeDirector";
 
 function RecipeDetailScreen({ navigation }) {
   const route = useRoute();
-  const { title, calories, time, image } = route.params;
+  const { title, area, category, image, instructions, youtube } = route.params;
   const insets = useSafeAreaInsets();
 
   return (
@@ -26,53 +24,28 @@ function RecipeDetailScreen({ navigation }) {
       <View style={styles.mealInfoContainer}>
         <View>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.secondaryText}>{calories} Cal</Text>
+          <Text style={styles.secondaryText}>{area}</Text>
         </View>
         <View style={styles.timeContainer}>
           <Ionicons
-            name="time-outline"
+            name="pricetag-outline"
             size={12.67}
             color={StyleColors.onBackgroundVariant}
           />
-          <Text style={styles.secondaryText}>{time} min</Text>
+          <Text style={styles.secondaryText}>{category}</Text>
         </View>
       </View>
-      <View style={styles.nutritionContainer}>
-        <RecipeDetailNutrition number="300" text="Calories" />
-        <RecipeDetailNutrition number="20g" text="Proteins" />
-        <RecipeDetailNutrition number="15g" text="Fats" />
-        <RecipeDetailNutrition number="15g" text="Carbs" />
+      <View style={styles.youtubeContainer}>
+        {youtube ? (
+          <YoutubeDirector link={youtube} />
+        ) : (
+          <YoutubeDirector link="No link found for this recipe." />
+        )}
       </View>
       <View style={styles.divider}></View>
       <ScrollView showsVerticalScrollIndicator={false} overScrollMode="never">
         <View style={styles.descriptionContainer}>
-          <Text style={styles.description}>
-            Lorem ipsum dolor sit amet consectetur. Fringilla mauris est lorem
-            et amet. Vestibulum tristique volutpat massa aliquet ultrices eu
-            pretium. Ultrices risus blandit at id nibh euismod. In sit commodo
-            ornare felis tincidunt faucibus nunc a. Nisl sagittis leo velit
-            pharetra dolor nibh fermentum adipiscing adipiscing.Lorem ipsum
-            dolor sit amet consectetur. Fringilla mauris est lorem et amet.
-            Vestibulum tristique volutpat massa aliquet ultrices eu pretium.
-            Ultrices risus blandit at id nibh euismod. In sit commodo ornare
-            felis tincidunt faucibus nunc a. Nisl sagittis leo velit pharetra
-            dolor nibh fermentum adipiscing adipiscing.Lorem ipsum dolor sit
-            amet consectetur. Fringilla mauris est lorem et amet. Vestibulum
-            tristique volutpat massa aliquet ultrices eu pretium. Ultrices risus
-            blandit at id nibh euismod. In sit commodo ornare felis tincidunt
-            faucibus nunc a. Nisl sagittis leo velit pharetra dolor nibh
-            fermentum adipiscing adipiscing.Lorem ipsum dolor sit amet
-            consectetur. Fringilla mauris est lorem et amet. Vestibulum
-            tristique volutpat massa aliquet ultrices eu pretium. Ultrices risus
-            blandit at id nibh euismod. In sit commodo ornare felis tincidunt
-            faucibus nunc a. Nisl sagittis leo velit pharetra dolor nibh
-            fermentum adipiscing adipiscing.Lorem ipsum dolor sit amet
-            consectetur. Fringilla mauris est lorem et amet. Vestibulum
-            tristique volutpat massa aliquet ultrices eu pretium. Ultrices risus
-            blandit at id nibh euismod. In sit commodo ornare felis tincidunt
-            faucibus nunc a. Nisl sagittis leo velit pharetra dolor nibh
-            fermentum adipiscing adipiscing.
-          </Text>
+          <Text style={styles.description}>{instructions}</Text>
         </View>
       </ScrollView>
     </View>
@@ -109,7 +82,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     gap: 4,
   },
-  nutritionContainer: {
+  youtubeContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 18,
@@ -128,6 +101,7 @@ const styles = StyleSheet.create({
     fontFamily: "inter-medium",
     fontSize: 16,
     color: StyleColors.onBackground,
+    maxWidth: 279,
   },
   secondaryText: {
     fontFamily: "inter-regular",
@@ -138,6 +112,5 @@ const styles = StyleSheet.create({
     fontFamily: "inter-regular",
     fontSize: 14,
     color: StyleColors.onBackground,
-    textAlign: "center",
   },
 });

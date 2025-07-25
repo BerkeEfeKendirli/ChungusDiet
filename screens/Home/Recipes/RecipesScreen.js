@@ -6,15 +6,61 @@ import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import SearchField from "../../../components/textField/SearchField";
 import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import LoadingScreen from "../../Onboarding/LoadingScreen";
+import { DebugInstructions } from "react-native/Libraries/NewAppScreen";
 
 function RecipesScreen() {
   const auth = getAuth();
   const email = auth.currentUser?.email;
   const navigation = useNavigation();
+  const [recipes, setRecipes] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [initialRecipes, setInitialRecipes] = useState([]);
+
+  useEffect(() => {
+    const fetchRandomRecipes = async () => {
+      setLoading(true);
+      try {
+        let meals = [];
+        for (let i = 0; i < 10; i++) {
+          const r = await fetch(
+            "https://www.themealdb.com/api/json/v1/1/random.php"
+          );
+          const d = await r.json();
+          if (d.meals && d.meals[0]) meals.push(d.meals[0]);
+        }
+        setRecipes(meals);
+        setInitialRecipes(meals); // İlk random tarifleri sakla
+      } catch (error) {}
+      setLoading(false);
+    };
+    fetchRandomRecipes();
+  }, []);
+
+  const handleSearch = async (text) => {
+    setSearch(text);
+    setLoading(true);
+    if (!text) {
+      // Arama kutusu boşsa ilk random tarifleri geri getir
+      setRecipes(initialRecipes);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await fetch(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${text}`
+      );
+      const data = await res.json();
+      setRecipes(data.meals || []);
+    } catch (err) {}
+    setLoading(false);
+  };
 
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.profile}>
           <Ionicons
             name="person-circle-outline"
@@ -25,69 +71,30 @@ function RecipesScreen() {
         </View>
         <View style={styles.content}>
           <View style={styles.searchContainer}>
-            <SearchField />
-            <Ionicons
-              name="options-outline"
-              size={22}
-              color={StyleColors.primary}
-            />
+            <SearchField value={search} onChangeText={handleSearch} />
           </View>
-          <RecipeItem
-            title="Sushi"
-            calories={244}
-            time={60}
-            image={require("../../../assets/images/sushi.jpg")}
-            onPress={() =>
-              navigation.navigate("RecipeDetail", {
-                title: "Sushi",
-                calories: 244,
-                time: 60,
-                image: require("../../../assets/images/sushi.jpg"),
-              })
-            }
-          />
-          <RecipeItem
-            title="Sushi"
-            calories={244}
-            time={60}
-            image={require("../../../assets/images/sushi.jpg")}
-            onPress={() =>
-              navigation.navigate("RecipeDetail", {
-                title: "Sushi",
-                calories: 244,
-                time: 60,
-                image: require("../../../assets/images/sushi.jpg"),
-              })
-            }
-          />
-          <RecipeItem
-            title="Sushi"
-            calories={244}
-            time={60}
-            image={require("../../../assets/images/sushi.jpg")}
-            onPress={() =>
-              navigation.navigate("RecipeDetail", {
-                title: "Sushi",
-                calories: 244,
-                time: 60,
-                image: require("../../../assets/images/sushi.jpg"),
-              })
-            }
-          />
-          <RecipeItem
-            title="Sushi"
-            calories={244}
-            time={60}
-            image={require("../../../assets/images/sushi.jpg")}
-            onPress={() =>
-              navigation.navigate("RecipeDetail", {
-                title: "Sushi",
-                calories: 244,
-                time: 60,
-                image: require("../../../assets/images/sushi.jpg"),
-              })
-            }
-          />
+          {loading && <LoadingScreen />}
+          {recipes.map((recipe) => (
+            <RecipeItem
+              key={recipe.idMeal}
+              title={recipe.strMeal}
+              area={recipe.strArea}
+              category={recipe.strCategory}
+              time={"?"}
+              image={{ uri: recipe.strMealThumb }}
+              onPress={() =>
+                navigation.navigate("RecipeDetail", {
+                  id: recipe.idMeal,
+                  title: recipe.strMeal,
+                  image: { uri: recipe.strMealThumb },
+                  instructions: recipe.strInstructions,
+                  area: recipe.strArea,
+                  category: recipe.strCategory,
+                  youtube: recipe.strYoutube,
+                })
+              }
+            />
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>

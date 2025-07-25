@@ -1,23 +1,27 @@
-import { Ionicons } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
 import { Image, Text, View, StyleSheet, Pressable } from "react-native";
 import { StyleColors } from "../../constants/colors";
+import { Ionicons } from "@expo/vector-icons";
 
-function RecipeItem({ title, calories, time, image, onPress }) {
+function RecipeItem({ title, area, category, image, onPress }) {
   return (
     <Pressable style={styles.rootContainer} onPress={onPress}>
       <Image source={image} style={styles.image} />
       <View style={styles.bottomContainer}>
         <View>
-          <Text style={styles.mealText}>{title}</Text>
-          <Text style={styles.secondaryText}>{calories} Cal</Text>
+          <Text style={styles.mealText} numberOfLines={1} ellipsizeMode="tail">
+            {title}
+          </Text>
+          <Text style={styles.secondaryText}>{area}</Text>
         </View>
         <View style={styles.timeContainer}>
           <Ionicons
-            name="time-outline"
+            name="pricetag-outline"
             size={12.67}
-            color={StyleColors.onSurfaceVariant}
+            color={StyleColors.onBackgroundVariant}
           />
-          <Text style={styles.secondaryText}>{time} min</Text>
+          <Text style={styles.secondaryText}>{category}</Text>
         </View>
       </View>
     </Pressable>
@@ -54,6 +58,7 @@ const styles = StyleSheet.create({
     fontFamily: "inter-medium",
     fontSize: 16,
     color: StyleColors.onSurfacePrimary,
+    maxWidth: 230,
   },
   secondaryText: {
     fontFamily: "inter-regular",

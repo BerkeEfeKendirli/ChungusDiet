@@ -1,19 +1,32 @@
 import { Ionicons } from "@expo/vector-icons";
-import { TextInput, View, StyleSheet, RootTagContext } from "react-native";
+import { TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
 import { StyleColors } from "../../constants/colors";
+import { useRef } from "react";
 
-function SearchField() {
+function SearchField({ value, onChangeText }) {
+  const inputRef = useRef(null);
+
   return (
-    <View style={styles.rootContainer}>
+    <TouchableOpacity
+      style={styles.rootContainer}
+      activeOpacity={1}
+      onPress={() => inputRef.current && inputRef.current.focus()}
+    >
       <View style={styles.searchContainer}>
         <Ionicons
           name="search"
           size={16}
           color={StyleColors.onSurfaceVariant}
         />
-        <TextInput placeholder="Search for recipes" />
+        <TextInput
+          ref={inputRef}
+          placeholder="Search for recipes"
+          value={value}
+          onChangeText={onChangeText}
+          style={{ flex: 1 }}
+        />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
