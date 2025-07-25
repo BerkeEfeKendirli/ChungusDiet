@@ -74,27 +74,32 @@ function RecipesScreen() {
             <SearchField value={search} onChangeText={handleSearch} />
           </View>
           {loading && <LoadingScreen />}
-          {recipes.map((recipe) => (
-            <RecipeItem
-              key={recipe.idMeal}
-              title={recipe.strMeal}
-              area={recipe.strArea}
-              category={recipe.strCategory}
-              time={"?"}
-              image={{ uri: recipe.strMealThumb }}
-              onPress={() =>
-                navigation.navigate("RecipeDetail", {
-                  id: recipe.idMeal,
-                  title: recipe.strMeal,
-                  image: { uri: recipe.strMealThumb },
-                  instructions: recipe.strInstructions,
-                  area: recipe.strArea,
-                  category: recipe.strCategory,
-                  youtube: recipe.strYoutube,
-                })
-              }
-            />
-          ))}
+          {recipes
+            .filter(
+              (recipe, index, self) =>
+                self.findIndex((r) => r.idMeal === recipe.idMeal) === index
+            )
+            .map((recipe) => (
+              <RecipeItem
+                key={recipe.idMeal}
+                title={recipe.strMeal}
+                area={recipe.strArea}
+                category={recipe.strCategory}
+                time={"?"}
+                image={{ uri: recipe.strMealThumb }}
+                onPress={() =>
+                  navigation.navigate("RecipeDetail", {
+                    id: recipe.idMeal,
+                    title: recipe.strMeal,
+                    image: { uri: recipe.strMealThumb },
+                    instructions: recipe.strInstructions,
+                    area: recipe.strArea,
+                    category: recipe.strCategory,
+                    youtube: recipe.strYoutube,
+                  })
+                }
+              />
+            ))}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -132,5 +137,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 16,
     gap: 20,
+    marginBottom: 20,
   },
 });

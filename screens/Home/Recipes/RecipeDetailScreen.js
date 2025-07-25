@@ -37,9 +37,11 @@ function RecipeDetailScreen({ navigation }) {
       </View>
       <View style={styles.youtubeContainer}>
         {youtube ? (
-          <YoutubeDirector link={youtube} />
+          <YoutubeDirector link={youtube} title={title} />
         ) : (
-          <YoutubeDirector link="No link found for this recipe." />
+          <Text style={styles.secondaryText}>
+            No video available for this recipe.
+          </Text>
         )}
       </View>
       <View style={styles.divider}></View>

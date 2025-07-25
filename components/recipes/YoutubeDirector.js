@@ -1,19 +1,78 @@
-import { View, Pressable, Text, StyleSheet, Linking } from "react-native";
+import {
+  View,
+  Pressable,
+  Text,
+  StyleSheet,
+  Linking,
+  Image,
+} from "react-native";
 import YoutubeSvg from "./../../assets/images/svg/youtube";
 import { StyleColors } from "./../../constants/colors";
+import { useEffect, useState } from "react";
+
+function getYoutubeId(link) {
+  const match = link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
 
 function YoutubeDirector({ link }) {
+  const videoId = link ? getYoutubeId(link) : null;
+  const thumbnailUrl = videoId
+    ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    : null;
+  const [thumbnailError, setThumbnailError] = useState(false);
+  const [videoTitle, setVideoTitle] = useState("");
+
+  useEffect(() => {
+    async function fetchYoutubeTitle() {
+      if (!videoId) return;
+      try {
+        const apiKey = process.env.EXPO_PUBLIC_YOUTUBE_API_KEY;
+        const res = await fetch(
+          `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${apiKey}&part=snippet`
+        );
+        const data = await res.json();
+        setVideoTitle(data.items?.[0]?.snippet?.title || "");
+      } catch (err) {
+        setVideoTitle("");
+      }
+    }
+    fetchYoutubeTitle();
+  }, [videoId]);
+
   return (
-    <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.pressed]}
-      onPress={() => link && Linking.openURL(link)}
-    >
+    <View style={styles.button}>
       <Text style={styles.description}>Watch the recipe video ⬇</Text>
-      <View style={styles.youtubeContainer}>
-        <YoutubeSvg width={20} height={20} />
-        <Text style={styles.link}>{link}</Text>
-      </View>
-    </Pressable>
+      <Pressable
+        style={({ pressed }) => [pressed && styles.pressed]}
+        onPress={() => link && Linking.openURL(link)}
+      >
+        <View style={styles.youtubeContainer}>
+          {thumbnailUrl && !thumbnailError ? (
+            <>
+              <Image
+                source={{ uri: thumbnailUrl }}
+                style={styles.thumbnail}
+                resizeMode="cover"
+                onError={() => setThumbnailError(true)}
+              />
+              <YoutubeSvg width={25} height={20} />
+            </>
+          ) : (
+            <View style={[styles.thumbnail, styles.placeholder]}>
+              <Text style={styles.placeholderText}>Not Available</Text>
+            </View>
+          )}
+          <Text
+            style={styles.videoTitle}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {videoTitle}
+          </Text>
+        </View>
+      </Pressable>
+    </View>
   );
 }
 
@@ -40,5 +99,25 @@ const styles = StyleSheet.create({
     fontFamily: "inter-regular",
     fontSize: 12,
     color: StyleColors.red,
+  },
+  thumbnail: {
+    width: 80,
+    height: 45,
+    borderRadius: 6,
+  },
+  videoTitle: {
+    fontFamily: "inter-medium",
+    fontSize: 16,
+    color: StyleColors.red,
+    maxWidth: 200,
+  },
+  placeholder: {
+    backgroundColor: StyleColors.surfaceVariant,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  placeholderText: {
+    color: StyleColors.onSurfaceVariant,
+    fontSize: 11,
   },
 });
