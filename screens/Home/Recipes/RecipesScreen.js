@@ -80,6 +80,7 @@ function RecipesScreen() {
             tintColor={StyleColors.primary}
           />
         }
+        overScrollMode="never"
       >
         <View style={styles.profile}>
           <Ionicons

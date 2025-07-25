@@ -3,11 +3,24 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Image, Text, View, StyleSheet, Pressable } from "react-native";
 import { StyleColors } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 
 function RecipeItem({ title, area, category, image, onPress }) {
+  const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <Pressable style={styles.rootContainer} onPress={onPress}>
-      <Image source={image} style={styles.image} />
+      <View>
+        {!imageLoaded && (
+          <View style={styles.placeholder}>
+            <Text style={styles.placeholderText}>Loading...</Text>
+          </View>
+        )}
+        <Image
+          source={image}
+          style={styles.image}
+          onLoad={() => setImageLoaded(true)}
+        />
+      </View>
       <View style={styles.bottomContainer}>
         <View>
           <Text style={styles.mealText} numberOfLines={1} ellipsizeMode="tail">
@@ -40,6 +53,20 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 164,
     resizeMode: "cover",
+  },
+  placeholder: {
+    position: "absolute",
+    width: "100%",
+    height: 164,
+    backgroundColor: StyleColors.surfaceVariant,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
+  placeholderText: {
+    fontFamily: "inter-regular",
+    fontSize: 13,
+    color: StyleColors.onSurfaceVariant,
   },
   bottomContainer: {
     backgroundColor: StyleColors.surfacePrimary,

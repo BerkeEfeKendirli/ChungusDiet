@@ -2,9 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import RecipeDetailNutrition from "../../../components/recipes/RecipeDetailNutrition";
-import { StyleColors } from "../../../constants/colors";
 import YoutubeDirector from "../../../components/recipes/YoutubeDirector";
+import { StyleColors } from "../../../constants/colors";
 
 function RecipeDetailScreen({ navigation }) {
   const route = useRoute();
