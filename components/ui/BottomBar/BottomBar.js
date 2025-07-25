@@ -1,10 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { StyleColors } from "../../constants/colors";
+import { StyleColors } from "./../../../constants/colors";
+import TabBackground from "./TabBackground";
 
 function BottomBar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
+  const screenWidth = Dimensions.get("window").width;
+  const tabWidth = screenWidth / state.routes.length;
+
   return (
     <View
       style={[
@@ -40,6 +50,8 @@ function BottomBar({ state, descriptors, navigation }) {
             onPress={() => navigation.navigate(route.name)}
             style={[styles.tab, isFocused && styles.activeTab]}
           >
+            {isFocused && <TabBackground tabWidth={tabWidth} />}
+
             <View
               style={[
                 styles.iconWrapper,
@@ -53,7 +65,6 @@ function BottomBar({ state, descriptors, navigation }) {
                   isFocused ? StyleColors.onPrimary : StyleColors.navigationItem
                 }
               />
-
               <Text style={[styles.label, isFocused && styles.activeLabel]}>
                 {label}
               </Text>
@@ -81,6 +92,7 @@ const styles = StyleSheet.create({
   tab: {
     alignItems: "center",
     flex: 1,
+    justifyContent: "flex-end", // bombe etkisi için alttan hizalı
   },
   activeTab: {
     marginTop: -15,

@@ -7,7 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import BottomBar from "./components/ui/BottomBar";
+import BottomBar from "./components/ui/BottomBar/BottomBar";
 import { auth } from "./config/firebaseConfig";
 import { StyleColors } from "./constants/colors";
 import LoginScreen from "./screens/Auth/LoginScreen";

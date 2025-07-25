@@ -9,6 +9,8 @@ import {
 import YoutubeSvg from "./../../assets/images/svg/youtube";
 import { StyleColors } from "./../../constants/colors";
 import { useEffect, useState } from "react";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { AntDesign, Feather } from "@expo/vector-icons";
 
 function getYoutubeId(link) {
   const match = link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -45,7 +47,21 @@ function YoutubeDirector({ link }) {
 
   return (
     <View style={styles.button}>
-      <Text style={styles.description}>Watch the recipe video ⬇</Text>
+      <View style={styles.descriptionContainer}>
+        <Feather
+          name="corner-left-down"
+          size={12.67}
+          color={StyleColors.onBackgroundVariant}
+          style={{ paddingTop: 8 }}
+        />
+        <Text style={styles.description}> Watch the recipe video </Text>
+        <Feather
+          name="corner-right-down"
+          size={12.67}
+          color={StyleColors.onBackgroundVariant}
+          style={{ paddingTop: 8 }}
+        />
+      </View>
       <Pressable
         style={({ pressed }) => [pressed && styles.pressed]}
         onPress={() => link && Linking.openURL(link)}
@@ -89,8 +105,13 @@ const styles = StyleSheet.create({
     gap: 4,
     width: "100%",
   },
-  description: {
+  descriptionContainer: {
     alignSelf: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  description: {
     fontFamily: "inter-regular",
     fontSize: 14,
     color: StyleColors.onBackgroundVariant,
