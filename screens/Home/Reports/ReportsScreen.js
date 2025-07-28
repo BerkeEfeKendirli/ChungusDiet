@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import { StyleColors } from "../../constants/colors";
+import { StyleColors } from "../../../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function ReportsScreen() {

@@ -1,10 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth, signOut } from "firebase/auth";
 import { Alert, StyleSheet, Text, View } from "react-native";
-import { StyleColors } from "../../constants/colors";
-import ProfileButton from "./../../components/buttons/ProfileButton";
-import SettingsButton from "../../components/buttons/SettingsButton";
-import CustomSwitch from "./../../components/buttons/CustomSwitch";
+import { StyleColors } from "../../../constants/colors";
+import ProfileButton from "./../../../components/buttons/ProfileButton";
+import SettingsButton from "../../../components/buttons/SettingsButton";
+import CustomSwitch from "./../../../components/buttons/CustomSwitch";
 import { useState } from "react";
 
 function ProfileScreen({ userProfile }) {

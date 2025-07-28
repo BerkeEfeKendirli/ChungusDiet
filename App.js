@@ -12,25 +12,27 @@ import { auth } from "./config/firebaseConfig";
 import { StyleColors } from "./constants/colors";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import SignUpScreen from "./screens/Auth/SignUpScreen";
-import DiaryScreen from "./screens/Home/DiaryScreen";
-import ProfileScreen from "./screens/Home/ProfileScreen";
+import DiaryScreen from "./screens/Home/Diary/DiaryScreen";
+import ProfileScreen from "./screens/Home/Diary/ProfileScreen";
 import RecipeDetailScreen from "./screens/Home/Recipes/RecipeDetailScreen";
 import RecipesScreen from "./screens/Home/Recipes/RecipesScreen";
-import ReportsScreen from "./screens/Home/ReportsScreen";
+import ReportsScreen from "./screens/Home/Reports/ReportsScreen";
 import LoadingScreen from "./screens/Onboarding/LoadingScreen";
 import OnboardingSlideScreen from "./screens/Onboarding/OnboardingSlideScreen";
 import WelcomeScreen from "./screens/Onboarding/WelcomeScreen";
 import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
 import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
 import { listenUserProfile } from "./services/userService";
+import NewMealScreen from "./screens/Home/Diary/NewMealScreen";
+import MealSearchScreen from "./screens/Home/Diary/MealSearchScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
-function CustomBackButton({ navigation }) {
+function CustomBackButton({ navigation, icon = "chevron-back" }) {
   return (
     <Pressable onPress={() => navigation.goBack()}>
-      <Ionicons name="chevron-back" size={24} />
+      <Ionicons name={icon} size={24} />
     </Pressable>
   );
 }
@@ -136,12 +138,30 @@ export default function App() {
                           tintColor={StyleColors.onBackground}
                         />
                       ),
-                      headerTitleStyle: styles.signUpTitle,
+                      headerTitleStyle: styles.headerTitle,
                     })}
                   />
                   <Stack.Screen
                     name="RecipeDetail"
                     component={RecipeDetailScreen}
+                  />
+                  <Stack.Screen name="NewMeal" component={NewMealScreen} />
+                  <Stack.Screen
+                    name="MealSearch"
+                    component={MealSearchScreen}
+                    options={({ navigation }) => ({
+                      headerTitle: "",
+                      headerTitleAlign: "center",
+                      headerShown: true,
+                      headerShadowVisible: false,
+                      headerLeft: () => (
+                        <CustomBackButton
+                          navigation={navigation}
+                          tintColor={StyleColors.onBackground}
+                        />
+                      ),
+                      headerTitleStyle: styles.headerTitle,
+                    })}
                   />
                 </>
               </>
@@ -178,7 +198,7 @@ export default function App() {
                       tintColor={StyleColors.onBackground}
                     />
                   ),
-                  headerTitleStyle: styles.signUpTitle,
+                  headerTitleStyle: styles.headerTitle,
                 })}
               />
               <Stack.Screen
@@ -195,7 +215,7 @@ export default function App() {
                       tintColor={StyleColors.onBackground}
                     />
                   ),
-                  headerTitleStyle: styles.signUpTitle,
+                  headerTitleStyle: styles.headerTitle,
                 })}
               />
             </>
@@ -207,7 +227,7 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  signUpTitle: {
+  headerTitle: {
     fontFamily: "inter-medium",
     fontSize: 18,
     color: StyleColors.onBackground,

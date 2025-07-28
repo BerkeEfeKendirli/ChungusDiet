@@ -8,10 +8,10 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import NutrientsIndicator from "../../components/diary/NutrientsIndicator";
-import WaterIntake from "../../components/diary/WaterIntake";
-import { StyleColors } from "../../constants/colors";
-import Meal from "../../components/diary/Meal";
+import NutrientsIndicator from "../../../components/diary/NutrientsIndicator";
+import WaterIntake from "../../../components/diary/WaterIntake";
+import { StyleColors } from "../../../constants/colors";
+import Meal from "../../../components/diary/Meal";
 
 function DiaryScreen({ navigation }) {
   const auth = getAuth();
@@ -56,7 +56,11 @@ function DiaryScreen({ navigation }) {
           <View style={styles.indicatorContainer}>
             <View style={styles.mealTitle}>
               <Text style={styles.title}>Meals</Text>
-              <Ionicons name="add" size={24} />
+              <Ionicons
+                name="add"
+                size={24}
+                onPress={() => navigation.navigate("NewMeal")}
+              />
             </View>
             <View style={{ gap: 12 }}>
               <Meal />
