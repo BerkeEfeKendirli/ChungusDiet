@@ -13,6 +13,7 @@ import { StyleColors } from "./constants/colors";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import SignUpScreen from "./screens/Auth/SignUpScreen";
 import DiaryScreen from "./screens/Home/Diary/DiaryScreen";
+import NewMealScreen from "./screens/Home/Diary/NewMealScreen";
 import ProfileScreen from "./screens/Home/Diary/ProfileScreen";
 import RecipeDetailScreen from "./screens/Home/Recipes/RecipeDetailScreen";
 import RecipesScreen from "./screens/Home/Recipes/RecipesScreen";
@@ -23,8 +24,6 @@ import WelcomeScreen from "./screens/Onboarding/WelcomeScreen";
 import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
 import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
 import { listenUserProfile } from "./services/userService";
-import NewMealScreen from "./screens/Home/Diary/NewMealScreen";
-import MealSearchScreen from "./screens/Home/Diary/MealSearchScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -146,23 +145,6 @@ export default function App() {
                     component={RecipeDetailScreen}
                   />
                   <Stack.Screen name="NewMeal" component={NewMealScreen} />
-                  <Stack.Screen
-                    name="MealSearch"
-                    component={MealSearchScreen}
-                    options={({ navigation }) => ({
-                      headerTitle: "",
-                      headerTitleAlign: "center",
-                      headerShown: true,
-                      headerShadowVisible: false,
-                      headerLeft: () => (
-                        <CustomBackButton
-                          navigation={navigation}
-                          tintColor={StyleColors.onBackground}
-                        />
-                      ),
-                      headerTitleStyle: styles.headerTitle,
-                    })}
-                  />
                 </>
               </>
             ) : (

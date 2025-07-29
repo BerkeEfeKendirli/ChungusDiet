@@ -3,7 +3,12 @@ import { TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
 import { StyleColors } from "../../constants/colors";
 import { useRef } from "react";
 
-function SearchField({ value, onChangeText }) {
+function SearchField({
+  value,
+  onChangeText,
+  placeholder = "",
+  onSubmitEditing,
+}) {
   const inputRef = useRef(null);
 
   return (
@@ -20,11 +25,21 @@ function SearchField({ value, onChangeText }) {
         />
         <TextInput
           ref={inputRef}
-          placeholder="Search for recipes"
+          placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
+          onSubmitEditing={onSubmitEditing}
           style={{ flex: 1 }}
         />
+        {value?.length > 0 && (
+          <TouchableOpacity onPress={() => onChangeText("")}>
+            <Ionicons
+              name="close"
+              size={16}
+              color={StyleColors.onSurfaceVariant}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );

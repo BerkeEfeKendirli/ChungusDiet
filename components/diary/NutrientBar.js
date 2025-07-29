@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import { StyleColors } from "./../../constants/colors";
 
-function NutrientBar({ type, percentage = 66, fillColor }) {
+function NutrientBar({ type, percentage = 0, fillColor, completed, total }) {
   return (
     <View style={styles.rootContainer}>
-      <Text style={styles.numberText}>150/225</Text>
+      <Text style={styles.numberText}>
+        {completed} / {total}
+      </Text>
       <View style={styles.barContainer}>
         <View style={styles.barBackground}></View>
         <View

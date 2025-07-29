@@ -11,6 +11,7 @@ function ProfileScreen({ userProfile }) {
   const auth = getAuth();
   const email = auth.currentUser?.email;
   const calories = userProfile?.profile?.targetCalories;
+  const water = userProfile?.profile?.targetWater;
   const [darkMode, setDarkMode] = useState(false);
 
   const logoutHandler = () => {
@@ -64,7 +65,7 @@ function ProfileScreen({ userProfile }) {
           text="Water Intake"
           backgroundColor={StyleColors.surfaceSecondary}
           textColor={StyleColors.onSurfaceSecondary}
-          object={<Text style={styles.calorieText}>{calories} Cal</Text>}
+          object={<Text style={styles.calorieText}>{water} mL</Text>}
         />
       </View>
       <View style={styles.divider}></View>

@@ -43,11 +43,46 @@ function RecommendedCaloriesScreen({ route }) {
 
   const recommendedCalories = calculateRecommendedCalories();
 
+  const calculatePFC = (calories, weightGoal) => {
+    let proteinRatio, fatRatio, carbRatio;
+    if (weightGoal === "lose") {
+      proteinRatio = 0.3;
+      fatRatio = 0.3;
+      carbRatio = 0.4;
+    } else if (weightGoal === "gain") {
+      proteinRatio = 0.2;
+      fatRatio = 0.25;
+      carbRatio = 0.55;
+    } else {
+      proteinRatio = 0.2;
+      fatRatio = 0.3;
+      carbRatio = 0.5;
+    }
+
+    const proteinGrams = Math.round((calories * proteinRatio) / 4);
+    const fatGrams = Math.round((calories * fatRatio) / 9);
+    const carbGrams = Math.round((calories * carbRatio) / 4);
+
+    return {
+      protein: proteinGrams,
+      fats: fatGrams,
+      carbs: carbGrams,
+    };
+  };
+
+  const recommendedPFC = calculatePFC(recommendedCalories, formData.weightGoal);
+
+  const recommendedWater = formData.weight * 33;
+
   const handleStart = async () => {
     try {
       const profileData = {
         ...formData,
         targetCalories: recommendedCalories,
+        targetProtein: recommendedPFC.protein,
+        targetFat: recommendedPFC.fats,
+        targetCarbs: recommendedPFC.carbs,
+        targetWater: recommendedWater,
       };
       await updateUserProfile(auth.currentUser.uid, profileData, true);
     } catch (error) {
@@ -85,6 +120,39 @@ function RecommendedCaloriesScreen({ route }) {
           <Text style={styles.calorieNumber}>{recommendedCalories}</Text>
           <Text style={styles.calorieUnit}>calories/day</Text>
           <Text style={styles.goalText}>{getGoalText()}</Text>
+        </View>
+        <View style={styles.pfcContainer}>
+          <View style={styles.pfcCover}>
+            <Text style={[styles.pfcText, { color: StyleColors.red }]}>
+              {recommendedPFC.protein}g
+            </Text>
+            <Text style={[styles.pfcType, { color: StyleColors.red }]}>
+              {" "}
+              protein
+            </Text>
+          </View>
+          <View style={styles.pfcCover}>
+            <Text style={[styles.pfcText, { color: StyleColors.orange }]}>
+              {recommendedPFC.fats}g
+            </Text>
+            <Text style={[styles.pfcType, { color: StyleColors.orange }]}>
+              {" "}
+              fats
+            </Text>
+          </View>
+          <View style={styles.pfcCover}>
+            <Text style={[styles.pfcText, { color: StyleColors.lightGreen }]}>
+              {recommendedPFC.carbs}g
+            </Text>
+            <Text style={[styles.pfcType, { color: StyleColors.lightGreen }]}>
+              {" "}
+              carbs
+            </Text>
+          </View>
+        </View>
+        <View style={styles.waterContainer}>
+          <Text style={styles.waterMlText}>{recommendedWater}mL </Text>
+          <Text style={styles.waterText}>water</Text>
         </View>
         <View style={styles.summaryContainer}>
           <View style={styles.summaryRow}>
@@ -190,5 +258,36 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: StyleColors.primary,
     marginBottom: 50,
+  },
+  pfcContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  pfcCover: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  pfcText: {
+    fontFamily: "inter-semibold",
+    fontSize: 16,
+  },
+  pfcType: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+  },
+  waterContainer: {
+    alignSelf: "center",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  waterMlText: {
+    fontFamily: "inter-semibold",
+    fontSize: 16,
+    color: StyleColors.blueGradientEnd,
+  },
+  waterText: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+    color: StyleColors.blueGradientEnd,
   },
 });

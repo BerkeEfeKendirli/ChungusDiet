@@ -92,7 +92,11 @@ function RecipesScreen() {
         </View>
         <View style={styles.content}>
           <View style={styles.searchContainer}>
-            <SearchField value={search} onChangeText={handleSearch} />
+            <SearchField
+              value={search}
+              onChangeText={handleSearch}
+              placeholder="Search for recipes"
+            />
           </View>
           {!refreshing && loading && <LoadingScreen />}
           {recipes

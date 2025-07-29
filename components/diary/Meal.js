@@ -2,22 +2,25 @@ import { View, StyleSheet, Text } from "react-native";
 import { StyleColors } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 
-function Meal() {
+function Meal({ title, time, calorie, proteins, fats, carbs }) {
   return (
     <View style={styles.rootContainer}>
       <View style={styles.timeContainer}>
-        <Text style={styles.mealText}>Breakfast</Text>
+        <Text style={styles.mealText}>{title}</Text>
         <View style={styles.time}>
           <Ionicons
             name="time-outline"
             color={StyleColors.onBackgroundVariant}
             size={12.67}
           />
-          <Text style={styles.timeText}>10:45 AM</Text>
+          <Text style={styles.timeText}>{time}</Text>
         </View>
       </View>
       <View style={styles.calorieContainer}>
-        <Text style={styles.calText}>531 Cal</Text>
+        <Text style={styles.calText}>{calorie} Cal</Text>
+        <Text style={styles.nutritionText}>
+          {proteins} g protein • {fats} g fat • {carbs} g carb
+        </Text>
       </View>
     </View>
   );
@@ -41,7 +44,10 @@ const styles = StyleSheet.create({
     gap: 4,
     alignItems: "center",
   },
-  calorieContainer: {},
+  calorieContainer: {
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   mealText: {
     fontFamily: "inter-regular",
     fontSize: 14,
@@ -53,8 +59,14 @@ const styles = StyleSheet.create({
     color: StyleColors.onSurfaceVariant,
   },
   calText: {
+    alignSelf: "flex-end",
     fontFamily: "inter-medium",
     fontSize: 16,
     color: StyleColors.onSurfacePrimary,
+  },
+  nutritionText: {
+    fontFamily: "inter-regular",
+    fontSize: 12,
+    color: StyleColors.onBackgroundVariant,
   },
 });

@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
 import { StyleColors } from "../../constants/colors";
 
-function MealFood({ onPress, meal = "", grams, calories }) {
+function MealFood({ onPress, meal = "", calories, proteins, fats, carbs }) {
   return (
     <View style={styles.rootContainer}>
       <View style={styles.textContainer}>
         <Text style={styles.mealText}>{meal}</Text>
         <Text style={styles.nutritionText}>
-          {grams} g • {calories} Cal
+          {calories} cal • {proteins} g protein • {fats} g fat • {carbs} g carb
         </Text>
       </View>
       <Ionicons

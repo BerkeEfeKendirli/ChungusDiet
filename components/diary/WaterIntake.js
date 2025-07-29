@@ -4,7 +4,7 @@ import FloatingActionButton from "./../buttons/FloatingActionButton";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
-function WaterIntake({ percentage }) {
+function WaterIntake({ percentage, time, completed, total, onAdd, onRemove }) {
   const fillHeight = 100 * (percentage / 100);
   return (
     <View style={styles.rootContainer}>
@@ -12,8 +12,8 @@ function WaterIntake({ percentage }) {
         <View style={styles.waterTextContainer}>
           <Text style={styles.title}>Water</Text>
           <View style={styles.literTextContainer}>
-            <Text style={styles.currentLiterText}>1,9 / </Text>
-            <Text style={styles.targetLiterText}>2,5L</Text>
+            <Text style={styles.currentLiterText}>{completed}mL / </Text>
+            <Text style={styles.targetLiterText}>{total}mL</Text>
           </View>
         </View>
         <View style={styles.time}>
@@ -22,7 +22,7 @@ function WaterIntake({ percentage }) {
             color={StyleColors.onBackgroundVariant}
             size={12.67}
           />
-          <Text style={styles.timeText}>Last time 10:45 AM</Text>
+          <Text style={styles.timeText}>Last time {time}</Text>
         </View>
       </View>
       <View style={styles.waterInput}>
@@ -32,12 +32,14 @@ function WaterIntake({ percentage }) {
             size={24}
             backgroundColor={StyleColors.surfaceVariant}
             iconColor={StyleColors.onSurfacePrimary}
+            onPress={onAdd}
           />
           <FloatingActionButton
             icon="remove"
             size={24}
             backgroundColor={StyleColors.surfaceVariant}
             iconColor={StyleColors.onSurfacePrimary}
+            onPress={onRemove}
           />
         </View>
         <View style={styles.waterIndicator}>
@@ -97,6 +99,7 @@ const styles = StyleSheet.create({
     color: StyleColors.onBackground,
   },
   time: {
+    alignSelf: "flex-start",
     flexDirection: "row",
     gap: 4,
     alignItems: "center",
