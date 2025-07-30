@@ -63,6 +63,9 @@ function NewMealScreen({ navigation, route }) {
     }
     setModalVisible(false);
   };
+  const selectedDate = route.params?.date
+    ? new Date(route.params.date)
+    : new Date();
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -180,6 +183,8 @@ function NewMealScreen({ navigation, route }) {
             screen: "Diary",
             params: {
               allMeals: updatedMeals,
+              fromNewMeal: true,
+              date: selectedDate.toISOString(),
             },
           });
         }}
