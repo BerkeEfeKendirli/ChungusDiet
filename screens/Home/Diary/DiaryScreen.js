@@ -200,6 +200,15 @@ function DiaryScreen({ navigation, route }) {
     hasUserChanged,
   ]);
 
+  useEffect(() => {
+    if (route.params?.date) {
+      const paramDate = new Date(route.params.date);
+      if (selectedDate.toDateString() !== paramDate.toDateString()) {
+        setSelectedDate(paramDate);
+      }
+    }
+  }, [route.params?.date]);
+
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <ScrollView
