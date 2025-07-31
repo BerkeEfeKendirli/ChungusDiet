@@ -14,7 +14,7 @@ import LoginScreen from "./screens/Auth/LoginScreen";
 import SignUpScreen from "./screens/Auth/SignUpScreen";
 import DiaryScreen from "./screens/Home/Diary/DiaryScreen";
 import NewMealScreen from "./screens/Home/Diary/NewMealScreen";
-import ProfileScreen from "./screens/Home/Diary/ProfileScreen";
+import ProfileScreen from "./screens/Home/Profile/ProfileScreen";
 import RecipeDetailScreen from "./screens/Home/Recipes/RecipeDetailScreen";
 import RecipesScreen from "./screens/Home/Recipes/RecipesScreen";
 import ReportsScreen from "./screens/Home/Reports/ReportsScreen";
@@ -24,6 +24,9 @@ import WelcomeScreen from "./screens/Onboarding/WelcomeScreen";
 import ProfileSetupNavigatorScreen from "./screens/ProfileSetup/ProfileSetupNavigatorScreen";
 import RecommendedCaloriesScreen from "./screens/ProfileSetup/RecommendedCaloriesScreen";
 import { listenUserProfile } from "./services/userService";
+import MeScreen from "./screens/Home/Profile/MeScreen";
+import CalorieIntakeScreen from "./screens/Home/Profile/CalorieIntakeScreen";
+import WaterIntakeScreen from "./screens/Home/Profile/WaterIntakeScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -139,6 +142,18 @@ export default function App() {
                       ),
                       headerTitleStyle: styles.headerTitle,
                     })}
+                  />
+                  <Stack.Screen
+                    name="Me"
+                    children={() => <MeScreen userProfile={userProfile} />}
+                  />
+                  <Stack.Screen
+                    name="CalorieIntake"
+                    component={CalorieIntakeScreen}
+                  />
+                  <Stack.Screen
+                    name="WaterIntake"
+                    component={WaterIntakeScreen}
                   />
                   <Stack.Screen
                     name="RecipeDetail"

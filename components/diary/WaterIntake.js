@@ -12,8 +12,8 @@ function WaterIntake({ percentage, time, completed, total, onAdd, onRemove }) {
         <View style={styles.waterTextContainer}>
           <Text style={styles.title}>Water</Text>
           <View style={styles.literTextContainer}>
-            <Text style={styles.currentLiterText}>{completed}mL / </Text>
-            <Text style={styles.targetLiterText}>{total}mL</Text>
+            <Text style={styles.currentLiterText}>{completed} / </Text>
+            <Text style={styles.targetLiterText}>{total}L</Text>
           </View>
         </View>
         <View style={styles.time}>

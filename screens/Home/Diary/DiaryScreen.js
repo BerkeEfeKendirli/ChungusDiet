@@ -39,7 +39,6 @@ function DiaryScreen({ navigation, route }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [hasUserChanged, setHasUserChanged] = useState(false);
-  const [skipFetch, setSkipFetch] = useState(false);
 
   useEffect(() => {
     const fetchTargets = async () => {
@@ -313,9 +312,9 @@ function DiaryScreen({ navigation, route }) {
                     )
                   : 0
               }
-              total={targets.water}
+              total={(targets.water / 1000).toFixed(1)}
               time={waterTime}
-              completed={waterAmount}
+              completed={waterAmount / 1000}
               onAdd={handleAddWater}
               onRemove={handleRemoveWater}
             />

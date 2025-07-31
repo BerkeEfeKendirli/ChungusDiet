@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   rootContainer: {
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 16,
   },
   inputContainer: {
     flexDirection: "row",

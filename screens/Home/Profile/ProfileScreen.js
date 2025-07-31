@@ -1,36 +1,22 @@
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth, signOut } from "firebase/auth";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, Modal, StyleSheet, Text, View } from "react-native";
 import { StyleColors } from "../../../constants/colors";
-import ProfileButton from "./../../../components/buttons/ProfileButton";
+import ProfileButton from "../../../components/buttons/ProfileButton";
 import SettingsButton from "../../../components/buttons/SettingsButton";
-import CustomSwitch from "./../../../components/buttons/CustomSwitch";
+import CustomSwitch from "../../../components/buttons/CustomSwitch";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import TextButton from "../../../components/buttons/TextButton";
 
 function ProfileScreen({ userProfile }) {
+  const navigation = useNavigation();
   const auth = getAuth();
   const email = auth.currentUser?.email;
   const calories = userProfile?.profile?.targetCalories;
   const water = userProfile?.profile?.targetWater;
   const [darkMode, setDarkMode] = useState(false);
-
-  const logoutHandler = () => {
-    try {
-      Alert.alert("Do you really want to sign out?", "", [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Sign Out",
-          style: "destructive",
-          onPress: async () => {
-            await signOut(auth);
-          },
-        },
-      ]);
-    } catch (error) {}
-  };
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.rootContainer}>
@@ -54,18 +40,21 @@ function ProfileScreen({ userProfile }) {
               size={12}
             />
           }
+          onPress={() => navigation.navigate("Me")}
         />
         <ProfileButton
           text="Calorie Intake"
           backgroundColor={StyleColors.surfaceSecondary}
           textColor={StyleColors.onSurfaceSecondary}
           object={<Text style={styles.calorieText}>{calories} Cal</Text>}
+          onPress={() => navigation.navigate("CalorieIntake")}
         />
         <ProfileButton
           text="Water Intake"
           backgroundColor={StyleColors.surfaceSecondary}
           textColor={StyleColors.onSurfaceSecondary}
           object={<Text style={styles.calorieText}>{water} mL</Text>}
+          onPress={() => navigation.navigate("WaterIntake")}
         />
       </View>
       <View style={styles.divider}></View>
@@ -81,8 +70,33 @@ function ProfileScreen({ userProfile }) {
         icon="log-out-outline"
         iconColor={StyleColors.danger}
         textColor={StyleColors.danger}
-        onPress={logoutHandler}
+        onPress={() => setModalVisible(true)}
       />
+      {modalVisible && (
+        <Modal transparent statusBarTranslucent animationType="fade">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalInnerContainer}>
+              <Text style={styles.modalText}>
+                Do you really want to sign out?
+              </Text>
+              <View style={styles.modalButtonContainer}>
+                <TextButton
+                  text="Cancel"
+                  style={[styles.button, { color: StyleColors.primary }]}
+                  onPress={() => setModalVisible(false)}
+                />
+                <TextButton
+                  text="Sign Out"
+                  style={[styles.button, { color: StyleColors.danger }]}
+                  onPress={async () => {
+                    await signOut(auth);
+                  }}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 }
@@ -125,5 +139,39 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  modalContainer: {
+    ...StyleSheet.absoluteFillObject,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#0000004f",
+    paddingHorizontal: 32,
+  },
+  modalInnerContainer: {
+    width: "100%",
+    backgroundColor: StyleColors.surfacePrimary,
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 10,
+    alignItems: "center",
+    elevation: 2,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  modalButtonContainer: {
+    flexDirection: "row",
+    gap: 32,
+    marginTop: 36,
+  },
+  modalText: {
+    fontFamily: "inter-medium",
+    fontSize: 18,
+  },
+  button: {
+    fontFamily: "inter-regular",
+    fontSize: 14,
   },
 });

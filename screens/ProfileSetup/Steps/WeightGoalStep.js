@@ -3,7 +3,7 @@ import Button from "../../../components/buttons/Button";
 import { StyleColors } from "../../../constants/colors";
 import { useState } from "react";
 
-function WeightGoalStep({ formData, setFormData }) {
+function WeightGoalStep({ formData, setFormData, onDone, showDone }) {
   const [selectedGoal, setSelectedGoal] = useState(formData?.weightGoal);
   const handleGoalSelect = (goal) => {
     setSelectedGoal(goal);
@@ -21,7 +21,7 @@ function WeightGoalStep({ formData, setFormData }) {
         onPress={() => handleGoalSelect("lose")}
       />
       <Button
-        text="Keep weight"
+        text="Maintain weight"
         style={[
           styles.button,
           selectedGoal === "maintain" && styles.selectedButton,
