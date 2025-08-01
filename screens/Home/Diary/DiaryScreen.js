@@ -61,6 +61,7 @@ function DiaryScreen({ navigation, route }) {
           carbs: profile.targetCarbs ?? profile.recommendedCarbs ?? 0,
           calories: profile.targetCalories ?? profile.recommendedCalories ?? 0,
           water: profile.targetWater ?? profile.recommendedWater ?? 0,
+          waterStep: profile.waterStep ?? 100,
         });
       }
     });
@@ -70,7 +71,7 @@ function DiaryScreen({ navigation, route }) {
   }, [auth.currentUser?.uid]);
 
   const handleAddWater = () => {
-    setWaterAmount((prev) => prev + 100);
+    setWaterAmount((prev) => prev + (targets.waterStep || 100));
     const now = new Date();
     setWaterTime(
       now.toLocaleTimeString([], {
@@ -83,7 +84,7 @@ function DiaryScreen({ navigation, route }) {
   };
 
   const handleRemoveWater = () => {
-    setWaterAmount((prev) => Math.max(0, prev - 100));
+    setWaterAmount((prev) => Math.max(0, prev - (targets.waterStep || 100)));
     const now = new Date();
     setWaterTime(
       now.toLocaleTimeString([], {

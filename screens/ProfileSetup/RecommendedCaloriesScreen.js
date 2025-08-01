@@ -88,6 +88,7 @@ function RecommendedCaloriesScreen({ route }) {
         targetFat: recommendedPFC.fats,
         targetCarbs: recommendedPFC.carbs,
         targetWater: recommendedWater,
+        waterStep: 100,
       };
       await updateUserProfile(auth.currentUser.uid, profileData, true);
     } catch (error) {
