@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { StyleColors } from "../../constants/colors";
 
-function MeInfoItem({ infoText, info, infoSecondary = "", onPress }) {
+function InfoItem({ infoText = "", info, infoSecondary = "", onPress }) {
   return (
     <Pressable style={styles.rootContainer} onPress={onPress}>
       <Text style={styles.infoText}>{infoText}</Text>
@@ -13,7 +13,7 @@ function MeInfoItem({ infoText, info, infoSecondary = "", onPress }) {
   );
 }
 
-export default MeInfoItem;
+export default InfoItem;
 
 const styles = StyleSheet.create({
   rootContainer: {

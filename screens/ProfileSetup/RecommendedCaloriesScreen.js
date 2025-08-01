@@ -78,6 +78,11 @@ function RecommendedCaloriesScreen({ route }) {
     try {
       const profileData = {
         ...formData,
+        recCalories: recommendedCalories,
+        recProtein: recommendedPFC.protein,
+        recFat: recommendedPFC.fats,
+        recCarbs: recommendedPFC.carbs,
+        recWater: recommendedWater,
         targetCalories: recommendedCalories,
         targetProtein: recommendedPFC.protein,
         targetFat: recommendedPFC.fats,

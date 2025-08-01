@@ -1,7 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getFirestore,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
   Modal,
@@ -41,27 +47,27 @@ function DiaryScreen({ navigation, route }) {
   const [hasUserChanged, setHasUserChanged] = useState(false);
 
   useEffect(() => {
-    const fetchTargets = async () => {
-      try {
-        const db = getFirestore();
-        const docRef = doc(db, "users", auth.currentUser.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          const profile = data.profile || {};
+    const db = getFirestore();
+    const docRef = doc(db, "users", auth.currentUser.uid);
 
-          setTargets({
-            proteins: profile.targetProtein || 0,
-            fats: profile.targetFat || 0,
-            carbs: profile.targetCarbs || 0,
-            calories: profile.targetCalories || 0,
-            water: profile.targetWater || 0,
-          });
-        }
-      } catch (e) {}
-    };
-    fetchTargets();
-  }, []);
+    // Firestore'dan canlı dinleme
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const profile = data.profile || {};
+        setTargets({
+          proteins: profile.targetProtein ?? profile.recommendedProtein ?? 0,
+          fats: profile.targetFat ?? profile.recommendedFat ?? 0,
+          carbs: profile.targetCarbs ?? profile.recommendedCarbs ?? 0,
+          calories: profile.targetCalories ?? profile.recommendedCalories ?? 0,
+          water: profile.targetWater ?? profile.recommendedWater ?? 0,
+        });
+      }
+    });
+
+    // Temizlik
+    return () => unsubscribe();
+  }, [auth.currentUser?.uid]);
 
   const handleAddWater = () => {
     setWaterAmount((prev) => prev + 100);

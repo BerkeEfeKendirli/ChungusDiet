@@ -23,7 +23,7 @@ function HeightStep({ formData, setFormData }) {
       height: {
         meters: newMeters,
         centimeters: newCentimeters,
-        total: newMeters + newCentimeters / 100,
+        total: (newMeters + newCentimeters / 100).toFixed(2),
       },
     });
   };

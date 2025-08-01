@@ -1,7 +1,7 @@
 import { Pressable, Text, StyleSheet } from "react-native";
 import { StyleColors } from "../../constants/colors";
 
-function TextButton({ text, onPress, style }) {
+function TextButton({ text = "", onPress, style }) {
   return (
     <Pressable
       style={({ pressed }) => pressed && styles.pressed}

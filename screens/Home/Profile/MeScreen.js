@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import {
+  Animated,
   Dimensions,
   Keyboard,
   KeyboardAvoidingView,
@@ -8,13 +10,14 @@ import {
   Platform,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  Animated,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Button from "../../../components/buttons/Button";
-import MeInfoItem from "../../../components/profile/MeInfoItem";
+import TextButton from "../../../components/buttons/TextButton";
+import InfoItem from "../../../components/profile/InfoItem";
 import { StyleColors } from "../../../constants/colors";
 import ActivityLevelStep from "../../ProfileSetup/Steps/ActivityLevelStep";
 import AgeStep from "../../ProfileSetup/Steps/AgeStep";
@@ -22,7 +25,9 @@ import GenderStep from "../../ProfileSetup/Steps/GenderStep";
 import HeightStep from "../../ProfileSetup/Steps/HeightStep";
 import WeightGoalStep from "../../ProfileSetup/Steps/WeightGoalStep";
 import WeightStep from "../../ProfileSetup/Steps/WeightStep";
-import { useNavigation } from "@react-navigation/native";
+import { db } from "../../../config/firebaseConfig";
+import { doc, updateDoc } from "firebase/firestore";
+import TargetWeightStep from "../../ProfileSetup/Steps/TargetWeightStep";
 
 const { width } = Dimensions.get("window");
 
@@ -34,11 +39,14 @@ function MeScreen({ userProfile }) {
   const [formData, setFormData] = useState(profile);
   const [fadeAnim] = useState(new Animated.Value(0));
   const [isClosing, setIsClosing] = useState(false);
+  const [saveModalVisible, setSaveModalVisible] = useState(false);
+  const [updateEnabled, setUpdateEnabled] = useState(false);
 
   const goal = formData?.weightGoal;
   const age = formData?.age;
   const height = formData?.height?.total * 100;
   const weight = formData?.weight;
+  const targetWeight = formData?.targetWeight;
   const gender = formData?.gender;
   const lifestyle = formData?.activityLevel;
   const navigation = useNavigation();
@@ -58,6 +66,10 @@ function MeScreen({ userProfile }) {
       case "activityLevel":
         return (
           <ActivityLevelStep formData={formData} setFormData={setFormData} />
+        );
+      case "targetWeight":
+        return (
+          <TargetWeightStep formData={formData} setFormData={setFormData} />
         );
       default:
         return null;
@@ -123,6 +135,100 @@ function MeScreen({ userProfile }) {
     }
   }
 
+  const handleSaveProfile = async () => {
+    try {
+      const userRef = doc(db, "users", userProfile.uid);
+      const { calories, water, protein, fat, carbs } =
+        calculateDailyNutrients(formData);
+
+      await updateDoc(userRef, {
+        profile: {
+          ...formData,
+          recCalories: calories,
+          recWater: water,
+          recProtein: protein,
+          recFat: fat,
+          recCarbs: carbs,
+        },
+      });
+
+      if (updateEnabled) {
+        await updateDoc(userRef, {
+          "profile.targetCalories": calories,
+          "profile.targetWater": water,
+          "profile.targetProtein": protein,
+          "profile.targetFat": fat,
+          "profile.targetCarbs": carbs,
+        });
+      }
+
+      setSaveModalVisible(false);
+      navigation.goBack();
+    } catch (err) {
+      console.error("Profile couldn't updated:", err);
+    }
+  };
+
+  const calculateDailyNutrients = (formData) => {
+    const weight = formData?.weight; // kg
+    const height = formData?.height?.total * 100; // cm
+    const age = formData?.age;
+    const gender = formData?.gender;
+    const activityLevel = formData?.activityLevel;
+    const weightGoal = formData?.weightGoal;
+
+    let bmr = 0;
+    if (gender === "male") {
+      bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+      bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+    }
+
+    const activityMultipliers = {
+      sedentary: 1.2,
+      low: 1.375,
+      active: 1.55,
+      veryactive: 1.725,
+    };
+    const multiplier = activityMultipliers[activityLevel] || 1.2;
+    let tdee = bmr * multiplier;
+
+    let calories = tdee;
+    if (weightGoal === "lose") {
+      calories -= 500;
+    } else if (weightGoal === "gain") {
+      calories += 500;
+    }
+    calories = Math.round(calories);
+
+    let proteinRatio = 0.2,
+      fatRatio = 0.3,
+      carbRatio = 0.5;
+    if (weightGoal === "lose") {
+      proteinRatio = 0.3;
+      fatRatio = 0.3;
+      carbRatio = 0.4;
+    } else if (weightGoal === "gain") {
+      proteinRatio = 0.2;
+      fatRatio = 0.25;
+      carbRatio = 0.55;
+    }
+
+    const protein = Math.round((calories * proteinRatio) / 4);
+    const fat = Math.round((calories * fatRatio) / 9);
+    const carbs = Math.round((calories * carbRatio) / 4);
+
+    const water = Math.round(weight * 33);
+
+    return {
+      calories,
+      water,
+      protein,
+      fat,
+      carbs,
+    };
+  };
+
   return (
     <View
       style={[
@@ -150,36 +256,42 @@ function MeScreen({ userProfile }) {
           <Ionicons name="chevron-back" size={24} style={{ opacity: 0 }} />
         </View>
         <View style={styles.infoContainer}>
-          <MeInfoItem
+          <InfoItem
             infoText="Goal"
             info={goal}
             infoSecondary="weight"
             onPress={() => handleInfoItemPress("weightGoal")}
           />
-          <MeInfoItem
+          <InfoItem
             infoText="Age"
             info={age}
             infoSecondary="years"
             onPress={() => handleInfoItemPress("age")}
           />
-          <MeInfoItem
+          <InfoItem
             infoText="Height"
             info={height}
             infoSecondary="cm"
             onPress={() => handleInfoItemPress("height")}
           />
-          <MeInfoItem
+          <InfoItem
             infoText="Weight"
             info={weight}
             infoSecondary="kg"
             onPress={() => handleInfoItemPress("weight")}
           />
-          <MeInfoItem
+          <InfoItem
+            infoText="Target Weight"
+            info={targetWeight}
+            infoSecondary="kg"
+            onPress={() => handleInfoItemPress("targetWeight")}
+          />
+          <InfoItem
             infoText="Gender"
             info={gender}
             onPress={() => handleInfoItemPress("gender")}
           />
-          <MeInfoItem
+          <InfoItem
             infoText="Lifestyle"
             info={formatActivityLevel(lifestyle)}
             onPress={() => handleInfoItemPress("activityLevel")}
@@ -190,6 +302,7 @@ function MeScreen({ userProfile }) {
         text="Save"
         textColor={StyleColors.onPrimary}
         style={styles.button}
+        onPress={() => setSaveModalVisible(true)}
       />
 
       {activeStep === "height" && modalVisible ? (
@@ -264,7 +377,7 @@ function MeScreen({ userProfile }) {
             }}
           >
             <View style={styles.modalContainer}>
-              <TouchableWithoutFeedback onPress={() => {}}>
+              <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <KeyboardAvoidingView
                   behavior={Platform.OS === "ios" ? "padding" : "height"}
                   style={{ width: "100%" }}
@@ -284,6 +397,49 @@ function MeScreen({ userProfile }) {
           </TouchableWithoutFeedback>
         </Modal>
       )}
+      <Modal
+        visible={saveModalVisible}
+        statusBarTranslucent
+        transparent
+        animationType="fade"
+      >
+        <TouchableWithoutFeedback onPress={() => setSaveModalVisible(false)}>
+          <View style={styles.saveModalContainer}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.saveModalInnerContainer}>
+                <Text style={styles.saveModalTitle}>Save</Text>
+                <TouchableOpacity
+                  style={styles.checkButtonContainer}
+                  onPress={() => {
+                    setUpdateEnabled((prev) => !prev);
+                  }}
+                >
+                  <Ionicons
+                    name={updateEnabled ? "checkbox-outline" : "square-outline"}
+                    size={20}
+                    color={StyleColors.primary}
+                  />
+                  <Text style={styles.checkButtonText}>
+                    Update daily nutrients
+                  </Text>
+                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                  <TextButton
+                    text="Cancel"
+                    style={styles.buttonText}
+                    onPress={() => setSaveModalVisible(false)}
+                  />
+                  <TextButton
+                    text="OK"
+                    style={styles.buttonText}
+                    onPress={handleSaveProfile}
+                  />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 }
@@ -343,5 +499,49 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     borderTopLeftRadius: 16,
     padding: 24,
+  },
+  saveModalContainer: {
+    flex: 1,
+    backgroundColor: "#0000004f",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
+  },
+  saveModalInnerContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: StyleColors.onPrimary,
+    paddingTop: 16,
+    paddingBottom: 24,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    gap: 44,
+  },
+  checkButtonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  saveModalTitle: {
+    fontFamily: "inter-medium",
+    fontSize: 18,
+    color: StyleColors.onSurfacePrimary,
+  },
+  checkButtonText: {
+    fontFamily: "inter-regular",
+    fontSize: 16,
+    color: StyleColors.onSurfacePrimary,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 32,
+    alignSelf: "flex-end",
+  },
+  buttonText: {
+    fontFamily: "inter-medium",
+    fontSize: 14,
+    color: StyleColors.primary,
   },
 });
