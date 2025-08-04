@@ -205,7 +205,9 @@ function CalorieIntakeScreen({ navigation }) {
         onRequestClose={() => setModalVisible(false)}
       >
         <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={styles.modalContainer}>
+          <View
+            style={[styles.modalContainer, { paddingBottom: insets.bottom }]}
+          >
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" && "padding"}

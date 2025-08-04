@@ -28,6 +28,7 @@ import CalorieIntakeScreen from "./screens/Home/Profile/CalorieIntakeScreen";
 import WaterIntakeScreen from "./screens/Home/Profile/WaterIntakeScreen";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { StatusBar } from "expo-status-bar";
+import AboutAppScreen from "./screens/Home/Profile/AboutAppScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -128,6 +129,24 @@ function AppContent({ user, userProfile, isAppReady }) {
                   <Stack.Screen
                     name="WaterIntake"
                     component={WaterIntakeScreen}
+                  />
+                  <Stack.Screen
+                    name="AboutApp"
+                    component={AboutAppScreen}
+                    options={({ navigation }) => ({
+                      title: "About app",
+                      headerShown: true,
+                      headerTitleAlign: "center",
+                      headerStyle: { backgroundColor: StyleColors.background },
+                      headerShadowVisible: false,
+                      headerLeft: () => (
+                        <CustomBackButton
+                          navigation={navigation}
+                          tintColor={StyleColors.onBackground}
+                        />
+                      ),
+                      headerTitleStyle: styles.headerTitle,
+                    })}
                   />
                   <Stack.Screen
                     name="RecipeDetail"

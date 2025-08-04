@@ -70,7 +70,11 @@ function ProfileScreen({ userProfile }) {
         />
       </View>
       <SettingsButton text="Contact us" icon="mail-outline" />
-      <SettingsButton text="About app" icon="information-circle-outline" />
+      <SettingsButton
+        text="About app"
+        icon="information-circle-outline"
+        onPress={() => navigation.navigate("AboutApp")}
+      />
       <SettingsButton text="Settings" icon="settings-outline" />
       <SettingsButton
         text="Sign Out"
