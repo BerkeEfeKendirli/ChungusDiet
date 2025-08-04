@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import { Animated, StyleSheet, TextInput, View } from "react-native";
-import { StyleColors } from "../../constants/colors";
+import { useTheme } from "../../context/ThemeContext";
 
 function OutlinedTextField({
   keyboardType,
@@ -21,6 +21,8 @@ function OutlinedTextField({
     rightIcon === "eye-off"
   );
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   // Animasyon effect'i
   useEffect(() => {
@@ -132,31 +134,32 @@ function OutlinedTextField({
 
 export default OutlinedTextField;
 
-const styles = StyleSheet.create({
-  textInputContainer: {
-    backgroundColor: StyleColors.background,
-    borderRadius: 8,
-    borderWidth: 2,
-    marginBottom: 24,
-    elevation: 2,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  textInput: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    padding: 12,
-  },
-  inputText: {
-    flex: 1,
-    fontFamily: "inter-regular",
-  },
-  leftDesign: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    textInputContainer: {
+      backgroundColor: StyleColors.background,
+      borderRadius: 8,
+      borderWidth: 2,
+      marginBottom: 24,
+      elevation: 2,
+      shadowColor: "black",
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
+    },
+    textInput: {
+      justifyContent: "center",
+      alignItems: "center",
+      flexDirection: "row",
+      padding: 12,
+    },
+    inputText: {
+      flex: 1,
+      fontFamily: "inter-regular",
+    },
+    leftDesign: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+    },
+  });

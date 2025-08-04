@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import Button from "../../../components/buttons/Button";
-import { StyleColors } from "../../../constants/colors";
 import { useState } from "react";
+import { useTheme } from "../../../context/ThemeContext";
 
 function GenderStep({ formData, setFormData }) {
   const [selectedGender, setSelectedGender] = useState(formData?.gender);
@@ -9,6 +9,9 @@ function GenderStep({ formData, setFormData }) {
     setSelectedGender(gender);
     setFormData({ ...formData, gender: gender });
   };
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <View>
@@ -19,6 +22,7 @@ function GenderStep({ formData, setFormData }) {
           selectedGender === "male" && styles.selectedButton,
         ]}
         onPress={() => handleGenderSelect("male")}
+        textColor={StyleColors.onBackground}
       />
       <Button
         text="Female"
@@ -27,6 +31,7 @@ function GenderStep({ formData, setFormData }) {
           selectedGender === "female" && styles.selectedButton,
         ]}
         onPress={() => handleGenderSelect("female")}
+        textColor={StyleColors.onBackground}
       />
     </View>
   );
@@ -34,18 +39,19 @@ function GenderStep({ formData, setFormData }) {
 
 export default GenderStep;
 
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: StyleColors.background,
-    elevation: 0,
-    shadowOpacity: 0,
-    borderColor: StyleColors.outline,
-    borderWidth: 1,
-  },
-  selectedButton: {
-    borderColor: StyleColors.primary,
-    borderWidth: 1,
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    button: {
+      backgroundColor: StyleColors.background,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderColor: StyleColors.outline,
+      borderWidth: 1,
+    },
+    selectedButton: {
+      borderColor: StyleColors.primary,
+      borderWidth: 1,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+  });

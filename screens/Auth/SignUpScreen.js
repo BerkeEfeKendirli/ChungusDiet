@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import OutlinedTextField from "../../components/textField/OutlinedTextField";
 import Button from "../../components/buttons/Button";
-import { StyleColors } from "../../constants/colors";
 import GoogleSvg from "../../assets/images/svg/google";
 import TextButton from "../../components/buttons/TextButton";
 import { useState } from "react";
@@ -16,6 +15,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../config/firebaseConfig";
 import { createUserProfile } from "../../services/userService";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../context/ThemeContext";
 
 function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -102,6 +102,9 @@ function SignUpScreen({ navigation }) {
     }
   };
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -170,7 +173,9 @@ function SignUpScreen({ navigation }) {
               }}
             />
             <View style={styles.loginDirectorContainer}>
-              <Text>Already have an account?</Text>
+              <Text style={styles.loginDirectorText}>
+                Already have an account?
+              </Text>
               <TextButton
                 style={styles.loginDirectorButton}
                 text="Sign in instead"
@@ -186,46 +191,52 @@ function SignUpScreen({ navigation }) {
 
 export default SignUpScreen;
 
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: StyleColors.background,
-  },
-  rootContainer: {
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 24,
-    paddingVertical: 40,
-  },
-  textFieldContainer: {
-    width: "100%",
-  },
-  errorText: {
-    fontFamily: "inter-medium",
-    fontSize: 14,
-    color: StyleColors.danger,
-    marginTop: -12,
-  },
-  authOptions: {
-    width: "100%",
-  },
-  signButton: {
-    backgroundColor: StyleColors.primary,
-  },
-  googleButton: {
-    backgroundColor: StyleColors.onPrimary,
-    borderColor: StyleColors.outline,
-    borderWidth: 1,
-  },
-  loginDirectorContainer: {
-    flexDirection: "row",
-    alignSelf: "center",
-  },
-  loginDirectorButton: {
-    fontFamily: "inter-medium",
-    fontSize: 14,
-    color: StyleColors.primary,
-    marginLeft: 6,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    scrollContainer: {
+      flexGrow: 1,
+      backgroundColor: StyleColors.background,
+    },
+    rootContainer: {
+      flexGrow: 1,
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 24,
+      paddingVertical: 40,
+    },
+    textFieldContainer: {
+      width: "100%",
+    },
+    errorText: {
+      fontFamily: "inter-medium",
+      fontSize: 14,
+      color: StyleColors.danger,
+      marginTop: -12,
+    },
+    authOptions: {
+      width: "100%",
+    },
+    signButton: {
+      backgroundColor: StyleColors.primary,
+    },
+    googleButton: {
+      backgroundColor: StyleColors.onPrimary,
+      borderColor: StyleColors.outline,
+      borderWidth: 1,
+    },
+    loginDirectorContainer: {
+      flexDirection: "row",
+      alignSelf: "center",
+    },
+    loginDirectorButton: {
+      fontFamily: "inter-medium",
+      fontSize: 14,
+      color: StyleColors.primary,
+      marginLeft: 6,
+    },
+    loginDirectorText: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.onBackground,
+    },
+  });

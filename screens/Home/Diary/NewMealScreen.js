@@ -11,9 +11,9 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import AddFoodModal from "../../../components/diary/AddFoodModal";
 import MealFood from "../../../components/diary/MealFood";
-import { StyleColors } from "../../../constants/colors";
 import { DetailNutrition } from "./../../../components/diary/DetailNutrition";
 import Button from "../../../components/buttons/Button";
+import { useTheme } from "../../../context/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
@@ -67,12 +67,16 @@ function NewMealScreen({ navigation, route }) {
     ? new Date(route.params.date)
     : new Date();
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <SafeAreaView style={styles.rootContainer}>
       <View style={styles.mealHeaderContainer}>
         <Ionicons
           name="close"
           size={24}
+          color={StyleColors.onBackground}
           onPress={() =>
             navigation.replace("Home", {
               screen: "Diary",
@@ -83,7 +87,12 @@ function NewMealScreen({ navigation, route }) {
           }
         />
         <Text style={styles.headerText}>Meal #{mealNumber}</Text>
-        <Ionicons name="add" size={24} onPress={() => setModalVisible(true)} />
+        <Ionicons
+          name="add"
+          size={24}
+          onPress={() => setModalVisible(true)}
+          color={StyleColors.onBackground}
+        />
       </View>
       <View style={styles.nutritionDetailsContainer}>
         <DetailNutrition text="Calories" number={calories} />
@@ -195,77 +204,78 @@ function NewMealScreen({ navigation, route }) {
 
 export default NewMealScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    backgroundColor: StyleColors.background,
-  },
-  mealHeaderContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 24,
-    paddingVertical: 20,
-  },
-  headerText: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onBackground,
-  },
-  nutritionDetailsContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 16,
-    marginTop: 24,
-    paddingHorizontal: 24,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: StyleColors.outline,
-    width: width,
-    marginBottom: 10,
-  },
-  popupMenu: {
-    position: "absolute",
-    right: 40,
-    top: 10,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    padding: 8,
-    flexDirection: "row",
-    zIndex: 10,
-  },
-  popupButton: {
-    marginHorizontal: 8,
-  },
-  popupEditText: {
-    color: StyleColors.primary,
-    fontSize: 16,
-    fontFamily: "inter-regular",
-  },
-  popupDeleteText: {
-    color: StyleColors.danger,
-    fontSize: 16,
-    fontFamily: "inter-regular",
-  },
-  overlayTouchable: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 9,
-  },
-  saveButton: {
-    backgroundColor: StyleColors.primary,
-    marginHorizontal: 16,
-    marginBottom: 24,
-  },
-  errorText: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.danger,
-    textAlign: "center",
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      backgroundColor: StyleColors.background,
+    },
+    mealHeaderContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 24,
+      paddingVertical: 20,
+    },
+    headerText: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onBackground,
+    },
+    nutritionDetailsContainer: {
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 16,
+      marginTop: 24,
+      paddingHorizontal: 24,
+    },
+    divider: {
+      height: 1,
+      backgroundColor: StyleColors.outline,
+      width: width,
+      marginBottom: 10,
+    },
+    popupMenu: {
+      position: "absolute",
+      right: 40,
+      top: 10,
+      backgroundColor: StyleColors.surfacePrimary,
+      borderRadius: 8,
+      elevation: 4,
+      shadowColor: "#000",
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      padding: 8,
+      flexDirection: "row",
+      zIndex: 10,
+    },
+    popupButton: {
+      marginHorizontal: 8,
+    },
+    popupEditText: {
+      color: StyleColors.primary,
+      fontSize: 16,
+      fontFamily: "inter-regular",
+    },
+    popupDeleteText: {
+      color: StyleColors.danger,
+      fontSize: 16,
+      fontFamily: "inter-regular",
+    },
+    overlayTouchable: {
+      ...StyleSheet.absoluteFillObject,
+      zIndex: 9,
+    },
+    saveButton: {
+      backgroundColor: StyleColors.primary,
+      marginHorizontal: 16,
+      marginBottom: 24,
+    },
+    errorText: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.danger,
+      textAlign: "center",
+    },
+  });

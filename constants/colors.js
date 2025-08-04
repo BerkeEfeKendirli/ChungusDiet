@@ -1,4 +1,4 @@
-export const StyleColors = {
+export const LightColors = {
   background: "#FFFFFF",
   onBackground: "#0D1220",
   onBackgroundVariant: "#6E7179",
@@ -21,4 +21,30 @@ export const StyleColors = {
   blueGradientStart: "#81DDFF",
   blueGradientEnd: "#78ABFF",
   danger: "#CB2030",
+};
+
+export const DarkColors = {
+  background: "#0D0D0D",
+  onBackground: "#B3B3B3",
+  onBackgroundVariant: "#6E7179",
+  primary: "#49D199",
+  onPrimary: "#242833",
+  surfaceSecondary: "#242833",
+  onSurfaceSecondary: "#E6E6E6",
+  secondary: "#AA9BD2",
+  surfacePrimary: "#242833",
+  onSurfacePrimary: "#E6E6E6",
+  surfaceVariant: "#3E414D",
+  onSurfaceVariant: "#808080",
+  outline: "#6E7179",
+  outlineVariant: "#242833",
+  bottomBarContainer: "#073622",
+  navigationItem: "#49D199",
+  red: "#B24F58",
+  orange: "#CB7F5B",
+  lightGreen: "#41FFBB",
+  green: "#2DAE77",
+  blueGradientStart: "#78CEEE",
+  blueGradientEnd: "#6D9CE8",
+  danger: "#FF4051",
 };

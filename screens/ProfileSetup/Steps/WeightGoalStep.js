@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import Button from "../../../components/buttons/Button";
-import { StyleColors } from "../../../constants/colors";
 import { useState } from "react";
+import { useTheme } from "../../../context/ThemeContext";
 
 function WeightGoalStep({ formData, setFormData, onDone, showDone }) {
   const [selectedGoal, setSelectedGoal] = useState(formData?.weightGoal);
@@ -9,6 +9,8 @@ function WeightGoalStep({ formData, setFormData, onDone, showDone }) {
     setSelectedGoal(goal);
     setFormData({ ...formData, weightGoal: goal });
   };
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <View>
@@ -19,6 +21,7 @@ function WeightGoalStep({ formData, setFormData, onDone, showDone }) {
           selectedGoal === "lose" && styles.selectedButton,
         ]}
         onPress={() => handleGoalSelect("lose")}
+        textColor={StyleColors.onBackground}
       />
       <Button
         text="Maintain weight"
@@ -27,6 +30,7 @@ function WeightGoalStep({ formData, setFormData, onDone, showDone }) {
           selectedGoal === "maintain" && styles.selectedButton,
         ]}
         onPress={() => handleGoalSelect("maintain")}
+        textColor={StyleColors.onBackground}
       />
       <Button
         text="Gain weight"
@@ -35,6 +39,7 @@ function WeightGoalStep({ formData, setFormData, onDone, showDone }) {
           selectedGoal === "gain" && styles.selectedButton,
         ]}
         onPress={() => handleGoalSelect("gain")}
+        textColor={StyleColors.onBackground}
       />
     </View>
   );
@@ -42,18 +47,19 @@ function WeightGoalStep({ formData, setFormData, onDone, showDone }) {
 
 export default WeightGoalStep;
 
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: StyleColors.background,
-    elevation: 0,
-    shadowOpacity: 0,
-    borderColor: StyleColors.outline,
-    borderWidth: 1,
-  },
-  selectedButton: {
-    borderColor: StyleColors.primary,
-    borderWidth: 1,
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    button: {
+      backgroundColor: StyleColors.background,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderColor: StyleColors.outline,
+      borderWidth: 1,
+    },
+    selectedButton: {
+      borderColor: StyleColors.primary,
+      borderWidth: 1,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+  });

@@ -1,12 +1,14 @@
 import { View, StyleSheet } from "react-native";
 import NutrientBar from "./NutrientBar";
-import { StyleColors } from "../../constants/colors";
+import { useTheme } from "../../context/ThemeContext";
 
 function NutrientsIndicator({ proteins, fats, carbs, calories }) {
   const getPercentage = (completed, total) => {
     return total > 0 ? Math.min((completed / total) * 100, 100) : 0;
   };
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   return (
     <View style={styles.rootContainer}>
       <View style={styles.pfcContainer}>
@@ -47,19 +49,20 @@ function NutrientsIndicator({ proteins, fats, carbs, calories }) {
 
 export default NutrientsIndicator;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    gap: 24,
-    paddingHorizontal: 12,
-    paddingVertical: 16,
-    backgroundColor: StyleColors.surfacePrimary,
-    borderRadius: 20,
-  },
-  pfcContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    gap: 24,
-    width: "100%",
-  },
-  calorieContainer: {},
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      gap: 24,
+      paddingHorizontal: 12,
+      paddingVertical: 16,
+      backgroundColor: StyleColors.surfacePrimary,
+      borderRadius: 20,
+    },
+    pfcContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      gap: 24,
+      width: "100%",
+    },
+    calorieContainer: {},
+  });

@@ -8,9 +8,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { StyleColors } from "../../constants/colors";
 import TextButton from "../buttons/TextButton";
 import { DetailNutritionInput } from "./DetailNutrition";
+import { useTheme } from "../../context/ThemeContext";
 
 function AddFoodModal({ visible, onClose, onSave, initialValues }) {
   const [mealName, setMealName] = useState("");
@@ -77,6 +77,9 @@ function AddFoodModal({ visible, onClose, onSave, initialValues }) {
     setFat("");
     onClose && onClose();
   };
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <Modal
@@ -170,80 +173,81 @@ function AddFoodModal({ visible, onClose, onSave, initialValues }) {
 
 export default AddFoodModal;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#0000004f",
-    paddingHorizontal: 16,
-  },
-  modalContainer: {
-    width: "100%",
-    backgroundColor: StyleColors.surfacePrimary,
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderRadius: 10,
-    alignItems: "center",
-    elevation: 2,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-  },
-  nutritionContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 18,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    alignSelf: "flex-end",
-    gap: 32,
-    marginTop: 36,
-  },
-  button: {
-    fontFamily: "inter-medium",
-    fontSize: 14,
-  },
-  cancelButton: {
-    color: StyleColors.danger,
-  },
-  okButton: {
-    color: StyleColors.primary,
-  },
-  foodText: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onBackground,
-  },
-  foodNameContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 20,
-  },
-  mealNameInput: {
-    fontFamily: "inter-medium",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-    borderRadius: 8,
-    paddingVertical: 4,
-    width: 200,
-    textAlign: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: StyleColors.onSurfacePrimary,
-  },
-  warningColor: {
-    borderBottomColor: StyleColors.danger,
-  },
-  errorText: {
-    marginTop: 16,
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.danger,
-    textAlign: "center",
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      ...StyleSheet.absoluteFillObject,
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#0000004f",
+      paddingHorizontal: 16,
+    },
+    modalContainer: {
+      width: "100%",
+      backgroundColor: StyleColors.surfacePrimary,
+      paddingHorizontal: 24,
+      paddingVertical: 16,
+      borderRadius: 10,
+      alignItems: "center",
+      elevation: 2,
+      shadowColor: "black",
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
+    },
+    nutritionContainer: {
+      width: "100%",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginTop: 18,
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      alignSelf: "flex-end",
+      gap: 32,
+      marginTop: 36,
+    },
+    button: {
+      fontFamily: "inter-medium",
+      fontSize: 14,
+    },
+    cancelButton: {
+      color: StyleColors.danger,
+    },
+    okButton: {
+      color: StyleColors.primary,
+    },
+    foodText: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onBackground,
+    },
+    foodNameContainer: {
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 20,
+    },
+    mealNameInput: {
+      fontFamily: "inter-medium",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+      borderRadius: 8,
+      paddingVertical: 4,
+      width: 200,
+      textAlign: "center",
+      borderBottomWidth: 1,
+      borderBottomColor: StyleColors.onSurfacePrimary,
+    },
+    warningColor: {
+      borderBottomColor: StyleColors.danger,
+    },
+    errorText: {
+      marginTop: 16,
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.danger,
+      textAlign: "center",
+    },
+  });

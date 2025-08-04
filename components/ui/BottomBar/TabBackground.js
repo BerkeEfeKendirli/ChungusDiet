@@ -1,11 +1,13 @@
 import React from "react";
 import Svg, { Path } from "react-native-svg";
-import { StyleColors } from "../../../constants/colors";
+import { useTheme } from "../../../context/ThemeContext";
 
 function TabBackground({ tabWidth }) {
   const height = 30; // bombe yüksekliği
   const curveWidth = tabWidth * 0.7; // biraz daraltıldı
   const offset = (tabWidth - curveWidth) / 2; // kenar boşluğu
+
+  const StyleColors = useTheme();
 
   return (
     <Svg

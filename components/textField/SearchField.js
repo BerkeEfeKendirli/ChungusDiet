@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
-import { StyleColors } from "../../constants/colors";
 import { useRef } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 function SearchField({
   value,
@@ -11,6 +11,8 @@ function SearchField({
 }) {
   const inputRef = useRef(null);
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   return (
     <TouchableOpacity
       style={styles.rootContainer}
@@ -26,10 +28,11 @@ function SearchField({
         <TextInput
           ref={inputRef}
           placeholder={placeholder}
+          placeholderTextColor={StyleColors.onSurfaceVariant}
           value={value}
           onChangeText={onChangeText}
           onSubmitEditing={onSubmitEditing}
-          style={{ flex: 1 }}
+          style={{ flex: 1, color: StyleColors.onBackground }}
         />
         {value?.length > 0 && (
           <TouchableOpacity onPress={() => onChangeText("")}>
@@ -47,16 +50,17 @@ function SearchField({
 
 export default SearchField;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    padding: 10,
-    borderRadius: 15,
-    backgroundColor: StyleColors.surfacePrimary,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      padding: 10,
+      borderRadius: 15,
+      backgroundColor: StyleColors.surfacePrimary,
+    },
+    searchContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+    },
+  });

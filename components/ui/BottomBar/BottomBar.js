@@ -7,13 +7,16 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { StyleColors } from "./../../../constants/colors";
 import TabBackground from "./TabBackground";
+import { useTheme } from "../../../context/ThemeContext";
 
 function BottomBar({ state, descriptors, navigation }) {
   const insets = useSafeAreaInsets();
   const screenWidth = Dimensions.get("window").width;
   const tabWidth = screenWidth / state.routes.length;
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <View
@@ -76,51 +79,52 @@ function BottomBar({ state, descriptors, navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    backgroundColor: StyleColors.bottomBarContainer,
-    justifyContent: "space-around",
-    alignItems: "center",
-    height: 60,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    marginHorizontal: 12,
-  },
-  tab: {
-    alignItems: "center",
-    flex: 1,
-    justifyContent: "flex-end", // bombe etkisi için alttan hizalı
-  },
-  activeTab: {
-    marginTop: -15,
-  },
-  label: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.primary,
-    marginTop: 2,
-  },
-  activeLabel: {
-    color: StyleColors.onPrimary,
-    fontWeight: "bold",
-  },
-  iconWrapper: {
-    backgroundColor: "transparent",
-    borderRadius: 27,
-    height: 60,
-    width: 60,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  activeIconWrapper: {
-    backgroundColor: StyleColors.primary,
-    borderRadius: 27,
-    height: 60,
-    width: 60,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      backgroundColor: StyleColors.bottomBarContainer,
+      justifyContent: "space-around",
+      alignItems: "center",
+      height: 60,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+      marginHorizontal: 12,
+    },
+    tab: {
+      alignItems: "center",
+      flex: 1,
+      justifyContent: "flex-end", // bombe etkisi için alttan hizalı
+    },
+    activeTab: {
+      marginTop: -15,
+    },
+    label: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.primary,
+      marginTop: 2,
+    },
+    activeLabel: {
+      color: StyleColors.onPrimary,
+      fontWeight: "bold",
+    },
+    iconWrapper: {
+      backgroundColor: "transparent",
+      borderRadius: 27,
+      height: 60,
+      width: 60,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    activeIconWrapper: {
+      backgroundColor: StyleColors.primary,
+      borderRadius: 27,
+      height: 60,
+      width: 60,
+    },
+  });
 
 export default BottomBar;

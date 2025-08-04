@@ -2,15 +2,18 @@ import { useNavigation } from "@react-navigation/native";
 import { Dimensions, View, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../../components/buttons/Button";
-import { StyleColors } from "../../constants/colors";
 import { updateUserProfile } from "../../services/userService";
 import { auth } from "../../config/firebaseConfig";
+import { useTheme } from "../../context/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
 function RecommendedCaloriesScreen({ route }) {
   const navigation = useNavigation();
   const { formData } = route.params;
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   const calculateRecommendedCalories = () => {
     const { weight, height, age, gender, activityLevel, weightGoal } = formData;
@@ -195,105 +198,108 @@ function RecommendedCaloriesScreen({ route }) {
 
 export default RecommendedCaloriesScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    paddingHorizontal: 24,
-    justifyContent: "space-between",
-  },
-  header: {
-    marginTop: 36,
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-  },
-  title: {
-    fontFamily: "inter-medium",
-    fontSize: 36,
-    color: StyleColors.onBackground,
-  },
-  subtitle: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    textAlign: "center",
-    color: StyleColors.onBackgroundVariant,
-  },
-  content: {
-    gap: 20,
-  },
-  calorieCounter: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 5,
-  },
-  calorieNumber: {
-    fontFamily: "inter-semibold",
-    fontSize: 42,
-    color: StyleColors.primary,
-  },
-  calorieUnit: {
-    fontFamily: "inter-regular",
-    fontSize: 20,
-    color: StyleColors.primary,
-  },
-  goalText: {
-    fontFamily: "inter-regular",
-    fontSize: 18,
-    color: StyleColors.onBackground,
-  },
-  summaryContainer: {
-    alignSelf: "center",
-    marginHorizontal: "auto",
-    gap: 10,
-  },
-  summaryRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-  },
-  summaryLabel: {
-    fontFamily: "inter-medium",
-    fontSize: 20,
-  },
-  summaryValue: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    textTransform: "uppercase",
-  },
-  button: {
-    backgroundColor: StyleColors.primary,
-    marginBottom: 50,
-  },
-  pfcContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  pfcCover: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  pfcText: {
-    fontFamily: "inter-semibold",
-    fontSize: 16,
-  },
-  pfcType: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-  },
-  waterContainer: {
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  waterMlText: {
-    fontFamily: "inter-semibold",
-    fontSize: 16,
-    color: StyleColors.blueGradientEnd,
-  },
-  waterText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.blueGradientEnd,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      paddingHorizontal: 24,
+      justifyContent: "space-between",
+    },
+    header: {
+      marginTop: 36,
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 10,
+    },
+    title: {
+      fontFamily: "inter-medium",
+      fontSize: 36,
+      color: StyleColors.onBackground,
+    },
+    subtitle: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      textAlign: "center",
+      color: StyleColors.onBackgroundVariant,
+    },
+    content: {
+      gap: 20,
+    },
+    calorieCounter: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 5,
+    },
+    calorieNumber: {
+      fontFamily: "inter-semibold",
+      fontSize: 42,
+      color: StyleColors.primary,
+    },
+    calorieUnit: {
+      fontFamily: "inter-regular",
+      fontSize: 20,
+      color: StyleColors.primary,
+    },
+    goalText: {
+      fontFamily: "inter-regular",
+      fontSize: 18,
+      color: StyleColors.onBackground,
+    },
+    summaryContainer: {
+      alignSelf: "center",
+      marginHorizontal: "auto",
+      gap: 10,
+    },
+    summaryRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 5,
+    },
+    summaryLabel: {
+      fontFamily: "inter-medium",
+      fontSize: 20,
+      color: StyleColors.onBackground,
+    },
+    summaryValue: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      textTransform: "uppercase",
+      color: StyleColors.onBackground,
+    },
+    button: {
+      backgroundColor: StyleColors.primary,
+      marginBottom: 50,
+    },
+    pfcContainer: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+    },
+    pfcCover: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    pfcText: {
+      fontFamily: "inter-semibold",
+      fontSize: 16,
+    },
+    pfcType: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+    },
+    waterContainer: {
+      alignSelf: "center",
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    waterMlText: {
+      fontFamily: "inter-semibold",
+      fontSize: 16,
+      color: StyleColors.blueGradientEnd,
+    },
+    waterText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.blueGradientEnd,
+    },
+  });

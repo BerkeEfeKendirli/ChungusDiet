@@ -18,7 +18,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Button from "../../../components/buttons/Button";
 import TextButton from "../../../components/buttons/TextButton";
 import InfoItem from "../../../components/profile/InfoItem";
-import { StyleColors } from "../../../constants/colors";
 import ActivityLevelStep from "../../ProfileSetup/Steps/ActivityLevelStep";
 import AgeStep from "../../ProfileSetup/Steps/AgeStep";
 import GenderStep from "../../ProfileSetup/Steps/GenderStep";
@@ -28,6 +27,7 @@ import WeightStep from "../../ProfileSetup/Steps/WeightStep";
 import { db } from "../../../config/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import TargetWeightStep from "../../ProfileSetup/Steps/TargetWeightStep";
+import { useTheme } from "../../../context/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
@@ -229,6 +229,9 @@ function MeScreen({ userProfile }) {
     };
   };
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <View
       style={[
@@ -247,6 +250,7 @@ function MeScreen({ userProfile }) {
             size={24}
             style={{ alignSelf: "flex-start" }}
             onPress={() => navigation.goBack()}
+            color={StyleColors.onBackground}
           />
           <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -446,102 +450,103 @@ function MeScreen({ userProfile }) {
 
 export default MeScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    backgroundColor: StyleColors.background,
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  headerContainer: {
-    paddingHorizontal: 16,
-    width: width,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontFamily: "inter-medium",
-    fontSize: 22,
-    color: StyleColors.onBackground,
-  },
-  infoContainer: {
-    width: width,
-  },
-  button: {
-    width: "100%",
-    backgroundColor: StyleColors.primary,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "#0000004f",
-  },
-  modalInnerContainer: {
-    backgroundColor: "white",
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    padding: 24,
-  },
-  heightStepContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "#0000004f",
-    justifyContent: "flex-end",
-    zIndex: 9999,
-  },
-  heightStepInnerContainer: {
-    backgroundColor: StyleColors.background,
-    borderTopRightRadius: 16,
-    borderTopLeftRadius: 16,
-    padding: 24,
-  },
-  saveModalContainer: {
-    flex: 1,
-    backgroundColor: "#0000004f",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 16,
-  },
-  saveModalInnerContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    backgroundColor: StyleColors.onPrimary,
-    paddingTop: 16,
-    paddingBottom: 24,
-    paddingHorizontal: 24,
-    borderRadius: 10,
-    gap: 44,
-  },
-  checkButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  saveModalTitle: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onSurfacePrimary,
-  },
-  checkButtonText: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onSurfacePrimary,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 32,
-    alignSelf: "flex-end",
-  },
-  buttonText: {
-    fontFamily: "inter-medium",
-    fontSize: 14,
-    color: StyleColors.primary,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      backgroundColor: StyleColors.background,
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
+    },
+    headerContainer: {
+      paddingHorizontal: 16,
+      width: width,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    headerText: {
+      fontFamily: "inter-medium",
+      fontSize: 22,
+      color: StyleColors.onBackground,
+    },
+    infoContainer: {
+      width: width,
+    },
+    button: {
+      width: "100%",
+      backgroundColor: StyleColors.primary,
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "flex-end",
+      backgroundColor: "#0000004f",
+    },
+    modalInnerContainer: {
+      backgroundColor: StyleColors.background,
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      padding: 24,
+    },
+    heightStepContainer: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "#0000004f",
+      justifyContent: "flex-end",
+      zIndex: 9999,
+    },
+    heightStepInnerContainer: {
+      backgroundColor: StyleColors.background,
+      borderTopRightRadius: 16,
+      borderTopLeftRadius: 16,
+      padding: 24,
+    },
+    saveModalContainer: {
+      flex: 1,
+      backgroundColor: "#0000004f",
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 16,
+    },
+    saveModalInnerContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      backgroundColor: StyleColors.onPrimary,
+      paddingTop: 16,
+      paddingBottom: 24,
+      paddingHorizontal: 24,
+      borderRadius: 10,
+      gap: 44,
+    },
+    checkButtonContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+    },
+    saveModalTitle: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onSurfacePrimary,
+    },
+    checkButtonText: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onSurfacePrimary,
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 32,
+      alignSelf: "flex-end",
+    },
+    buttonText: {
+      fontFamily: "inter-medium",
+      fontSize: 14,
+      color: StyleColors.primary,
+    },
+  });

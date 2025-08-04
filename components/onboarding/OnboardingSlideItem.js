@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet, Dimensions } from "react-native";
-import { StyleColors } from "../../constants/colors";
+import { useTheme } from "../../context/ThemeContext";
 
 const { width } = Dimensions.get("window");
 const { height } = Dimensions.get("screen");
 
 function OnboardingSlideItem({ slide }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   const SvgComponent = slide.svg;
   return (
     <View style={styles.rootContainer}>
@@ -23,38 +25,39 @@ function OnboardingSlideItem({ slide }) {
 
 export default OnboardingSlideItem;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: width,
-  },
-  content: {
-    width: width,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 48,
-  },
-  svgContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textContainer: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  title: {
-    fontFamily: "inter-medium",
-    textAlign: "center",
-    fontSize: 20,
-    color: StyleColors.onBackground,
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontFamily: "inter-regular",
-    textAlign: "center",
-    fontSize: 16,
-    color: StyleColors.onBackgroundVariant,
-    marginBottom: 20,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      width: width,
+    },
+    content: {
+      width: width,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 48,
+    },
+    svgContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    textContainer: {
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    title: {
+      fontFamily: "inter-medium",
+      textAlign: "center",
+      fontSize: 20,
+      color: StyleColors.onBackground,
+      marginBottom: 10,
+    },
+    subtitle: {
+      fontFamily: "inter-regular",
+      textAlign: "center",
+      fontSize: 16,
+      color: StyleColors.onBackgroundVariant,
+      marginBottom: 20,
+    },
+  });

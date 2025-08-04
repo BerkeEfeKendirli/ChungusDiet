@@ -1,8 +1,11 @@
 import { View, StyleSheet, Text } from "react-native";
-import { StyleColors } from "../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../../context/ThemeContext";
 
 function Meal({ title, time, calorie, proteins, fats, carbs }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <View style={styles.rootContainer}>
       <View style={styles.timeContainer}>
@@ -28,45 +31,46 @@ function Meal({ title, time, calorie, proteins, fats, carbs }) {
 
 export default Meal;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    padding: 16,
-    borderRadius: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: StyleColors.surfacePrimary,
-  },
-  timeContainer: {
-    gap: 21.5,
-  },
-  time: {
-    flexDirection: "row",
-    gap: 4,
-    alignItems: "center",
-  },
-  calorieContainer: {
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  mealText: {
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    color: StyleColors.onSurfacePrimary,
-  },
-  timeText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onSurfaceVariant,
-  },
-  calText: {
-    alignSelf: "flex-end",
-    fontFamily: "inter-medium",
-    fontSize: 16,
-    color: StyleColors.onSurfacePrimary,
-  },
-  nutritionText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onBackgroundVariant,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      padding: 16,
+      borderRadius: 10,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      backgroundColor: StyleColors.surfacePrimary,
+    },
+    timeContainer: {
+      gap: 21.5,
+    },
+    time: {
+      flexDirection: "row",
+      gap: 4,
+      alignItems: "center",
+    },
+    calorieContainer: {
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    mealText: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.onSurfacePrimary,
+    },
+    timeText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onSurfaceVariant,
+    },
+    calText: {
+      alignSelf: "flex-end",
+      fontFamily: "inter-medium",
+      fontSize: 16,
+      color: StyleColors.onSurfacePrimary,
+    },
+    nutritionText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackgroundVariant,
+    },
+  });

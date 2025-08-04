@@ -3,12 +3,15 @@ import { useRoute } from "@react-navigation/native";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import YoutubeDirector from "../../../components/recipes/YoutubeDirector";
-import { StyleColors } from "../../../constants/colors";
+import { useTheme } from "../../../context/ThemeContext";
 
 function RecipeDetailScreen({ navigation }) {
   const route = useRoute();
   const { title, area, category, image, instructions, youtube } = route.params;
   const insets = useSafeAreaInsets();
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <View style={[styles.rootContainer, { paddingBottom: insets.bottom }]}>
@@ -55,63 +58,64 @@ function RecipeDetailScreen({ navigation }) {
 
 export default RecipeDetailScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    backgroundColor: StyleColors.background,
-  },
-  closeIcon: {
-    position: "absolute",
-    left: 20,
-    top: 28,
-  },
-  image: {
-    height: 250,
-    width: "100%",
-    resizeMode: "cover",
-  },
-  mealInfoContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    marginTop: 16,
-    marginBottom: 12,
-  },
-  timeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "flex-start",
-    gap: 4,
-  },
-  youtubeContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 18,
-    marginBottom: 15,
-  },
-  descriptionContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 19,
-    marginBottom: 10,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: StyleColors.outline,
-  },
-  title: {
-    fontFamily: "inter-medium",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-    maxWidth: 279,
-  },
-  secondaryText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onBackgroundVariant,
-  },
-  description: {
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    color: StyleColors.onBackground,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      backgroundColor: StyleColors.background,
+    },
+    closeIcon: {
+      position: "absolute",
+      left: 20,
+      top: 28,
+    },
+    image: {
+      height: 250,
+      width: "100%",
+      resizeMode: "cover",
+    },
+    mealInfoContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
+      marginTop: 16,
+      marginBottom: 12,
+    },
+    timeContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      alignSelf: "flex-start",
+      gap: 4,
+    },
+    youtubeContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingHorizontal: 18,
+      marginBottom: 15,
+    },
+    descriptionContainer: {
+      paddingHorizontal: 16,
+      paddingTop: 19,
+      marginBottom: 10,
+    },
+    divider: {
+      height: 1,
+      backgroundColor: StyleColors.outline,
+    },
+    title: {
+      fontFamily: "inter-medium",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+      maxWidth: 279,
+    },
+    secondaryText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackgroundVariant,
+    },
+    description: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.onBackground,
+    },
+  });

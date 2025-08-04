@@ -1,9 +1,9 @@
 import { View, StyleSheet, Text, Dimensions } from "react-native";
 import Onboarding4 from "../../assets/images/svg/Onboarding4";
-import { StyleColors } from "../../constants/colors";
 import Button from "../../components/buttons/Button";
 import TextButton from "../../components/buttons/TextButton";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../context/ThemeContext";
 
 function WelcomeScreen({ navigation }) {
   const startButtonHandler = () => {
@@ -13,6 +13,8 @@ function WelcomeScreen({ navigation }) {
   const startTextHandler = () => {
     navigation.navigate("Login");
   };
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -50,57 +52,58 @@ function WelcomeScreen({ navigation }) {
 
 export default WelcomeScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: StyleColors.background,
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  svgContainer: {
-    marginBottom: 15,
-  },
-  textContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontFamily: "inter-medium",
-    fontSize: 20,
-    color: StyleColors.onBackground,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onBackgroundVariant,
-  },
-  startContainer: {
-    width: "100%",
-    paddingHorizontal: 24,
-    paddingBottom: 40,
-  },
-  button: {
-    marginBottom: 20,
-  },
-  startTextContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  startText: {
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    color: StyleColors.onBackground,
-    marginRight: 6,
-  },
-  startTextButton: {
-    fontFamily: "inter-medium",
-    fontSize: 14,
-    color: StyleColors.primary,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: StyleColors.background,
+    },
+    content: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    svgContainer: {
+      marginBottom: 15,
+    },
+    textContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    title: {
+      fontFamily: "inter-medium",
+      fontSize: 20,
+      color: StyleColors.onBackground,
+      marginBottom: 4,
+    },
+    subtitle: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onBackgroundVariant,
+    },
+    startContainer: {
+      width: "100%",
+      paddingHorizontal: 24,
+      paddingBottom: 40,
+    },
+    button: {
+      marginBottom: 20,
+    },
+    startTextContainer: {
+      flexDirection: "row",
+      justifyContent: "center",
+    },
+    startText: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.onBackground,
+      marginRight: 6,
+    },
+    startTextButton: {
+      fontFamily: "inter-medium",
+      fontSize: 14,
+      color: StyleColors.primary,
+    },
+  });

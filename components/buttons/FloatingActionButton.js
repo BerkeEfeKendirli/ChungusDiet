@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet } from "react-native";
-import { StyleColors } from "../../constants/colors";
 
 function FloatingActionButton({
   icon,

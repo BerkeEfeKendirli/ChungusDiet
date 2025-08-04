@@ -1,6 +1,6 @@
 import { StyleSheet, View, Animated } from "react-native";
-import { StyleColors } from "../../constants/colors";
 import { useEffect, useRef } from "react";
+import { useTheme } from "../../context/ThemeContext";
 
 function OnboardingNavigation({ slides, currentSlide }) {
   const animatedValues = useRef(
@@ -17,6 +17,8 @@ function OnboardingNavigation({ slides, currentSlide }) {
     });
   }, [currentSlide]);
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   return (
     <View style={styles.pagination}>
       {slides.map((_, index) => {
@@ -42,16 +44,17 @@ function OnboardingNavigation({ slides, currentSlide }) {
 
 export default OnboardingNavigation;
 
-const styles = StyleSheet.create({
-  pagination: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 20,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginHorizontal: 4,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    pagination: {
+      flexDirection: "row",
+      justifyContent: "center",
+      marginBottom: 20,
+    },
+    dot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      marginHorizontal: 4,
+    },
+  });

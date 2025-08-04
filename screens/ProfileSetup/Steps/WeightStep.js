@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { StyleColors } from "../../../constants/colors";
+import { useTheme } from "../../../context/ThemeContext";
 
 function WeightStep({ formData, setFormData }) {
   const [weight, setWeight] = useState(formData?.weight?.toString() || "");
@@ -31,6 +31,8 @@ function WeightStep({ formData, setFormData }) {
       }
     }
   };
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <View style={styles.rootContainer}>
@@ -51,30 +53,31 @@ function WeightStep({ formData, setFormData }) {
 
 export default WeightStep;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  input: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-    borderBottomColor: StyleColors.primary,
-    borderBottomWidth: 2,
-    paddingBottom: 8,
-    width: 100,
-    textAlign: "center",
-  },
-  text: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.primary,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 16,
+    },
+    inputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+    },
+    input: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+      borderBottomColor: StyleColors.primary,
+      borderBottomWidth: 2,
+      paddingBottom: 8,
+      width: 100,
+      textAlign: "center",
+    },
+    text: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.primary,
+    },
+  });

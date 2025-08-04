@@ -9,7 +9,6 @@ import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import BottomBar from "./components/ui/BottomBar/BottomBar";
 import { auth } from "./config/firebaseConfig";
-import { StyleColors } from "./constants/colors";
 import LoginScreen from "./screens/Auth/LoginScreen";
 import SignUpScreen from "./screens/Auth/SignUpScreen";
 import DiaryScreen from "./screens/Home/Diary/DiaryScreen";
@@ -27,19 +26,22 @@ import { listenUserProfile } from "./services/userService";
 import MeScreen from "./screens/Home/Profile/MeScreen";
 import CalorieIntakeScreen from "./screens/Home/Profile/CalorieIntakeScreen";
 import WaterIntakeScreen from "./screens/Home/Profile/WaterIntakeScreen";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { StatusBar } from "expo-status-bar";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
-function CustomBackButton({ navigation, icon = "chevron-back" }) {
+function CustomBackButton({ navigation, icon = "chevron-back", tintColor }) {
   return (
     <Pressable onPress={() => navigation.goBack()}>
-      <Ionicons name={icon} size={24} />
+      <Ionicons name={icon} size={24} color={tintColor} />
     </Pressable>
   );
 }
 
 function BottomTabNavigator({ userProfile }) {
+  const StyleColors = useTheme();
   return (
     <BottomTab.Navigator
       screenOptions={{
@@ -56,41 +58,9 @@ function BottomTabNavigator({ userProfile }) {
   );
 }
 
-export default function App() {
-  const [fontsLoaded] = useFonts({
-    "inter-regular": require("./assets/fonts/Inter-Regular.ttf"),
-    "inter-medium": require("./assets/fonts/Inter-Medium.ttf"),
-    "inter-semibold": require("./assets/fonts/Inter-SemiBold.ttf"),
-  });
-  const [user, setUser] = useState(undefined);
-  const [userProfile, setUserProfile] = useState(null);
-  const [isAppReady, setIsAppReady] = useState(false);
-
-  useEffect(() => {
-    let unsubscribeProfile;
-    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-
-      if (user) {
-        unsubscribeProfile = listenUserProfile(user.uid, (profile) => {
-          setUserProfile(profile);
-        });
-      } else {
-        setUserProfile(null);
-      }
-    });
-
-    return () => {
-      unsubscribeAuth();
-      if (unsubscribeProfile) unsubscribeProfile();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (fontsLoaded && user !== undefined && (!user || userProfile)) {
-      setIsAppReady(true);
-    }
-  }, [fontsLoaded, user, userProfile]);
+function AppContent({ user, userProfile, isAppReady }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   if (!isAppReady) {
     return (
@@ -108,6 +78,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar style={StyleColors.mode === "dark" ? "light" : "dark"} />
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -134,6 +105,9 @@ export default function App() {
                       headerTitleAlign: "center",
                       headerShown: true,
                       headerShadowVisible: false,
+                      headerStyle: {
+                        backgroundColor: StyleColors.background,
+                      },
                       headerLeft: () => (
                         <CustomBackButton
                           navigation={navigation}
@@ -188,6 +162,9 @@ export default function App() {
                   title: "Sign Up",
                   headerTitleAlign: "center",
                   headerShown: true,
+                  headerStyle: {
+                    backgroundColor: StyleColors.background,
+                  },
                   headerShadowVisible: false,
                   headerLeft: () => (
                     <CustomBackButton
@@ -205,6 +182,9 @@ export default function App() {
                   title: "Sign In",
                   headerShown: true,
                   headerShadowVisible: false,
+                  headerStyle: {
+                    backgroundColor: StyleColors.background,
+                  },
                   headerTitleAlign: "center",
                   headerLeft: () => (
                     <CustomBackButton
@@ -223,10 +203,58 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  headerTitle: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onBackground,
-  },
-});
+export default function App() {
+  const [fontsLoaded] = useFonts({
+    "inter-regular": require("./assets/fonts/Inter-Regular.ttf"),
+    "inter-medium": require("./assets/fonts/Inter-Medium.ttf"),
+    "inter-semibold": require("./assets/fonts/Inter-SemiBold.ttf"),
+  });
+  const [user, setUser] = useState(undefined);
+  const [userProfile, setUserProfile] = useState(null);
+  const [isAppReady, setIsAppReady] = useState(false);
+
+  useEffect(() => {
+    let unsubscribeProfile;
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+
+      if (user) {
+        unsubscribeProfile = listenUserProfile(user.uid, (profile) => {
+          setUserProfile(profile);
+        });
+      } else {
+        setUserProfile(null);
+      }
+    });
+
+    return () => {
+      unsubscribeAuth();
+      if (unsubscribeProfile) unsubscribeProfile();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (fontsLoaded && user !== undefined && (!user || userProfile)) {
+      setIsAppReady(true);
+    }
+  }, [fontsLoaded, user, userProfile]);
+
+  return (
+    <ThemeProvider>
+      <AppContent
+        user={user}
+        userProfile={userProfile}
+        isAppReady={isAppReady}
+      />
+    </ThemeProvider>
+  );
+}
+
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    headerTitle: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onBackground,
+    },
+  });

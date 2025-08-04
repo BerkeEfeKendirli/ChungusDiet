@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { StyleColors } from "../../../constants/colors";
+import { useTheme } from "../../../context/ThemeContext";
 
 function HeightStep({ formData, setFormData }) {
   const [selectedMeters, setSelectedMeters] = useState(
@@ -28,6 +28,9 @@ function HeightStep({ formData, setFormData }) {
     });
   };
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <View style={styles.container}>
       <View style={styles.pickersContainer}>
@@ -41,8 +44,8 @@ function HeightStep({ formData, setFormData }) {
               handleHeightChange(value, selectedCentimeters);
             }}
           >
-            <Picker.Item label="1" value={1} />
-            <Picker.Item label="2" value={2} />
+            <Picker.Item label="1" value={1} color={StyleColors.onBackground} />
+            <Picker.Item label="2" value={2} color={StyleColors.onBackground} />
           </Picker>
           <Text style={styles.unit}>m</Text>
         </View>
@@ -62,6 +65,7 @@ function HeightStep({ formData, setFormData }) {
                 key={i}
                 label={i.toString().padStart(2, "0")}
                 value={i}
+                color={StyleColors.onBackground}
               />
             ))}
           </Picker>
@@ -74,26 +78,27 @@ function HeightStep({ formData, setFormData }) {
 
 export default HeightStep;
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
-  pickersContainer: {
-    flexDirection: "row",
-    gap: 10,
-  },
-  pickerSection: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-  },
-  picker: {
-    width: 100,
-  },
-  unit: {
-    fontSize: 16,
-    color: StyleColors.primary,
-    fontFamily: "inter-regular",
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    container: {
+      alignItems: "center",
+    },
+    pickersContainer: {
+      flexDirection: "row",
+      gap: 10,
+    },
+    pickerSection: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 10,
+    },
+    picker: {
+      width: 100,
+    },
+    unit: {
+      fontSize: 16,
+      color: StyleColors.primary,
+      fontFamily: "inter-regular",
+    },
+  });

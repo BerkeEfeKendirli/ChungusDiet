@@ -13,11 +13,11 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import InfoItem from "../../../components/profile/InfoItem";
-import { StyleColors } from "../../../constants/colors";
 import { db } from "./../../../config/firebaseConfig";
 import { Modal, TextInput, TouchableWithoutFeedback } from "react-native";
 import Button from "./../../../components/buttons/Button";
 import TextButton from "../../../components/buttons/TextButton";
+import { useTheme } from "../../../context/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
@@ -32,6 +32,8 @@ function WaterIntakeScreen({ navigation }) {
   const [editField, setEditField] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [showWarning, setShowWarning] = useState(false);
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -102,6 +104,7 @@ function WaterIntakeScreen({ navigation }) {
             size={24}
             style={{ alignSelf: "flex-start" }}
             onPress={() => navigation.goBack()}
+            color={StyleColors.onBackground}
           />
           <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
@@ -286,128 +289,129 @@ function WaterIntakeScreen({ navigation }) {
 
 export default WaterIntakeScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    backgroundColor: StyleColors.background,
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  headerContainer: {
-    paddingHorizontal: 16,
-    width: width,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerText: {
-    fontFamily: "inter-medium",
-    fontSize: 22,
-    color: StyleColors.onBackground,
-  },
-  infoContainer: {
-    width: width,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "flex-end",
-    backgroundColor: "#0000004f",
-  },
-  modalInnerContainer: {
-    backgroundColor: "white",
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    padding: 24,
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 34,
-  },
-  modalTitle: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onBackground,
-    marginBottom: 12,
-  },
-  input: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-    borderBottomColor: StyleColors.primary,
-    borderBottomWidth: 2,
-    paddingBottom: 8,
-    width: 100,
-    textAlign: "center",
-  },
-  buttonContainer: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  button: {
-    width: "100%",
-    backgroundColor: StyleColors.primary,
-  },
-  textButton: {
-    fontFamily: "inter-medium",
-    fontSize: 14,
-    color: StyleColors.primary,
-    marginBottom: 16,
-  },
-  errorText: {
-    color: StyleColors.danger,
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    marginBottom: 12,
-  },
-  resetModalContainer: {
-    flex: 1,
-    backgroundColor: "#0000004f",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 16,
-  },
-  resetModalInnerContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    backgroundColor: StyleColors.onPrimary,
-    paddingTop: 16,
-    paddingBottom: 24,
-    paddingHorizontal: 24,
-    borderRadius: 10,
-    gap: 22,
-  },
-  resetModalTextContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 12,
-  },
-  resetModalTitle: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onSurfacePrimary,
-  },
-  resetModalDescription: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onSurfacePrimary,
-  },
-  resetButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 32,
-    alignSelf: "flex-end",
-  },
-  resetButtonText: {
-    fontFamily: "inter-medium",
-    fontSize: 14,
-    color: StyleColors.primary,
-  },
-  errorText: {
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    color: StyleColors.danger,
-    marginTop: 4,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      backgroundColor: StyleColors.background,
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
+    },
+    headerContainer: {
+      paddingHorizontal: 16,
+      width: width,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    headerText: {
+      fontFamily: "inter-medium",
+      fontSize: 22,
+      color: StyleColors.onBackground,
+    },
+    infoContainer: {
+      width: width,
+    },
+    modalContainer: {
+      flex: 1,
+      justifyContent: "flex-end",
+      backgroundColor: "#0000004f",
+    },
+    modalInnerContainer: {
+      backgroundColor: StyleColors.background,
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      padding: 24,
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 34,
+    },
+    modalTitle: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onBackground,
+      marginBottom: 12,
+    },
+    input: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+      borderBottomColor: StyleColors.primary,
+      borderBottomWidth: 2,
+      paddingBottom: 8,
+      width: 100,
+      textAlign: "center",
+    },
+    buttonContainer: {
+      width: "100%",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    button: {
+      width: "100%",
+      backgroundColor: StyleColors.primary,
+    },
+    textButton: {
+      fontFamily: "inter-medium",
+      fontSize: 14,
+      color: StyleColors.primary,
+      marginBottom: 16,
+    },
+    errorText: {
+      color: StyleColors.danger,
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      marginBottom: 12,
+    },
+    resetModalContainer: {
+      flex: 1,
+      backgroundColor: "#0000004f",
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 16,
+    },
+    resetModalInnerContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+      width: "100%",
+      backgroundColor: StyleColors.onPrimary,
+      paddingTop: 16,
+      paddingBottom: 24,
+      paddingHorizontal: 24,
+      borderRadius: 10,
+      gap: 22,
+    },
+    resetModalTextContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 12,
+    },
+    resetModalTitle: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onSurfacePrimary,
+    },
+    resetModalDescription: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onSurfacePrimary,
+    },
+    resetButtonContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 32,
+      alignSelf: "flex-end",
+    },
+    resetButtonText: {
+      fontFamily: "inter-medium",
+      fontSize: 14,
+      color: StyleColors.primary,
+    },
+    errorText: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.danger,
+      marginTop: 4,
+    },
+  });

@@ -22,8 +22,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Meal from "../../../components/diary/Meal";
 import NutrientsIndicator from "../../../components/diary/NutrientsIndicator";
 import WaterIntake from "../../../components/diary/WaterIntake";
-import { StyleColors } from "../../../constants/colors";
-
+import { useTheme } from "../../../context/ThemeContext";
 function DiaryScreen({ navigation, route }) {
   const auth = getAuth();
   const email = auth.currentUser?.email;
@@ -215,6 +214,9 @@ function DiaryScreen({ navigation, route }) {
     }
   }, [route.params?.date]);
 
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <ScrollView
@@ -332,6 +334,7 @@ function DiaryScreen({ navigation, route }) {
               <Ionicons
                 name="add"
                 size={24}
+                color={StyleColors.onBackground}
                 onPress={() =>
                   navigation.replace("NewMeal", {
                     mealNumber: allMeals.length + 1,
@@ -364,80 +367,82 @@ function DiaryScreen({ navigation, route }) {
 
 export default DiaryScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    backgroundColor: StyleColors.background,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 24,
-    marginBottom: 36,
-    marginTop: 10,
-  },
-  userContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 9,
-  },
-  dateContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-  },
-  emailText: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onBackground,
-  },
-  dateText: {
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    color: StyleColors.onBackground,
-  },
-  content: {
-    flexGrow: 1,
-    alignItems: "center",
-    paddingHorizontal: 16,
-    gap: 20,
-  },
-  title: {
-    fontFamily: "inter-semibold",
-    fontSize: 12,
-  },
-  indicatorContainer: {
-    width: "100%",
-    gap: 10,
-  },
-  mealTitle: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  pickerContainer: {
-    backgroundColor: StyleColors.surfacePrimary,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 24,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  closeButton: {
-    marginTop: 12,
-    alignSelf: "center",
-  },
-  datePickerText: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.primary,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      backgroundColor: StyleColors.background,
+    },
+    scrollContainer: {
+      flexGrow: 1,
+    },
+    headerContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 24,
+      marginBottom: 36,
+      marginTop: 10,
+    },
+    userContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 9,
+    },
+    dateContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 12,
+    },
+    emailText: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onBackground,
+    },
+    dateText: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.onBackground,
+    },
+    content: {
+      flexGrow: 1,
+      alignItems: "center",
+      paddingHorizontal: 16,
+      gap: 20,
+    },
+    title: {
+      fontFamily: "inter-semibold",
+      fontSize: 12,
+      color: StyleColors.onBackground,
+    },
+    indicatorContainer: {
+      width: "100%",
+      gap: 10,
+    },
+    mealTitle: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    modalOverlay: {
+      flex: 1,
+      justifyContent: "flex-end",
+    },
+    pickerContainer: {
+      backgroundColor: StyleColors.surfacePrimary,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      padding: 24,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    closeButton: {
+      marginTop: 12,
+      alignSelf: "center",
+    },
+    datePickerText: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.primary,
+    },
+  });

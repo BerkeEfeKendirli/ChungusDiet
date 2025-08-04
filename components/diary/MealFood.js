@@ -1,8 +1,10 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, Text, View } from "react-native";
-import { StyleColors } from "../../constants/colors";
+import { useTheme } from "../../context/ThemeContext";
 
 function MealFood({ onPress, meal = "", calories, proteins, fats, carbs }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   return (
     <View style={styles.rootContainer}>
       <View style={styles.textContainer}>
@@ -23,25 +25,26 @@ function MealFood({ onPress, meal = "", calories, proteins, fats, carbs }) {
 
 export default MealFood;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  textContainer: {
-    gap: 4,
-  },
-  mealText: {
-    fontFamily: "inter-semibold",
-    fontSize: 12,
-    color: StyleColors.onBackground,
-  },
-  nutritionText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onBackgroundVariant,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+    },
+    textContainer: {
+      gap: 4,
+    },
+    mealText: {
+      fontFamily: "inter-semibold",
+      fontSize: 12,
+      color: StyleColors.onBackground,
+    },
+    nutritionText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackgroundVariant,
+    },
+  });

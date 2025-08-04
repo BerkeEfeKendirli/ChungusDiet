@@ -7,7 +7,6 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeItem from "../../../components/recipes/RecipeItem";
-import { StyleColors } from "../../../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { getAuth } from "firebase/auth";
 import SearchField from "../../../components/textField/SearchField";
@@ -15,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../../Onboarding/LoadingScreen";
 import { DebugInstructions } from "react-native/Libraries/NewAppScreen";
+import { useTheme } from "../../../context/ThemeContext";
 
 function RecipesScreen() {
   const auth = getAuth();
@@ -25,6 +25,8 @@ function RecipesScreen() {
   const [loading, setLoading] = useState(false);
   const [initialRecipes, setInitialRecipes] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   const fetchRandomRecipes = async () => {
     setLoading(true);
@@ -133,35 +135,36 @@ function RecipesScreen() {
 
 export default RecipesScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    backgroundColor: StyleColors.background,
-  },
-  profile: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 24,
-    paddingVertical: 10,
-    gap: 9,
-  },
-  profileText: {
-    fontFamily: "inter-medium",
-    fontSize: 18,
-    color: StyleColors.onBackground,
-  },
-  searchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    gap: 20,
-  },
-  content: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    gap: 20,
-    marginBottom: 20,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      backgroundColor: StyleColors.background,
+    },
+    profile: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 24,
+      paddingVertical: 10,
+      gap: 9,
+    },
+    profileText: {
+      fontFamily: "inter-medium",
+      fontSize: 18,
+      color: StyleColors.onBackground,
+    },
+    searchContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      width: "100%",
+      gap: 20,
+    },
+    content: {
+      flexGrow: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      gap: 20,
+      marginBottom: 20,
+    },
+  });

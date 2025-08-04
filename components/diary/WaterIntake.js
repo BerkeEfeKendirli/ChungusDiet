@@ -1,11 +1,14 @@
 import { View, Text, StyleSheet } from "react-native";
-import { StyleColors } from "../../constants/colors";
 import FloatingActionButton from "./../buttons/FloatingActionButton";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { useTheme } from "../../context/ThemeContext";
 
 function WaterIntake({ percentage, time, completed, total, onAdd, onRemove }) {
   const fillHeight = 100 * (percentage / 100);
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   return (
     <View style={styles.rootContainer}>
       <View style={styles.summaryContainer}>
@@ -64,104 +67,105 @@ function WaterIntake({ percentage, time, completed, total, onAdd, onRemove }) {
 
 export default WaterIntake;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    padding: 16,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: StyleColors.surfacePrimary,
-    borderRadius: 20,
-  },
-  summaryContainer: {
-    justifyContent: "space-between",
-    marginBottom: 6,
-  },
-  waterTextContainer: {
-    justifyContent: "center",
-  },
-  literTextContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  title: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onBackground,
-  },
-  currentLiterText: {
-    fontFamily: "inter-semibold",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-  },
-  targetLiterText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onBackground,
-  },
-  time: {
-    alignSelf: "flex-start",
-    flexDirection: "row",
-    gap: 4,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  timeText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onBackgroundVariant,
-  },
-  waterInput: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-  },
-  buttons: {
-    gap: 24,
-  },
-  waterIndicator: {
-    width: 40,
-    height: 100,
-    borderRadius: 30,
-    backgroundColor: StyleColors.surfaceVariant,
-    overflow: "hidden",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    position: "relative",
-  },
-  percentageIndicator: {
-    width: "100%",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-  },
-  gradientFill: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  emptyContainer: {
-    width: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    backgroundColor: "transparent",
-  },
-  percentTextContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  percentText: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onSurfacePrimary,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      padding: 16,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      backgroundColor: StyleColors.surfacePrimary,
+      borderRadius: 20,
+    },
+    summaryContainer: {
+      justifyContent: "space-between",
+      marginBottom: 6,
+    },
+    waterTextContainer: {
+      justifyContent: "center",
+    },
+    literTextContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    title: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackground,
+    },
+    currentLiterText: {
+      fontFamily: "inter-semibold",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+    },
+    targetLiterText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackground,
+    },
+    time: {
+      alignSelf: "flex-start",
+      flexDirection: "row",
+      gap: 4,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    timeText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackgroundVariant,
+    },
+    waterInput: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 16,
+    },
+    buttons: {
+      gap: 24,
+    },
+    waterIndicator: {
+      width: 40,
+      height: 100,
+      borderRadius: 30,
+      backgroundColor: StyleColors.surfaceVariant,
+      overflow: "hidden",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      position: "relative",
+    },
+    percentageIndicator: {
+      width: "100%",
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      justifyContent: "center",
+      alignItems: "center",
+      overflow: "hidden",
+    },
+    gradientFill: {
+      width: "100%",
+      height: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    emptyContainer: {
+      width: "100%",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      backgroundColor: "transparent",
+    },
+    percentTextContainer: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    percentText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onSurfacePrimary,
+    },
+  });

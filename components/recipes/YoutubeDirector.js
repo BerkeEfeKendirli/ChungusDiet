@@ -1,16 +1,15 @@
+import { Feather } from "@expo/vector-icons";
+import { useEffect, useState } from "react";
 import {
-  View,
-  Pressable,
-  Text,
-  StyleSheet,
-  Linking,
   Image,
+  Linking,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import YoutubeSvg from "./../../assets/images/svg/youtube";
-import { StyleColors } from "./../../constants/colors";
-import { useEffect, useState } from "react";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { useTheme } from "../../context/ThemeContext";
 
 function getYoutubeId(link) {
   const match = link.match(/(?:v=|\/embed\/|\.be\/)([a-zA-Z0-9_-]{11})/);
@@ -44,6 +43,9 @@ function YoutubeDirector({ link }) {
     }
     fetchYoutubeTitle();
   }, [videoId]);
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   return (
     <View style={styles.button}>
@@ -100,65 +102,66 @@ function YoutubeDirector({ link }) {
 
 export default YoutubeDirector;
 
-const styles = StyleSheet.create({
-  button: {
-    gap: 4,
-    width: "100%",
-  },
-  descriptionContainer: {
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 4,
-  },
-  description: {
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    color: StyleColors.onBackgroundVariant,
-  },
-  youtubeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  pressed: {
-    opacity: 0.7,
-    backgroundColor: StyleColors.outline,
-    borderRadius: 6,
-  },
-  link: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.red,
-  },
-  thumbnail: {
-    width: 80,
-    height: 45,
-    borderRadius: 6,
-  },
-  videoDetails: {
-    flexDirection: "column",
-    gap: 2,
-  },
-  videoTitle: {
-    fontFamily: "inter-medium",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-    maxWidth: 220,
-  },
-  channelName: {
-    fontFamily: "inter-regular",
-    fontSize: 12,
-    color: StyleColors.onBackgroundVariant,
-    maxWidth: 200,
-  },
-  placeholder: {
-    backgroundColor: StyleColors.surfaceVariant,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  placeholderText: {
-    color: StyleColors.onSurfaceVariant,
-    fontSize: 11,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    button: {
+      gap: 4,
+      width: "100%",
+    },
+    descriptionContainer: {
+      alignSelf: "center",
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 4,
+    },
+    description: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.onBackgroundVariant,
+    },
+    youtubeContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+    },
+    pressed: {
+      opacity: 0.7,
+      backgroundColor: StyleColors.outline,
+      borderRadius: 6,
+    },
+    link: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.red,
+    },
+    thumbnail: {
+      width: 80,
+      height: 45,
+      borderRadius: 6,
+    },
+    videoDetails: {
+      flexDirection: "column",
+      gap: 2,
+    },
+    videoTitle: {
+      fontFamily: "inter-medium",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+      maxWidth: 220,
+    },
+    channelName: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackgroundVariant,
+      maxWidth: 200,
+    },
+    placeholder: {
+      backgroundColor: StyleColors.surfaceVariant,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    placeholderText: {
+      color: StyleColors.onSurfaceVariant,
+      fontSize: 11,
+    },
+  });

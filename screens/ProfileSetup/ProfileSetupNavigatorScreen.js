@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import TextButton from "../../components/buttons/TextButton";
 import FloatingActionButton from "../../components/buttons/FloatingActionButton";
-import { StyleColors } from "../../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WeightGoalStep from "./Steps/WeightGoalStep";
 import GenderStep from "./Steps/GenderStep";
@@ -21,6 +20,7 @@ import AgeStep from "./Steps/AgeStep";
 import { updateUserProfile } from "../../services/userService";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../config/firebaseConfig";
+import { useTheme } from "../../context/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
@@ -37,6 +37,8 @@ function ProfileSetupNavigatorScreen() {
     age: null,
     targetWeight: null,
   });
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   const pages = [
     {
@@ -218,58 +220,59 @@ function ProfileSetupNavigatorScreen() {
 
 export default ProfileSetupNavigatorScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: StyleColors.background,
-  },
-  header: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 36,
-    paddingHorizontal: 35,
-    gap: 10,
-  },
-  title: {
-    fontFamily: "inter-medium",
-    fontSize: 20,
-    color: StyleColors.onBackground,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onBackgroundVariant,
-    textAlign: "center",
-  },
-  stepContainer: {
-    width: width,
-    paddingHorizontal: 24,
-    gap: 8,
-  },
-  errorContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  errorText: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.danger,
-    textAlign: "center",
-  },
-  navigation: {
-    width: width,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 40,
-    paddingHorizontal: 24,
-  },
-  textButton: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onBackgroundVariant,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      justifyContent: "space-between",
+      alignItems: "center",
+      backgroundColor: StyleColors.background,
+    },
+    header: {
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 36,
+      paddingHorizontal: 35,
+      gap: 10,
+    },
+    title: {
+      fontFamily: "inter-medium",
+      fontSize: 20,
+      color: StyleColors.onBackground,
+      textAlign: "center",
+    },
+    subtitle: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onBackgroundVariant,
+      textAlign: "center",
+    },
+    stepContainer: {
+      width: width,
+      paddingHorizontal: 24,
+      gap: 8,
+    },
+    errorContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    errorText: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.danger,
+      textAlign: "center",
+    },
+    navigation: {
+      width: width,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 40,
+      paddingHorizontal: 24,
+    },
+    textButton: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onBackgroundVariant,
+    },
+  });

@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { StyleColors } from "../../constants/colors";
+import { useTheme } from "../../context/ThemeContext";
 
 // Sadece gösterim için
 export function DetailNutrition({ number, text = "" }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <View style={styles.rootContainer}>
       <Text style={styles.number}>{number}</Text>
@@ -19,6 +22,8 @@ export function DetailNutritionInput({
   placeholder,
   borderColor,
 }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   return (
     <View style={styles.rootContainer}>
       <TextInput
@@ -34,29 +39,30 @@ export function DetailNutritionInput({
   );
 }
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    gap: 4,
-    alignItems: "center",
-  },
-  number: {
-    fontFamily: "inter-medium",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-  },
-  input: {
-    fontFamily: "inter-medium",
-    fontSize: 16,
-    color: StyleColors.onBackground,
-    borderBottomWidth: 1,
-    borderRadius: 8,
-    paddingVertical: 4,
-    textAlign: "center",
-    minWidth: 50,
-  },
-  text: {
-    fontFamily: "inter-regular",
-    fontSize: 14,
-    color: StyleColors.onBackground,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      gap: 4,
+      alignItems: "center",
+    },
+    number: {
+      fontFamily: "inter-medium",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+    },
+    input: {
+      fontFamily: "inter-medium",
+      fontSize: 16,
+      color: StyleColors.onBackground,
+      borderBottomWidth: 1,
+      borderRadius: 8,
+      paddingVertical: 4,
+      textAlign: "center",
+      minWidth: 50,
+    },
+    text: {
+      fontFamily: "inter-regular",
+      fontSize: 14,
+      color: StyleColors.onBackground,
+    },
+  });

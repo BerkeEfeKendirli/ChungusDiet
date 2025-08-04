@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
-import { StyleColors } from "../../../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../../context/ThemeContext";
 
 function ReportsScreen() {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
+
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <Text>Reports Screen</Text>
@@ -12,11 +15,12 @@ function ReportsScreen() {
 
 export default ReportsScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: StyleColors.background,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: StyleColors.background,
+    },
+  });

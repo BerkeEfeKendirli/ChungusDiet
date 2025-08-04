@@ -5,14 +5,17 @@ import OnboardingSlideItem from "../../components/onboarding/OnboardingSlideItem
 import OnboardingNavigation from "../../components/onboarding/OnboardingNavigation";
 import FloatingActionButton from "../../components/buttons/FloatingActionButton";
 import TextButton from "../../components/buttons/TextButton";
-import { StyleColors } from "../../constants/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "../../context/ThemeContext";
 
 const { width } = Dimensions.get("window");
 
 function OnboardingSlideScreen({ navigation }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const scrollViewRef = useRef(null);
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   const handleNext = () => {
     if (currentSlide < onboardingSlideData.length - 1) {
@@ -84,30 +87,31 @@ function OnboardingSlideScreen({ navigation }) {
 
 export default OnboardingSlideScreen;
 
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    backgroundColor: StyleColors.background,
-  },
-  contentContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  slide: {
-    flexGrow: 0,
-  },
-  buttons: {
-    paddingHorizontal: 24,
-    paddingBottom: 40,
-    width: width,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  backButton: {
-    fontFamily: "inter-regular",
-    fontSize: 16,
-    color: StyleColors.onBackgroundVariant,
-  },
-});
+const getStyles = (StyleColors) =>
+  StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      backgroundColor: StyleColors.background,
+    },
+    contentContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    slide: {
+      flexGrow: 0,
+    },
+    buttons: {
+      paddingHorizontal: 24,
+      paddingBottom: 40,
+      width: width,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    backButton: {
+      fontFamily: "inter-regular",
+      fontSize: 16,
+      color: StyleColors.onBackgroundVariant,
+    },
+  });
