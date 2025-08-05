@@ -31,6 +31,7 @@ export function DetailNutritionInput({
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
+        inputMode="decimal"
         placeholder={placeholder}
         placeholderTextColor={StyleColors.surfaceVariant}
       />

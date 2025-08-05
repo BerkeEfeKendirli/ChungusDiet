@@ -5,6 +5,7 @@ import Button from "../../components/buttons/Button";
 import { updateUserProfile } from "../../services/userService";
 import { auth } from "../../config/firebaseConfig";
 import { useTheme } from "../../context/ThemeContext";
+import { setDoc, doc, getFirestore } from "firebase/firestore";
 
 const { width } = Dimensions.get("window");
 
@@ -94,6 +95,14 @@ function RecommendedCaloriesScreen({ route }) {
         waterStep: 100,
       };
       await updateUserProfile(auth.currentUser.uid, profileData, true);
+
+      const db = getFirestore();
+      const user = auth.currentUser;
+      const createdAt = new Date();
+      const dateKey = createdAt.toISOString().split("T")[0];
+      await setDoc(doc(db, "users", user.uid, "reports", dateKey), {
+        kilo: formData.weight,
+      });
     } catch (error) {
       console.error("Failed to complete profile:", error);
     }

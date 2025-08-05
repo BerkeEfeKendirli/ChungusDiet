@@ -279,7 +279,7 @@ function MeScreen({ userProfile }) {
             onPress={() => handleInfoItemPress("height")}
           />
           <InfoItem
-            infoText="Weight"
+            infoText="Initial Weight"
             info={weight}
             infoSecondary="kg"
             onPress={() => handleInfoItemPress("weight")}

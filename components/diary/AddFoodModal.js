@@ -95,6 +95,7 @@ function AddFoodModal({ visible, onClose, onSave, initialValues }) {
               <Text style={styles.foodText}>Add Food :</Text>
               <TextInput
                 placeholder="e.g. Boiled eggs"
+                placeholderTextColor={StyleColors.surfaceVariant}
                 value={mealName}
                 onChangeText={setMealName}
                 style={[

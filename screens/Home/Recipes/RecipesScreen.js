@@ -4,6 +4,7 @@ import {
   ScrollView,
   Text,
   RefreshControl,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeItem from "../../../components/recipes/RecipeItem";
@@ -85,11 +86,13 @@ function RecipesScreen() {
         overScrollMode="never"
       >
         <View style={styles.profile}>
-          <Ionicons
-            name="person-circle-outline"
-            size={40}
-            color={StyleColors.onBackgroundVariant}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <Ionicons
+              name="person-circle-outline"
+              size={40}
+              color={StyleColors.onBackgroundVariant}
+            />
+          </TouchableOpacity>
           <Text style={styles.profileText}>{email}</Text>
         </View>
         <View style={styles.content}>
