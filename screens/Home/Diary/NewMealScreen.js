@@ -64,6 +64,62 @@ function NewMealScreen({ navigation, route }) {
     }
     setModalVisible(false);
   };
+
+  const handleSaveMeal = () => {
+    if (meals.length === 0) {
+      setShowSaveWarning(true);
+      setTimeout(() => setShowSaveWarning(false), 3000);
+      return;
+    }
+    const now = new Date();
+    const mealTime = now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    let updatedMeals;
+    if (
+      route.params?.editIndex !== null &&
+      route.params?.editIndex !== undefined
+    ) {
+      updatedMeals = (route.params?.allMeals || []).map((item, idx) =>
+        idx === route.params.editIndex
+          ? {
+              foods: meals,
+              calories,
+              proteins,
+              fats,
+              carbs,
+              mealTitle: `Meal #${mealNumber}`,
+              mealTime,
+            }
+          : item
+      );
+    } else {
+      updatedMeals = (route.params?.allMeals || []).concat([
+        {
+          foods: meals,
+          calories,
+          proteins,
+          fats,
+          carbs,
+          mealTitle: `Meal #${mealNumber}`,
+          mealTime,
+        },
+      ]);
+    }
+
+    navigation.replace("Home", {
+      screen: "Diary",
+      params: {
+        allMeals: updatedMeals,
+        fromNewMeal: true,
+        date: selectedDate.toISOString(),
+      },
+    });
+  };
+
   const selectedDate = route.params?.date
     ? new Date(route.params.date)
     : new Date();
@@ -153,38 +209,7 @@ function NewMealScreen({ navigation, route }) {
         text="Save"
         style={styles.saveButton}
         textColor={StyleColors.onPrimary}
-        onPress={() => {
-          if (meals.length === 0) {
-            setShowSaveWarning(true);
-            setTimeout(() => setShowSaveWarning(false), 3000);
-            return;
-          }
-          const now = new Date();
-          const mealTime = now.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          });
-          const updatedMeals = (route.params?.allMeals || []).concat([
-            {
-              foods: meals,
-              calories,
-              proteins,
-              fats,
-              carbs,
-              mealTitle: `Meal #${mealNumber}`,
-              mealTime,
-            },
-          ]);
-          navigation.replace("Home", {
-            screen: "Diary",
-            params: {
-              allMeals: updatedMeals,
-              fromNewMeal: true,
-              date: selectedDate.toISOString(),
-            },
-          });
-        }}
+        onPress={handleSaveMeal}
       />
     </SafeAreaView>
   );
