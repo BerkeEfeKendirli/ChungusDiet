@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   ScrollView,
@@ -18,6 +18,8 @@ import { useTheme } from "../../../context/ThemeContext";
 const { width } = Dimensions.get("window");
 
 function NewMealScreen({ navigation, route }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   const [calories, setCalories] = useState(0);
   const [proteins, setProteins] = useState(0);
   const [fats, setFats] = useState(0);
@@ -25,7 +27,6 @@ function NewMealScreen({ navigation, route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [meals, setMeals] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(null);
   const mealNumber = route.params?.mealNumber || 1;
   const [showSaveWarning, setShowSaveWarning] = useState(false);
 
@@ -46,7 +47,7 @@ function NewMealScreen({ navigation, route }) {
       setMeals((prev) =>
         prev.map((item, i) => (i === editIndex ? meal : item))
       );
-      // Toplamları güncellemek için önce eski değeri çıkar, sonra yeni değeri ekle
+
       const old = meals[editIndex];
       setCalories((c) => c - (old.calories || 0) + (meal.calories || 0));
       setProteins((p) => p - (old.protein || 0) + (meal.protein || 0));
@@ -67,8 +68,18 @@ function NewMealScreen({ navigation, route }) {
     ? new Date(route.params.date)
     : new Date();
 
-  const StyleColors = useTheme();
-  const styles = getStyles(StyleColors);
+  useEffect(() => {
+    if (
+      route.params?.editIndex !== null &&
+      route.params?.editIndex !== undefined
+    ) {
+      setMeals(route.params.foods || []);
+      setCalories(route.params.calories || 0);
+      setProteins(route.params.proteins || 0);
+      setFats(route.params.fats || 0);
+      setCarbs(route.params.carbs || 0);
+    }
+  }, [route.params?.editIndex]);
 
   return (
     <SafeAreaView style={styles.rootContainer}>
@@ -103,46 +114,23 @@ function NewMealScreen({ navigation, route }) {
       <View style={styles.divider}></View>
       <View style={{ flex: 1 }}>
         <ScrollView>
-          {meals.map((meal, idx) => (
-            <View key={idx} style={{ position: "relative" }}>
+          {meals.map((food, idx) => (
+            <View
+              key={idx}
+              style={{ position: "relative", paddingHorizontal: 16 }}
+            >
               <MealFood
-                meal={meal.mealName}
-                calories={meal.calories}
-                proteins={meal.protein}
-                fats={meal.fat}
-                carbs={meal.carbs}
-                onPress={() => setSelectedIndex(idx)}
+                meal={food.mealName || food.name} // Firestore'da mealName var!
+                calories={food.calories}
+                proteins={food.protein}
+                fats={food.fat}
+                carbs={food.carbs}
+                onEdit={() => {
+                  setEditIndex(idx);
+                  setModalVisible(true);
+                }}
+                onDelete={() => handleDeleteMeal(idx)}
               />
-              {selectedIndex === idx && (
-                <>
-                  <TouchableOpacity
-                    style={styles.overlayTouchable}
-                    activeOpacity={1}
-                    onPress={() => setSelectedIndex(null)}
-                  />
-                  <View style={styles.popupMenu}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setEditIndex(idx);
-                        setModalVisible(true);
-                        setSelectedIndex(null);
-                      }}
-                      style={styles.popupButton}
-                    >
-                      <Text style={styles.popupEditText}>Edit</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleDeleteMeal(idx);
-                        setSelectedIndex(null);
-                      }}
-                      style={styles.popupButton}
-                    >
-                      <Text style={styles.popupDeleteText}>Delete</Text>
-                    </TouchableOpacity>
-                  </View>
-                </>
-              )}
             </View>
           ))}
         </ScrollView>

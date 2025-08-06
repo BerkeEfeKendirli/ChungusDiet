@@ -3,13 +3,14 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { getAuth } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   getFirestore,
   setDoc,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   Keyboard,
@@ -42,6 +43,9 @@ function ReportsScreen({ navigation }) {
   const [weightData, setWeightData] = useState([]);
   const [initialWeight, setInitialWeight] = useState(null);
   const [initialDate, SetInitiaLDate] = useState(null);
+  const [selectedPoint, setSelectedPoint] = useState(null);
+  const [editDate, setEditDate] = useState(null);
+  const pointTimeoutRef = useRef();
 
   useEffect(() => {
     const fetchInitialWeight = async () => {
@@ -99,6 +103,13 @@ function ReportsScreen({ navigation }) {
     fetchReports();
   }, [auth.currentUser]);
 
+  const handleEdit = (item) => {
+    setEditDate(item.date);
+    setSelectedDate(item.date);
+    setWeight(item.value.toString());
+    setModalVisible(true);
+  };
+
   const handleSave = async () => {
     if (!weight) return;
     const num = parseFloat(weight);
@@ -108,7 +119,10 @@ function ReportsScreen({ navigation }) {
     const user = auth.currentUser;
     if (!user) return;
 
-    const dateKey = selectedDate.toISOString().split("T")[0];
+    const isEdit = editDate !== null;
+    const dateKey = (isEdit ? editDate : selectedDate)
+      .toISOString()
+      .split("T")[0];
 
     await setDoc(doc(db, "users", user.uid, "reports", dateKey), {
       kilo: num,
@@ -117,8 +131,25 @@ function ReportsScreen({ navigation }) {
     setModalVisible(false);
     setWeight("");
     setSelectedDate(new Date());
+    setEditDate(null);
 
     fetchReports();
+  };
+
+  const handleDelete = async (item) => {
+    const db = getFirestore();
+    const user = auth.currentUser;
+    if (!user) return;
+    const dateKey = item.date.toISOString().split("T")[0];
+    await deleteDoc(doc(db, "users", user.uid, "reports", dateKey));
+    fetchReports();
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setWeight("");
+    setSelectedDate(new Date());
+    setEditDate(null);
   };
 
   const getDateLabel = (date) => {
@@ -207,7 +238,7 @@ function ReportsScreen({ navigation }) {
           <View
             style={{
               width: chartWidth,
-              backgroundColor: StyleColors.surfacePrimary, // Arka plan burada
+              backgroundColor: StyleColors.surfacePrimary,
               borderRadius: 10,
               paddingVertical: 12,
             }}
@@ -225,7 +256,9 @@ function ReportsScreen({ navigation }) {
                 labelColor: () => StyleColors.onSurfacePrimary,
                 propsForDots: {
                   r: "3",
+                  strokeWidth: 3,
                   stroke: StyleColors.primary,
+                  fill: StyleColors.primary,
                 },
               }}
               withDots
@@ -233,7 +266,40 @@ function ReportsScreen({ navigation }) {
               withInnerLines={false}
               withOuterLines={false}
               style={{ borderRadius: 10 }}
+              onDataPointClick={({ value, x, y, index }) => {
+                setSelectedPoint({ value, x, y, index });
+                if (pointTimeoutRef.current)
+                  clearTimeout(pointTimeoutRef.current);
+
+                pointTimeoutRef.current = setTimeout(() => {
+                  setSelectedPoint(null);
+                }, 3000);
+              }}
             />
+            {selectedPoint && (
+              <View
+                style={{
+                  position: "absolute",
+                  left: selectedPoint.x - 25,
+                  top: selectedPoint.y + 15,
+                  backgroundColor: StyleColors.surfacePrimary,
+                  borderRadius: 8,
+                  paddingHorizontal: 8,
+                  paddingVertical: 4,
+                  borderWidth: 1,
+                  borderColor: StyleColors.primary,
+                  zIndex: 10,
+                  minWidth: 50,
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{ color: StyleColors.primary, fontWeight: "bold" }}
+                >
+                  {selectedPoint.value} kg
+                </Text>
+              </View>
+            )}
           </View>
         </ScrollView>
       </View>
@@ -256,6 +322,8 @@ function ReportsScreen({ navigation }) {
             key={item.date.toString() + idx}
             date={getDateLabel(item.date)}
             weight={item.value}
+            onEdit={() => handleEdit(item)}
+            onDelete={() => handleDelete(item)}
           />
         ))}
       </ScrollView>
@@ -264,9 +332,9 @@ function ReportsScreen({ navigation }) {
         animationType="fade"
         transparent
         statusBarTranslucent
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={handleCloseModal}
       >
-        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+        <TouchableWithoutFeedback onPress={handleCloseModal}>
           <View style={styles.modalContainer}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={styles.modalInnerContainer}>

@@ -1,31 +1,70 @@
-import { View, StyleSheet, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Animated, StyleSheet, Text, View } from "react-native";
+import { RectButton, Swipeable } from "react-native-gesture-handler";
 import { useTheme } from "../../context/ThemeContext";
 
-function Meal({ title, time, calorie, proteins, fats, carbs }) {
+function Meal({
+  title,
+  time,
+  calorie,
+  proteins,
+  fats,
+  carbs,
+  onEdit,
+  onDelete,
+}) {
   const StyleColors = useTheme();
   const styles = getStyles(StyleColors);
 
+  const renderRightActions = (progress, dragX) => {
+    const translateX = dragX.interpolate({
+      inputRange: [-128, 0],
+      outputRange: [0, 128],
+      extrapolate: "clamp",
+    });
+
+    return (
+      <View style={styles.rectButtonsContainer}>
+        <Animated.View style={{ transform: [{ translateX }] }}>
+          <RectButton style={styles.editButton} onPress={onEdit}>
+            <Ionicons name="pencil" size={24} color={StyleColors.background} />
+          </RectButton>
+        </Animated.View>
+        <Animated.View style={{ transform: [{ translateX }] }}>
+          <RectButton style={styles.deleteButton} onPress={onDelete}>
+            <Ionicons
+              name="trash-outline"
+              size={24}
+              color={StyleColors.background}
+            />
+          </RectButton>
+        </Animated.View>
+      </View>
+    );
+  };
+
   return (
-    <View style={styles.rootContainer}>
-      <View style={styles.timeContainer}>
-        <Text style={styles.mealText}>{title}</Text>
-        <View style={styles.time}>
-          <Ionicons
-            name="time-outline"
-            color={StyleColors.onBackgroundVariant}
-            size={12.67}
-          />
-          <Text style={styles.timeText}>{time}</Text>
+    <Swipeable renderRightActions={renderRightActions}>
+      <View style={styles.rootContainer}>
+        <View style={styles.timeContainer}>
+          <Text style={styles.mealText}>{title}</Text>
+          <View style={styles.time}>
+            <Ionicons
+              name="time-outline"
+              color={StyleColors.onBackgroundVariant}
+              size={12.67}
+            />
+            <Text style={styles.timeText}>{time}</Text>
+          </View>
+        </View>
+        <View style={styles.calorieContainer}>
+          <Text style={styles.calText}>{calorie} Cal</Text>
+          <Text style={styles.nutritionText}>
+            {proteins} g protein • {fats} g fat • {carbs} g carb
+          </Text>
         </View>
       </View>
-      <View style={styles.calorieContainer}>
-        <Text style={styles.calText}>{calorie} Cal</Text>
-        <Text style={styles.nutritionText}>
-          {proteins} g protein • {fats} g fat • {carbs} g carb
-        </Text>
-      </View>
-    </View>
+    </Swipeable>
   );
 }
 
@@ -72,5 +111,27 @@ const getStyles = (StyleColors) =>
       fontFamily: "inter-regular",
       fontSize: 12,
       color: StyleColors.onBackgroundVariant,
+    },
+    rectButtonsContainer: {
+      alignItems: "center",
+      flexDirection: "row",
+    },
+    deleteButton: {
+      backgroundColor: StyleColors.danger,
+      justifyContent: "center",
+      alignItems: "center",
+      width: 64,
+      height: "100%",
+      borderTopRightRadius: 10,
+      borderBottomRightRadius: 10,
+    },
+    editButton: {
+      backgroundColor: StyleColors.orange,
+      justifyContent: "center",
+      alignItems: "center",
+      width: 64,
+      height: "100%",
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10,
     },
   });

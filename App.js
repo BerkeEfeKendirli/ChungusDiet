@@ -29,6 +29,7 @@ import WaterIntakeScreen from "./screens/Home/Profile/WaterIntakeScreen";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { StatusBar } from "expo-status-bar";
 import AboutAppScreen from "./screens/Home/Profile/AboutAppScreen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -260,11 +261,13 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <AppContent
-        user={user}
-        userProfile={userProfile}
-        isAppReady={isAppReady}
-      />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AppContent
+          user={user}
+          userProfile={userProfile}
+          isAppReady={isAppReady}
+        />
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }

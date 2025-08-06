@@ -23,7 +23,11 @@ import Meal from "../../../components/diary/Meal";
 import NutrientsIndicator from "../../../components/diary/NutrientsIndicator";
 import WaterIntake from "../../../components/diary/WaterIntake";
 import { useTheme } from "../../../context/ThemeContext";
+import NoMealSvg from "./../../../assets/images/svg/noMeal";
+
 function DiaryScreen({ navigation, route }) {
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
   const auth = getAuth();
   const email = auth.currentUser?.email;
   const [allMeals, setAllMeals] = useState([]);
@@ -214,8 +218,26 @@ function DiaryScreen({ navigation, route }) {
     }
   }, [route.params?.date]);
 
-  const StyleColors = useTheme();
-  const styles = getStyles(StyleColors);
+  const handleEditMeal = (idx) => {
+    const meal = allMeals[idx];
+    navigation.replace("NewMeal", {
+      mealNumber: idx + 1,
+      allMeals,
+      editIndex: idx,
+      date: selectedDate.toISOString(),
+      foods: meal.foods || [],
+      mealTitle: meal.mealTitle,
+      calories: meal.calories,
+      proteins: meal.proteins,
+      fats: meal.fats,
+      carbs: meal.carbs,
+    });
+  };
+
+  const handleDeleteMeal = (idx) => {
+    setAllMeals((prev) => prev.filter((_, i) => i !== idx));
+    setHasUserChanged(true);
+  };
 
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
@@ -345,6 +367,12 @@ function DiaryScreen({ navigation, route }) {
                 }
               />
             </View>
+            {allMeals.length === 0 && (
+              <View style={styles.emptyMealContainer}>
+                <NoMealSvg width={50} height={50} />
+                <Text style={styles.emptyMealText}>No meal added yet.</Text>
+              </View>
+            )}
             <View style={{ gap: 12 }}>
               {allMeals.map((meal, idx) => (
                 <Meal
@@ -355,6 +383,8 @@ function DiaryScreen({ navigation, route }) {
                   proteins={meal.proteins}
                   fats={meal.fats}
                   carbs={meal.carbs}
+                  onEdit={() => handleEditMeal(idx)}
+                  onDelete={() => handleDeleteMeal(idx)}
                 />
               ))}
             </View>
@@ -444,5 +474,15 @@ const getStyles = (StyleColors) =>
       fontFamily: "inter-regular",
       fontSize: 16,
       color: StyleColors.primary,
+    },
+    emptyMealContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 4,
+    },
+    emptyMealText: {
+      fontFamily: "inter-regular",
+      fontSize: 12,
+      color: StyleColors.onBackgroundVariant,
     },
   });

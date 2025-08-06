@@ -2,7 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth, signOut } from "firebase/auth";
 import { useState } from "react";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import CustomSwitch from "../../../components/buttons/CustomSwitch";
 import ProfileButton from "../../../components/buttons/ProfileButton";
 import SettingsButton from "../../../components/buttons/SettingsButton";
@@ -85,27 +91,31 @@ function ProfileScreen({ userProfile }) {
       />
       {modalVisible && (
         <Modal transparent statusBarTranslucent animationType="fade">
-          <View style={styles.modalContainer}>
-            <View style={styles.modalInnerContainer}>
-              <Text style={styles.modalText}>
-                Do you really want to sign out?
-              </Text>
-              <View style={styles.modalButtonContainer}>
-                <TextButton
-                  text="Cancel"
-                  style={[styles.button, { color: StyleColors.primary }]}
-                  onPress={() => setModalVisible(false)}
-                />
-                <TextButton
-                  text="Sign Out"
-                  style={[styles.button, { color: StyleColors.danger }]}
-                  onPress={async () => {
-                    await signOut(auth);
-                  }}
-                />
-              </View>
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              <TouchableWithoutFeedback onPress={() => {}}>
+                <View style={styles.modalInnerContainer}>
+                  <Text style={styles.modalText}>
+                    Do you really want to sign out?
+                  </Text>
+                  <View style={styles.modalButtonContainer}>
+                    <TextButton
+                      text="Cancel"
+                      style={[styles.button, { color: StyleColors.primary }]}
+                      onPress={() => setModalVisible(false)}
+                    />
+                    <TextButton
+                      text="Sign Out"
+                      style={[styles.button, { color: StyleColors.danger }]}
+                      onPress={async () => {
+                        await signOut(auth);
+                      }}
+                    />
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
       )}
     </View>
