@@ -1,8 +1,8 @@
 import * as React from "react";
 import Svg, { G, Path } from "react-native-svg";
-const Onboarding4 = (props) => (
+const Onboarding4 = ({ color, ...props }) => (
   <Svg
-    fill="#35CC8C"
+    fill={color}
     height="100px"
     width="100px"
     baseProfile="tiny"
@@ -11,7 +11,7 @@ const Onboarding4 = (props) => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 256 256"
     xmlSpace="preserve"
-    stroke="#35CC8C"
+    stroke={color}
     {...props}
   >
     <G id="SVGRepo_bgCarrier" strokeWidth={0} />

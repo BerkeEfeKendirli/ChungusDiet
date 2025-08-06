@@ -20,7 +20,7 @@ function WelcomeScreen({ navigation }) {
     <SafeAreaView style={styles.rootContainer}>
       <View style={styles.content}>
         <View style={styles.svgContainer}>
-          <Onboarding4 />
+          <Onboarding4 color={StyleColors.primary} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>Welcome</Text>

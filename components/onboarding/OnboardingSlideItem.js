@@ -12,7 +12,11 @@ function OnboardingSlideItem({ slide }) {
     <View style={styles.rootContainer}>
       <View style={styles.content}>
         <View style={styles.svgContainer}>
-          <SvgComponent width={width * 0.733} height={height * 0.44} />
+          <SvgComponent
+            width={width * 0.733}
+            height={height * 0.44}
+            color={StyleColors.primary}
+          />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.title}>{slide.title}</Text>
