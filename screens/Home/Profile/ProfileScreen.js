@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { getAuth, signOut } from "firebase/auth";
 import { useState } from "react";
 import {
+  Image,
   Modal,
   StyleSheet,
   Text,
@@ -14,6 +15,7 @@ import ProfileButton from "../../../components/buttons/ProfileButton";
 import SettingsButton from "../../../components/buttons/SettingsButton";
 import TextButton from "../../../components/buttons/TextButton";
 import { useTheme } from "../../../context/ThemeContext";
+import ProfileSvg from "../../../assets/images/svg/profile";
 
 function ProfileScreen({ userProfile }) {
   const { mode, setMode } = useTheme();
@@ -22,20 +24,36 @@ function ProfileScreen({ userProfile }) {
   const email = auth.currentUser?.email;
   const calories = userProfile?.profile?.targetCalories;
   const water = userProfile?.profile?.targetWater;
-  const [darkMode, setDarkMode] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
   const StyleColors = useTheme();
   const styles = getStyles(StyleColors);
 
+  const profileImages = {
+    default: <ProfileSvg width={40} height={40} />,
+    pp1: require("../../../assets/images/png/pp1.png"),
+    pp2: require("../../../assets/images/png/pp2.png"),
+    pp3: require("../../../assets/images/png/pp3.png"),
+    pp4: require("../../../assets/images/png/pp4.png"),
+    pp5: require("../../../assets/images/png/pp5.png"),
+    pp6: require("../../../assets/images/png/pp6.png"),
+    pp7: require("../../../assets/images/png/pp7.png"),
+    pp8: require("../../../assets/images/png/pp8.png"),
+  };
+
+  const profileImageKey = userProfile?.profileImage || "default";
+
   return (
     <View style={styles.rootContainer}>
       <View style={styles.userContainer}>
-        <Ionicons
-          name="person-circle-outline"
-          size={90}
-          color={StyleColors.onBackgroundVariant}
-        />
+        {profileImageKey === "default" ? (
+          <ProfileSvg size={90} />
+        ) : (
+          <Image
+            source={profileImages[profileImageKey]}
+            style={{ width: 90, height: 90, borderRadius: 45 }}
+          />
+        )}
         <Text style={styles.mailText}>{email}</Text>
       </View>
       <View style={styles.infoContainer}>
@@ -81,7 +99,11 @@ function ProfileScreen({ userProfile }) {
         icon="information-circle-outline"
         onPress={() => navigation.navigate("AboutApp")}
       />
-      <SettingsButton text="Settings" icon="settings-outline" />
+      <SettingsButton
+        text="Settings"
+        icon="settings-outline"
+        onPress={() => navigation.navigate("Settings")}
+      />
       <SettingsButton
         text="Sign Out"
         icon="log-out-outline"

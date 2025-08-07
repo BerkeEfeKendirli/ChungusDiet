@@ -30,6 +30,8 @@ import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { StatusBar } from "expo-status-bar";
 import AboutAppScreen from "./screens/Home/Profile/AboutAppScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import SettingsScreen from "./screens/Home/Profile/SettingsScreen";
+import ProfilePictureScreen from "./screens/Home/Profile/ProfilePictureScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -53,9 +55,15 @@ function BottomTabNavigator({ userProfile }) {
       initialRouteName="Diary"
       contentStyle={{ backgroundColor: StyleColors.background }}
     >
-      <BottomTab.Screen name="Recipes" component={RecipesScreen} />
-      <BottomTab.Screen name="Diary" component={DiaryScreen} />
-      <BottomTab.Screen name="Reports" component={ReportsScreen} />
+      <BottomTab.Screen name="Recipes">
+        {() => <RecipesScreen userProfile={userProfile} />}
+      </BottomTab.Screen>
+      <BottomTab.Screen name="Diary">
+        {() => <DiaryScreen userProfile={userProfile} />}
+      </BottomTab.Screen>
+      <BottomTab.Screen name="Reports">
+        {() => <ReportsScreen userProfile={userProfile} />}
+      </BottomTab.Screen>
     </BottomTab.Navigator>
   );
 }
@@ -130,6 +138,49 @@ function AppContent({ user, userProfile, isAppReady }) {
                   <Stack.Screen
                     name="WaterIntake"
                     component={WaterIntakeScreen}
+                  />
+                  <Stack.Screen
+                    name="Settings"
+                    children={() => (
+                      <SettingsScreen userProfile={userProfile} />
+                    )}
+                    options={({ navigation }) => ({
+                      headerTitleAlign: "center",
+                      headerShown: true,
+                      headerShadowVisible: false,
+                      headerStyle: {
+                        backgroundColor: StyleColors.background,
+                      },
+                      headerLeft: () => (
+                        <CustomBackButton
+                          navigation={navigation}
+                          tintColor={StyleColors.onBackground}
+                        />
+                      ),
+                      headerTitleStyle: styles.headerTitle,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="ProfilePicture"
+                    children={() => (
+                      <ProfilePictureScreen userProfile={userProfile} />
+                    )}
+                    options={({ navigation }) => ({
+                      title: "Change Profile Picture",
+                      headerTitleAlign: "center",
+                      headerShown: true,
+                      headerShadowVisible: false,
+                      headerStyle: {
+                        backgroundColor: StyleColors.background,
+                      },
+                      headerLeft: () => (
+                        <CustomBackButton
+                          navigation={navigation}
+                          tintColor={StyleColors.onBackground}
+                        />
+                      ),
+                      headerTitleStyle: styles.headerTitle,
+                    })}
                   />
                   <Stack.Screen
                     name="AboutApp"

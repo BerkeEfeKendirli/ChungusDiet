@@ -25,6 +25,7 @@ export const createUserProfile = async (userId, userData) => {
       email: userData.email,
       isProfileComplete: false,
       createdAt: new Date(),
+      profileImage: "default",
       profile: {
         weight: null,
         height: null,
@@ -56,6 +57,16 @@ export const updateUserProfile = async (
       profile: profileData,
       isProfileComplete: isProfileComplete,
     });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateUserProfileImage = async (userId, profileImage) => {
+  try {
+    const userDocRef = doc(db, "users", userId);
+    await updateDoc(userDocRef, { profileImage });
   } catch (error) {
     console.error(error);
     throw error;

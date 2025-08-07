@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import {
+  Image,
   Modal,
   Platform,
   ScrollView,
@@ -24,8 +25,10 @@ import NutrientsIndicator from "../../../components/diary/NutrientsIndicator";
 import WaterIntake from "../../../components/diary/WaterIntake";
 import { useTheme } from "../../../context/ThemeContext";
 import NoMealSvg from "./../../../assets/images/svg/noMeal";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import ProfileSvg from "../../../assets/images/svg/profile";
 
-function DiaryScreen({ navigation, route }) {
+function DiaryScreen({ userProfile }) {
   const StyleColors = useTheme();
   const styles = getStyles(StyleColors);
   const auth = getAuth();
@@ -48,6 +51,8 @@ function DiaryScreen({ navigation, route }) {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [hasUserChanged, setHasUserChanged] = useState(false);
+  const route = useRoute();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const db = getFirestore();
@@ -239,6 +244,20 @@ function DiaryScreen({ navigation, route }) {
     setHasUserChanged(true);
   };
 
+  const profileImages = {
+    default: <ProfileSvg size={45} />,
+    pp1: require("../../../assets/images/png/pp1.png"),
+    pp2: require("../../../assets/images/png/pp2.png"),
+    pp3: require("../../../assets/images/png/pp3.png"),
+    pp4: require("../../../assets/images/png/pp4.png"),
+    pp5: require("../../../assets/images/png/pp5.png"),
+    pp6: require("../../../assets/images/png/pp6.png"),
+    pp7: require("../../../assets/images/png/pp7.png"),
+    pp8: require("../../../assets/images/png/pp8.png"),
+  };
+
+  const profileImageKey = userProfile?.profileImage || "default";
+
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <ScrollView
@@ -249,11 +268,14 @@ function DiaryScreen({ navigation, route }) {
         <View style={styles.headerContainer}>
           <View style={styles.userContainer}>
             <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-              <Ionicons
-                name="person-circle-outline"
-                size={40}
-                color={StyleColors.onBackgroundVariant}
-              />
+              {profileImageKey === "default" ? (
+                <ProfileSvg size={45} />
+              ) : (
+                <Image
+                  source={profileImages[profileImageKey]}
+                  style={{ width: 40, height: 40, borderRadius: 20 }}
+                />
+              )}
             </TouchableOpacity>
             <Text style={styles.emailText}>{email}</Text>
           </View>
@@ -370,7 +392,7 @@ function DiaryScreen({ navigation, route }) {
             {allMeals.length === 0 && (
               <View style={styles.emptyMealContainer}>
                 <NoMealSvg width={50} height={50} />
-                <Text style={styles.emptyMealText}>No meal added yet.</Text>
+                <Text style={styles.emptyMealText}>No meals added yet</Text>
               </View>
             )}
             <View style={{ gap: 12 }}>

@@ -13,6 +13,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
+  Image,
   Keyboard,
   Modal,
   Platform,
@@ -28,9 +29,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { DetailNutritionInput } from "../../../components/diary/DetailNutrition";
 import ReportItem from "../../../components/reports/ReportItem";
 import { useTheme } from "../../../context/ThemeContext";
+import ProfileSvg from "../../../assets/images/svg/profile";
 import TextButton from "./../../../components/buttons/TextButton";
+import { useNavigation } from "@react-navigation/native";
 
-function ReportsScreen({ navigation }) {
+function ReportsScreen({ userProfile }) {
   const StyleColors = useTheme();
   const styles = getStyles(StyleColors);
   const auth = getAuth();
@@ -46,6 +49,7 @@ function ReportsScreen({ navigation }) {
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [editDate, setEditDate] = useState(null);
   const pointTimeoutRef = useRef();
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchInitialWeight = async () => {
@@ -214,15 +218,32 @@ function ReportsScreen({ navigation }) {
     sortedData.length * 90 // Her veri için 40px genişlik
   );
 
+  const profileImages = {
+    default: <ProfileSvg size={45} />,
+    pp1: require("../../../assets/images/png/pp1.png"),
+    pp2: require("../../../assets/images/png/pp2.png"),
+    pp3: require("../../../assets/images/png/pp3.png"),
+    pp4: require("../../../assets/images/png/pp4.png"),
+    pp5: require("../../../assets/images/png/pp5.png"),
+    pp6: require("../../../assets/images/png/pp6.png"),
+    pp7: require("../../../assets/images/png/pp7.png"),
+    pp8: require("../../../assets/images/png/pp8.png"),
+  };
+
+  const profileImageKey = userProfile?.profileImage || "default";
+
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <View style={styles.userContainer}>
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <Ionicons
-            name="person-circle-outline"
-            size={40}
-            color={StyleColors.onBackgroundVariant}
-          />
+          {profileImageKey === "default" ? (
+            <ProfileSvg size={45} />
+          ) : (
+            <Image
+              source={profileImages[profileImageKey]}
+              style={{ width: 40, height: 40, borderRadius: 20 }}
+            />
+          )}
         </TouchableOpacity>
         <Text style={styles.emailText}>{email}</Text>
       </View>

@@ -5,6 +5,7 @@ import {
   Text,
   RefreshControl,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import RecipeItem from "../../../components/recipes/RecipeItem";
@@ -16,8 +17,9 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "../../Onboarding/LoadingScreen";
 import { DebugInstructions } from "react-native/Libraries/NewAppScreen";
 import { useTheme } from "../../../context/ThemeContext";
+import ProfileSvg from "../../../assets/images/svg/profile";
 
-function RecipesScreen() {
+function RecipesScreen({ userProfile }) {
   const auth = getAuth();
   const email = auth.currentUser?.email;
   const navigation = useNavigation();
@@ -71,6 +73,20 @@ function RecipesScreen() {
     setLoading(false);
   };
 
+  const profileImages = {
+    default: <ProfileSvg size={45} />,
+    pp1: require("../../../assets/images/png/pp1.png"),
+    pp2: require("../../../assets/images/png/pp2.png"),
+    pp3: require("../../../assets/images/png/pp3.png"),
+    pp4: require("../../../assets/images/png/pp4.png"),
+    pp5: require("../../../assets/images/png/pp5.png"),
+    pp6: require("../../../assets/images/png/pp6.png"),
+    pp7: require("../../../assets/images/png/pp7.png"),
+    pp8: require("../../../assets/images/png/pp8.png"),
+  };
+
+  const profileImageKey = userProfile?.profileImage || "default";
+
   return (
     <SafeAreaView style={styles.rootContainer} edges={["top"]}>
       <ScrollView
@@ -87,11 +103,14 @@ function RecipesScreen() {
       >
         <View style={styles.profile}>
           <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Ionicons
-              name="person-circle-outline"
-              size={40}
-              color={StyleColors.onBackgroundVariant}
-            />
+            {profileImageKey === "default" ? (
+              <ProfileSvg size={45} />
+            ) : (
+              <Image
+                source={profileImages[profileImageKey]}
+                style={{ width: 40, height: 40, borderRadius: 20 }}
+              />
+            )}
           </TouchableOpacity>
           <Text style={styles.profileText}>{email}</Text>
         </View>
