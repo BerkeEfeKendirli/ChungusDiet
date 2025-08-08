@@ -1,19 +1,18 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import OutlinedTextField from "../../components/textField/OutlinedTextField";
-import Button from "../../components/buttons/Button";
-import GoogleSvg from "../../assets/images/svg/google";
-import TextButton from "../../components/buttons/TextButton";
-import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../config/firebaseConfig";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Button from "../../components/buttons/Button";
+import TextButton from "../../components/buttons/TextButton";
+import OutlinedTextField from "../../components/textField/OutlinedTextField";
+import { auth } from "../../config/firebaseConfig";
 import { useTheme } from "../../context/ThemeContext";
 
 function LoginScreen({ navigation }) {
@@ -23,6 +22,9 @@ function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+
+  const StyleColors = useTheme();
+  const styles = getStyles(StyleColors);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -67,8 +69,6 @@ function LoginScreen({ navigation }) {
     }
   };
 
-  const StyleColors = useTheme();
-  const styles = getStyles(StyleColors);
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -118,12 +118,6 @@ function LoginScreen({ navigation }) {
               text="Sign In"
               textColor={StyleColors.onPrimary}
               onPress={handleLogin}
-            />
-            <Button
-              text="Sign in with Google"
-              style={styles.googleButton}
-              textColor={StyleColors.onSurfacePrimary}
-              icon={<GoogleSvg size={16} />}
             />
             <View style={styles.loginDirectorContainer}>
               <Text style={styles.loginDirectorText}>
