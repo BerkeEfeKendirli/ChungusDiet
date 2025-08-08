@@ -1,20 +1,19 @@
+import { useNavigation } from "@react-navigation/native";
+import { deleteUser, getAuth, signOut } from "firebase/auth";
+import { deleteDoc, doc, getFirestore } from "firebase/firestore";
+import { useState } from "react";
 import {
+  Image,
+  Modal,
   StyleSheet,
   Text,
-  View,
-  Modal,
   TouchableWithoutFeedback,
-  Image,
+  View,
 } from "react-native";
 import ProfileSvg from "../../../assets/images/svg/profile";
 import SettingsButton from "../../../components/buttons/SettingsButton";
-import { useTheme } from "../../../context/ThemeContext";
-import Button from "../../../components/buttons/Button";
 import TextButton from "../../../components/buttons/TextButton";
-import { useState } from "react";
-import { deleteUser, getAuth, signOut } from "firebase/auth";
-import { deleteDoc, doc, getFirestore } from "firebase/firestore";
-import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "../../../context/ThemeContext";
 
 function SettingsScreen({ userProfile }) {
   const StyleColors = useTheme();
@@ -70,7 +69,11 @@ function SettingsScreen({ userProfile }) {
       />
       <View style={styles.divider}></View>
       <View style={styles.accountButtons}>
-        <SettingsButton text="Change password" icon="key-outline" />
+        <SettingsButton
+          text="Change password"
+          icon="key-outline"
+          onPress={() => navigation.navigate("ChangePassword")}
+        />
         <SettingsButton
           text="Sign Out"
           textColor={StyleColors.danger}

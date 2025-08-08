@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function ProfilePictureScreen({ userProfile }) {
   const StyleColors = useTheme();
   const styles = getStyles(StyleColors);
   const navigation = useNavigation();
   const [selected, setSelected] = useState(null);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (userProfile?.profileImage) {
@@ -33,7 +35,7 @@ function ProfilePictureScreen({ userProfile }) {
   };
 
   return (
-    <View style={styles.rootContainer}>
+    <View style={[styles.rootContainer, { paddingBottom: insets.bottom }]}>
       <View style={styles.profileButtonsContainer}>
         <ProfilePictureButton
           isSvg={true}

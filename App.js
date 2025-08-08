@@ -32,6 +32,7 @@ import AboutAppScreen from "./screens/Home/Profile/AboutAppScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SettingsScreen from "./screens/Home/Profile/SettingsScreen";
 import ProfilePictureScreen from "./screens/Home/Profile/ProfilePictureScreen";
+import ChangePasswordScreen from "./screens/Home/Profile/ChangePasswordScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -167,6 +168,28 @@ function AppContent({ user, userProfile, isAppReady }) {
                     )}
                     options={({ navigation }) => ({
                       title: "Change Profile Picture",
+                      headerTitleAlign: "center",
+                      headerShown: true,
+                      headerShadowVisible: false,
+                      headerStyle: {
+                        backgroundColor: StyleColors.background,
+                      },
+                      headerLeft: () => (
+                        <CustomBackButton
+                          navigation={navigation}
+                          tintColor={StyleColors.onBackground}
+                        />
+                      ),
+                      headerTitleStyle: styles.headerTitle,
+                    })}
+                  />
+                  <Stack.Screen
+                    name="ChangePassword"
+                    children={() => (
+                      <ChangePasswordScreen userProfile={userProfile} />
+                    )}
+                    options={({ navigation }) => ({
+                      title: "Change Password",
                       headerTitleAlign: "center",
                       headerShown: true,
                       headerShadowVisible: false,
