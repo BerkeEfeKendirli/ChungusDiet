@@ -33,6 +33,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SettingsScreen from "./screens/Home/Profile/SettingsScreen";
 import ProfilePictureScreen from "./screens/Home/Profile/ProfilePictureScreen";
 import ChangePasswordScreen from "./screens/Home/Profile/ChangePasswordScreen";
+import ForgotPasswordScreen from "./screens/Auth/ForgotPasswordScreen";
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -274,6 +275,28 @@ function AppContent({ user, userProfile, isAppReady }) {
                 component={LoginScreen}
                 options={({ navigation }) => ({
                   title: "Sign In",
+                  headerShown: true,
+                  headerShadowVisible: false,
+                  headerStyle: {
+                    backgroundColor: StyleColors.background,
+                  },
+                  headerTitleAlign: "center",
+                  headerLeft: () => (
+                    <CustomBackButton
+                      navigation={navigation}
+                      tintColor={StyleColors.onBackground}
+                    />
+                  ),
+                  headerTitleStyle: styles.headerTitle,
+                })}
+              />
+              <Stack.Screen
+                name="ForgotPassword"
+                children={() => (
+                  <ForgotPasswordScreen userProfile={userProfile} />
+                )}
+                options={({ navigation }) => ({
+                  title: "Forgot password",
                   headerShown: true,
                   headerShadowVisible: false,
                   headerStyle: {

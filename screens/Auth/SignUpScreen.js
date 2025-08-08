@@ -53,7 +53,7 @@ function SignUpScreen({ navigation }) {
     if (isEmailEmpty) {
       newErrors.email = "Email is required";
     } else if (!isEmailValid) {
-      newErrors.email = "Enter a valid email adress.";
+      newErrors.email = "Enter a valid email address.";
     }
 
     const isPasswordEmpty = password.trim() === "";

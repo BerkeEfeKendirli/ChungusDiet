@@ -104,6 +104,7 @@ function LoginScreen({ navigation }) {
             <TextButton
               style={styles.forgotPasswordButton}
               text="Forgot your password?"
+              onPress={() => navigation.navigate("ForgotPassword")}
             />
             {Object.keys(errors).length > 0 && (
               <Text style={styles.errorText}>

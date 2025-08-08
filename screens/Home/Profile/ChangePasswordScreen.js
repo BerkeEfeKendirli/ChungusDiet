@@ -62,8 +62,8 @@ function ChangePasswordScreen({ userProfile }) {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "padding"}
-      // enabled={Platform.OS === "ios"}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      enabled={Platform.OS === "ios"}
     >
       <ScrollView
         contentContainerStyle={styles.scrollView}
