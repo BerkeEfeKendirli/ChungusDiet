@@ -25,6 +25,7 @@ expo-env.d.ts
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+*.log
 
 # macOS
 .DS_Store
@@ -40,6 +41,13 @@ yarn-error.*
 .env
 .env.local
 .env.production
+.env.*
+!.env.example
+
+# editor and operating system
+.vscode/
+.idea/
+Thumbs.db
 
 #TODO
 TODO.md
