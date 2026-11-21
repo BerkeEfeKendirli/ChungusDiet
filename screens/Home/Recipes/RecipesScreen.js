@@ -15,7 +15,6 @@ import SearchField from "../../../components/textField/SearchField";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import LoadingScreen from "../../Onboarding/LoadingScreen";
-import { DebugInstructions } from "react-native/Libraries/NewAppScreen";
 import { useTheme } from "../../../context/ThemeContext";
 import ProfileSvg from "../../../assets/images/svg/profile";
 

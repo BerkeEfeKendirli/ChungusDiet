@@ -1,7 +1,9 @@
+import SwipeAction from "../ui/SwipeAction";
 import { Ionicons } from "@expo/vector-icons";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../../context/ThemeContext";
-import { RectButton, Swipeable } from "react-native-gesture-handler";
+import { RectButton } from "react-native-gesture-handler";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 function MealFood({
   onEdit,
@@ -16,20 +18,14 @@ function MealFood({
   const styles = getStyles(StyleColors);
 
   const renderRightActions = (progress, dragX) => {
-    const translateX = dragX.interpolate({
-      inputRange: [-96, 0],
-      outputRange: [0, 96],
-      extrapolate: "clamp",
-    });
-
     return (
       <View style={styles.rectButtonsContainer}>
-        <Animated.View style={{ transform: [{ translateX }] }}>
+        <SwipeAction translation={dragX} distance={96}>
           <RectButton style={styles.editButton} onPress={onEdit}>
             <Ionicons name="pencil" size={24} color={StyleColors.background} />
           </RectButton>
-        </Animated.View>
-        <Animated.View style={{ transform: [{ translateX }] }}>
+        </SwipeAction>
+        <SwipeAction translation={dragX} distance={96}>
           <RectButton style={styles.deleteButton} onPress={onDelete}>
             <Ionicons
               name="trash-outline"
@@ -37,7 +33,7 @@ function MealFood({
               color={StyleColors.background}
             />
           </RectButton>
-        </Animated.View>
+        </SwipeAction>
       </View>
     );
   };

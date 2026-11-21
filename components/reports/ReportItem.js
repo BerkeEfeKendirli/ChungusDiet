@@ -1,6 +1,8 @@
+import SwipeAction from "../ui/SwipeAction";
 import { Ionicons } from "@expo/vector-icons";
-import { Animated, StyleSheet, Text, View } from "react-native";
-import { RectButton, Swipeable } from "react-native-gesture-handler";
+import { StyleSheet, Text, View } from "react-native";
+import { RectButton } from "react-native-gesture-handler";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import { useTheme } from "../../context/ThemeContext";
 import { useState } from "react";
 
@@ -10,20 +12,14 @@ function ReportItem({ date, weight, onEdit, onDelete }) {
   const [swiped, setSwiped] = useState(false);
 
   const renderRightActions = (progress, dragX) => {
-    const translateX = dragX.interpolate({
-      inputRange: [-96, 0],
-      outputRange: [0, 96],
-      extrapolate: "clamp",
-    });
-
     return (
       <View style={styles.rectButtonsContainer}>
-        <Animated.View style={{ transform: [{ translateX }] }}>
+        <SwipeAction translation={dragX} distance={96}>
           <RectButton style={styles.editButton} onPress={onEdit}>
             <Ionicons name="pencil" size={24} color={StyleColors.background} />
           </RectButton>
-        </Animated.View>
-        <Animated.View style={{ transform: [{ translateX }] }}>
+        </SwipeAction>
+        <SwipeAction translation={dragX} distance={96}>
           <RectButton style={styles.deleteButton} onPress={onDelete}>
             <Ionicons
               name="trash-outline"
@@ -31,7 +27,7 @@ function ReportItem({ date, weight, onEdit, onDelete }) {
               color={StyleColors.background}
             />
           </RectButton>
-        </Animated.View>
+        </SwipeAction>
       </View>
     );
   };
