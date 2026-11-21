@@ -41,11 +41,11 @@ const getStyles = (StyleColors) =>
     },
     barContainer: {
       width: "100%",
-      height: 5,
+      height: 8,
       borderRadius: 2.5,
-      backgroundColor: "transparent",
+      backgroundColor: StyleColors.surfaceVariant,
       position: "relative",
-      overflow: "hidden",
+      overflow: "visible",
     },
     barBackground: {
       ...StyleSheet.absoluteFillObject,
